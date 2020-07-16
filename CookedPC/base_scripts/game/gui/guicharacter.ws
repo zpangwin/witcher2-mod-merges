@@ -492,17 +492,20 @@ class CGuiCharacter extends CGuiPanel
 				if ( ! stats.IsAbilityDefined( levelN ) )
 					break;
 				
-				if ( stats.HasAbility( levelN ) )	playerLevel = 1;
-				else								playerLevel = 0;
-
 				AS_skill = theHud.CreateAnonymousObject();
 				
 				//theHud.SetFloat( "MaxMutations", stats.GetMaxEnhancementsForAbility( levelN ), AS_skill );
 				mutagentsSlotsNum = stats.GetMaxEnhancementsForAbility( levelN );
 				
 				AS_descrArr = theHud.CreateArray( "LvlDesc", AS_skill );
-				theHud.PushString( AS_descrArr, GetSkillTreeDescription( levelS + "_description" ) );
 				
+				if ( stats.HasAbility( levelN ) ) {
+					playerLevel = 1;
+					theHud.PushString( AS_descrArr, GetSkillTreeDescription( levelS + "_description" ) );
+				} else {
+					playerLevel = 0;
+					theHud.PushString( AS_descrArr, GetSkillTreeDescription( levelS + "_description" ) + "<br/><br/><p align='left'><font face='Font_Style_Standard' size='14' color='#979580'><b>" + GetLocStringByKeyExt("[[locale.char.pclevel]]") + " 2</b></font></p>" + GetSkillTreeDescription( levelS + "_2_description" ) );
+				}
 				
 				maxLevel = 1;
 				for ( j = 2; true; j += 1 )
@@ -520,11 +523,7 @@ class CGuiCharacter extends CGuiPanel
 						playerLevel = j;
 				}
 				
-				if ( playerLevel == 0 )
-				{
-					mutagentsSlotsNum = 0;
-				}
-				else if ( playerLevel == 1 && mutagentsSlotsNum > 1 )
+				if ( mutagentsSlotsNum > 1 )
 				{
 					mutagentsSlotsNum = 1;
 				}
