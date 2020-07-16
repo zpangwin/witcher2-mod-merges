@@ -20,5 +20,6 @@ I am planning to use the excellent EMC mod as a base since it is both open-sourc
 # Mods Used
 
 * [696-Enhanced Mod Compilation by QuietusPlus](https://www.nexusmods.com/witcher2/mods/696) \[Full Version\] | [Github](https://github.com/QuietusPlus)
+* [115-Weight Watchers by Bill Jahnel](https://www.nexusmods.com/witcher2/mods/115)
 
 
