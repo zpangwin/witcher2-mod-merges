@@ -68,6 +68,92 @@ import class CGuiUtils extends CObject
 		return output;
 	}
 
+	function GetItemNameTagged( inventory : CInventoryComponent, tagItemName : string ) : string {
+		var tagItemId : SItemUniqueId = inventory.AddItem( StringToName( tagItemName ), 1, false );
+		var tagItemCategory : name = inventory.GetItemCategory( tagItemId );
+		var tagItemTags : array< name >;
+		var tagLocTag : string = "";
+		var tagLocNameTagged : string = "";
+		
+		var tagCreatedId : SItemUniqueId;
+		var tagCreatedName : name;
+		var tagCreatedItem : bool = false;
+		
+		inventory.GetItemTags( tagItemId, tagItemTags );
+		
+		if ( tagItemCategory == 'schematic' ) {
+			tagCreatedName = inventory.GetCraftedItemName( tagItemId );
+			tagCreatedId = inventory.AddItem( StringToName( tagCreatedName ), 1, false );
+			tagItemCategory = inventory.GetItemCategory( tagCreatedId );
+			inventory.GetItemTags( tagCreatedId, tagItemTags );
+			tagCreatedItem = true;
+		}
+		
+		if ( tagItemTags.Contains('DarkDiffA1')|| tagItemTags.Contains('DarkDiffA2') || tagItemTags.Contains('DarkDiffA3') ) {
+			tagLocTag = GetLocStringByKeyExt( "menudifficultyveryhard" );
+		} else if ( tagItemTags.Contains('SortTypeQuest') || tagItemCategory == 'quest') {
+			if ( tagItemCategory == 'key' ) {
+				tagLocTag = GetLocStringByKeyExt( "type_key" );
+			} else {
+				tagLocTag = GetLocStringByKeyExt( "type_quest" );
+			}
+		} else if ( tagItemCategory == 'armor' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_armor" );
+		} else if ( tagItemCategory == 'armorupgrade' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_armorupgr" );
+		} else if ( tagItemCategory == 'book' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_book" );
+		} else if ( tagItemCategory == 'boots' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_boots" );
+		} else if ( tagItemCategory == 'gloves' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_gloves" );
+		} else if ( tagItemCategory == 'lure' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_lure" );
+		} else if ( tagItemCategory == 'other' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_trash" );
+		} else if ( tagItemCategory == 'skillupgrade' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_mutagen" );
+		} else if ( tagItemCategory == 'weaponupgrade' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_grease" );
+		} else if ( tagItemCategory == 'pants' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_pants" );
+		} else if ( tagItemCategory == 'petard' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_bomb" );
+		} else if ( tagItemCategory == 'elixir' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_potion" );
+		} else if ( tagItemCategory == 'rangedweapon' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_thrown" );
+		} else if ( tagItemCategory == 'rune' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_rune" );
+		} else if ( tagItemCategory == 'silversword' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_swordsilver" );
+		} else if ( tagItemCategory == 'steelsword' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_swordsteel" );
+		} else if ( tagItemCategory == 'trap' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_trap" );
+		} else if ( tagItemCategory == 'trophy' ) {
+			tagLocTag = GetLocStringByKeyExt( "type_trophy" );
+		} else if ( tagLocTag == "" ) {
+			if ( tagItemCategory == 'alchemyingredient' || tagItemCategory == 'craftingingredient') {
+				tagLocTag = GetLocStringByKeyExt( "[[locale.inv.listcraftingingredients]]" );
+			}
+		}
+		
+		if ( tagCreatedItem ) {
+			tagLocNameTagged = "(" + StrLeft( GetLocStringByKeyExt( "[[locale.inv.listcraftingingredients]]" ), 3 ) + ", " + StrLeft( tagLocTag, 3) + ") " + GetLocStringByKeyExt( tagCreatedName );
+			inventory.RemoveItem( tagCreatedId, 1 );
+		} else if ( tagLocTag == "" ) {
+			tagLocNameTagged = GetLocStringByKeyExt( tagItemName );
+		} else {
+			tagLocNameTagged = "(" + StrLeft( tagLocTag, 3) + ") " + GetLocStringByKeyExt( tagItemName );
+		}
+		
+		// Remove temporary items
+		inventory.RemoveItem( tagItemId, 1 );
+		
+		return tagLocNameTagged;
+	}
+	
 	public final function FillItemObject( inventory : CInventoryComponent, stats : CCharacterStats, itemId : SItemUniqueId, itemIdx : int, AS_item : int, 
 										  slotItems : array< SItemUniqueId >, optional custom : name )
 	{
@@ -119,7 +205,7 @@ import class CGuiUtils extends CObject
 		//}
 		
 		theHud.SetFloat	( "ID",			itemIdx,										AS_item );
-		theHud.SetString( "Name",		GetLocStringByKeyExt( itemName ),				AS_item );
+		theHud.SetString( "Name",		GetItemNameTagged( inventory, itemName ),				AS_item );
 		//theHud.SetString( "Name",		itemNameHtml,				AS_item );
 		//theHud.SetString( "Icon",		"icons/items/" + itemName + "_64x64.dds",		AS_item );
 		theHud.SetString( "Icon",		"img://globals/gui/icons/items/" + StrReplaceAll(itemName, " ", "") + "_64x64.dds",	AS_item );
@@ -219,7 +305,7 @@ import class CGuiUtils extends CObject
 				AS_schemPart = theHud.CreateAnonymousObject();
 				
 				theHud.SetFloat(  "ID", 		0,																AS_schemPart );
-				theHud.SetString( "Name",  		GetLocStringByKeyExt(ingredients[i].itemName), 					AS_schemPart );
+				theHud.SetString( "Name",  		GetItemNameTagged( inventory, ingredients[i].itemName ), 		AS_schemPart );
 				theHud.SetFloat(  "Count", 		ingredients[i].quantity, 										AS_schemPart );
 				theHud.SetString( "Icon",  		GetIngredientIconName( ingredients[i].itemName ), 				AS_schemPart );
 				theHud.SetFloat ( "Mass",  		GetItemNameMass( ingredients[i].itemName, inventory ), 			AS_schemPart );
@@ -273,7 +359,11 @@ import class CGuiUtils extends CObject
 			if ( inventory.ItemHasTag(itemId,'Sol') ) descFull += "<img src='img://globals/gui/icons/items/sol_64x64.dds' width='10' height='10'> ";
 			if ( inventory.ItemHasTag(itemId,'Fulgur') ) descFull += "<img src='img://globals/gui/icons/items/fulgur_64x64.dds' width='10' height='10'> ";
 			
-			theHud.SetString( "DescFull", GetLocStringByKeyExt( "Tooltip" + itemName ) + descFull + "<br>" + fullDescTootlip, AS_item );
+			if ( itemTags.Contains('NoTooltip') ) {
+				theHud.SetString( "DescFull", fullDescTootlip, AS_item );
+			} else {
+				theHud.SetString( "DescFull", GetLocStringByKeyExt( "Tooltip" + itemName ) + descFull + "<br>" + fullDescTootlip, AS_item );
+			}
 		}
 	}
 
