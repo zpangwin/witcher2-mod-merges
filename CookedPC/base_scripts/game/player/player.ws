@@ -7712,6 +7712,11 @@ thePlayer.RemoveAllBuffs();
 
 /////////////////////// DLC ///////////////////////////////////
 
+	event OnDlc_roche_jacket()
+	{
+		GetInventory().AddItem( 'Wolfsbane', 1, true );
+	}
+	
 	event OnDlc_alchemy_suit()
 	{
 		//GetInventory().AddItem( 'White Myrtle Petals', 15, true ); jaskolcze ziele, przestep, tegoskor
@@ -7723,6 +7728,11 @@ thePlayer.RemoveAllBuffs();
 		//GetInventory().AddItem( 'Bryony', 10, true );
 		GetInventory().AddItem( 'Verbena', 8, true );
 		GetInventory().AddItem( 'Balisse', 8, true );
+	}
+
+	event OnDlc_magical_suit()
+	{
+		GetInventory().AddItem( 'Wolfsbane', 1, true );
 	}
 
 	event OnDlc_swordsman_suit()
