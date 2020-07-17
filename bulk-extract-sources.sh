@@ -627,9 +627,10 @@ while IFS= read -r -d '' relativeFilePath; do
 
 	# invoke windows app to extract dzip files
 	if [[ 'false' == "${isWindows}" ]]; then
-		runOrSimulate /usr/bin/env WINEPREFIX="${witcher2ProtonPrefix}" "${protonWineBinPath}" "${wineToolsDir}/${GIBBED_EXTRACT_FILENAME}" "${wineFilePath}" "${wineOutputPath}" 2>&1 >/dev/null;
+		# Note: WINEDEBUG=-all is to get rid of wine debug messages/warnings such as "fixme" that just create console noise
+		runOrSimulate /usr/bin/env WINEDEBUG=-all WINEPREFIX="${witcher2ProtonPrefix}" "${protonWineBinPath}" "${wineToolsDir}/${GIBBED_EXTRACT_FILENAME}" "${wineFilePath}" "${wineOutputPath}";
 	else
-		runOrSimulate "${wineToolsDir}/${GIBBED_EXTRACT_FILENAME}" "${wineFilePath}" "${wineOutputPath}" 2>&1 >/dev/null;
+		runOrSimulate "${wineToolsDir}/${GIBBED_EXTRACT_FILENAME}" "${wineFilePath}" "${wineOutputPath}";
 	fi
 
 done < <(find . -iname '*.dzip' -print0)
