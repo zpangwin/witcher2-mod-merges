@@ -229,7 +229,7 @@ Options:
 * [695-Empty Hand -Dice Poker Cheat by DarkLive](https://www.nexusmods.com/witcher2/mods/695)
 * [Script edit for better market prices by menyalin](https://forums.nexusmods.com/index.php?/topic/388386-market-price-mod/page-7#entry32440680)
 * [867-BUGFIX Malgets notes in mysterious shop by Infintini](https://www.nexusmods.com/witcher2/mods/867)
-
+* [823-Story Ability Bug Fixes by Midnight Voyager](https://www.nexusmods.com/witcher2/mods/823)
 
 
 
