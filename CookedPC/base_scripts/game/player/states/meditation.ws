@@ -9,9 +9,9 @@ state Meditation in CPlayer extends Base
 {
 	var prevState		: EPlayerState;
 	var timeMultiplier	: float;
-	
+
 	event OnAnimEvent( animEventName : name, animEventTime : float, animEventType : EAnimationEventType )
-	{	
+	{
 		if (animEventName == 'Bottle')
 		{
 			if ( thePlayer.GetInventory().HasItem('Geralt_Elixir') )
@@ -26,7 +26,7 @@ state Meditation in CPlayer extends Base
 			}
 		}
 	}
-	
+
 	event OnEnterState()
 	{
 		var arenaDoor : CArenaDoor;
@@ -40,26 +40,26 @@ state Meditation in CPlayer extends Base
 			}
 		}
 		super.OnEnterState();
-		
+
 		theHud.SetHudVisibility( "false" );
-		
+
 		CreateNoSaveLock();
 		FactsAdd( 'facts_meditation', 1, -1 );
 		theCamera.SetCameraState(CS_Meditation);
-		
+
 		timeMultiplier = 1.f;
-		
+
 		theGame.EnableButtonInteractions( false );
-		
+
 		// we can exit from meditation only by StateMeditationExit() call - block other possibilities
 		thePlayer.SetAllPlayerStatesBlocked( true );
-		
+
 		// Play meditation start sound
 		theSound.PlaySound( "gui/waittime/started" );
-		
+
 		thePlayer.SetManualControl( false, false );
 	}
-	
+
 	event OnLeaveState()
 	{
 		var arenaDoor : CArenaDoor;
@@ -72,61 +72,61 @@ state Meditation in CPlayer extends Base
 			}
 		}
 		super.OnLeaveState();
-		
+
 		// Play meditation stop sound
 		theSound.PlaySound( "gui/waittime/stopped" );
-		
+
 		FactsAdd( 'facts_meditation', -1, -1 );
-		
+
 		theGame.ResetHoursPerMinute();
 		//theGame.SetDefaultAnimationTimeMultiplier( theGame.GetDefaultAnimationTimeMultiplier() / timeMultiplier );
 		theGame.SetTimeScale( theGame.GetTimeScale() / timeMultiplier );
-		
+
 		theGame.EnableButtonInteractions( true );
-		
+
 		parent.SetHotKeysBlocked( false );
-		
+
 		thePlayer.SetAllPlayerStatesBlocked( false );
-		
+
 		thePlayer.SetManualControl( true, true );
 	}
-	
+
 	event OnUseExploration( explorationArea : CActionAreaComponent )
 	{
 		return false;
 	}
-	
-	event OnStartTraversingExploration() 
+
+	event OnStartTraversingExploration()
 	{
 		return false;
 	}
-	
+
 	entry function StateMeditation( oldPlayerState : EPlayerState )
 	{
 		prevState = oldPlayerState;
-		
+
 		//hide swords etc.
 		if( thePlayer.GetCurrentWeapon() != GetInvalidUniqueId() )
 		{
 			thePlayer.HolsterWeaponLatent( thePlayer.GetCurrentWeapon() );
 		}
-		
+
 		parent.SetHotKeysBlocked( true );
-		
+
 		parent.ActivateBehavior( 'meditation' );
 
 		theHud.ShowMeditation();
-		
+
 		parent.WaitForBehaviorNodeActivation( 'idle_start' );
-		
-		
+
+
 	}
-	
+
 	entry function ChangeMeditationState( actEvent: name, waitForAct: name, functionSwitch : string )
 	{
 		if (parent.RaiseEvent( actEvent ))
 		{
-			parent.WaitForBehaviorNodeActivation( waitForAct );			
+			parent.WaitForBehaviorNodeActivation( waitForAct );
 		}
 		else
 		{
@@ -137,27 +137,27 @@ state Meditation in CPlayer extends Base
 			theHud.ProcessPanelSwitch(functionSwitch);
 		}
 	}
-	
+
 	entry function ChangeMeditationState2( actEvent: name, secondEvent: name, waitForAct: name, functionSwitch : string )
 	{
 		if (parent.RaiseEvent( actEvent ))
 		{
 			Sleep(0);//wait for next tick
-			parent.WaitForBehaviorNodeActivation( waitForAct, 20 );			
+			parent.WaitForBehaviorNodeActivation( waitForAct, 20 );
 			if (parent.RaiseEvent( secondEvent ))
 			{
 				Sleep(0);//wait for next tick
-				parent.WaitForBehaviorNodeActivation( waitForAct, 20 );			
+				parent.WaitForBehaviorNodeActivation( waitForAct, 20 );
 			}
 		}
 		else if(parent.RaiseForceEvent( actEvent ))
 		{
 			Sleep(0);//wait for next tick
-			parent.WaitForBehaviorNodeActivation( waitForAct, 20 );			
+			parent.WaitForBehaviorNodeActivation( waitForAct, 20 );
 			if (parent.RaiseEvent( secondEvent ))
 			{
 				Sleep(0);//wait for next tick
-				parent.WaitForBehaviorNodeActivation( waitForAct, 20 );			
+				parent.WaitForBehaviorNodeActivation( waitForAct, 20 );
 			}
 		}
 		if (functionSwitch != "")
@@ -165,7 +165,7 @@ state Meditation in CPlayer extends Base
 			theHud.ProcessPanelSwitch(functionSwitch);
 		}
 	}
-	
+
 	entry function StateMeditationProcess( numHoursToWait : int, elixirsToDrink : array< SItemUniqueId > )
 	{
 		var startTime	 : GameTime;
@@ -174,15 +174,15 @@ state Meditation in CPlayer extends Base
 		var npcs		 : array< CNewNPC >;
 		var lightsKeeper : W2LightsKeeper;
 		var wasLightKeeperFound : bool;
-		
+
 		theHud.HideMeditation();
-		
+
 		if ( numHoursToWait > 0 )
 		{
 			thePlayer.RemoveAllBuffs();
 			theHud.EnableInput( false, false, false );
 			startTime = theGame.GetGameTime();
-			
+
 			theGame.SetHoursPerMinute( 48 );
 			//theGame.SetDefaultAnimationTimeMultiplier( theGame.GetDefaultAnimationTimeMultiplier() * 10.f );
 			theGame.SetTimeScale( theGame.GetTimeScale() * 10.f );
@@ -196,19 +196,19 @@ state Meditation in CPlayer extends Base
 				thePlayer.ApplyTimerBuffs( sleepedSecs );
 			}
 			while ( GameTimeHours( theGame.GetGameTime() - startTime ) < numHoursToWait );
-			
+
 			theHud.EnableInput( true, true, true );
-			
-			thePlayer.IncreaseHealth( numHoursToWait * 24 ); 
-			
+
+			thePlayer.IncreaseHealth( numHoursToWait * 24 );
+
 			theGame.ResetHoursPerMinute();
 			//theGame.SetDefaultAnimationTimeMultiplier( theGame.GetDefaultAnimationTimeMultiplier() * 0.1f );
 			theGame.SetTimeScale( theGame.GetTimeScale() * 0.1f );
 			timeMultiplier *= 0.1f;
 		}
-		
+
 		//parent.SetToxicity(toxicity);
-		
+
 		if ( elixirsToDrink.Size() > 0 )
 		{
 			for ( i = 0; i < elixirsToDrink.Size(); i += 1 )
@@ -217,7 +217,7 @@ state Meditation in CPlayer extends Base
 				Sleep(0.5);
 			}
 		}
-		
+
 		// HACK: switch lights on/off if the lights keeper haven't done it yet
 		theGame.GetAllNPCs( npcs );
 		wasLightKeeperFound = false;
@@ -232,20 +232,20 @@ state Meditation in CPlayer extends Base
 		}
 		if ( !wasLightKeeperFound )
 		{
-			// TODO: 
+			// TODO:
 			FactsAdd( "spawn_keeper_after_meditation", 1 );
 		}
-		
+
 		parent.RaiseEvent('idle');
 		theCamera.RaiseEvent('idle');
-		
+
 		theHud.ShowMeditation();
 	}
-	
+
 	entry function StateMeditationExit()
 	{
 		theHud.CloseAllPanels();
-		
+
 		parent.RaiseForceEvent('exploration');
 		theCamera.ResetRotation(true,true,true, 2.67);
 		if( theCamera.RaiseEvent('exploration') )
@@ -261,17 +261,17 @@ state Meditation in CPlayer extends Base
 		}
 //		theCamera.RaiseForceEvent('meditation_reset');
 		//theCamera.WaitForBehaviorNodeDeactivation('cam_meditation_end', 7.0);
-		
 
-		
+
+
 		//parent.SetHotKeysBlocked( false );
-		
+
 		if( prevState == PS_Sneak )
 			parent.PlayerStateCallEntryFunction( prevState, '' );
 		else
 			parent.PlayerStateCallEntryFunction( PS_Exploration, '' );
 	}
-	
+
 	final function IsCameraControlKey( key : name ) : bool
 	{
 		if ( key == 'GI_AxisRightY' || key == 'GI_AxisRightX' )
@@ -281,7 +281,7 @@ state Meditation in CPlayer extends Base
 		else
 			return false;
 	}
-	
+
 	event OnGameInputEvent( key : name, value : float )
 	{
 		// block camera input while meditating
