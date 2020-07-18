@@ -235,7 +235,7 @@ Options:
 * [886-Walls have ears and Suspect Thorak no longer fail after returning from the mist by Klubargutan](https://www.nexusmods.com/witcher2/mods/886)
 * [763-Radovid Persuasion Fix by Tgirgis](https://www.nexusmods.com/witcher2/mods/763)
 * [908-The Scent of Incense Fix by Divius](https://www.nexusmods.com/witcher2/mods/908)
-
+* [887-Draugirs now correctly drop trophies fix by Klubargutan](https://www.nexusmods.com/witcher2/mods/887)
 
 
 
