@@ -191,7 +191,7 @@ state Meditation in CPlayer extends Base
 			do
 			{
 				sleepedSecs = GameTimeToSeconds( theGame.GetGameTime() );
-				Sleep( 1.f );
+				Sleep( 0.25f );
 				sleepedSecs = GameTimeToSeconds( theGame.GetGameTime() ) - sleepedSecs;
 				thePlayer.ApplyTimerBuffs( sleepedSecs );
 			}
@@ -250,16 +250,16 @@ state Meditation in CPlayer extends Base
 		theCamera.ResetRotation(true,true,true, 2.67);
 		if( theCamera.RaiseEvent('exploration') )
 		{
-			parent.WaitForBehaviorNodeDeactivation('meditation_end', 4.0);
+			parent.WaitForBehaviorNodeDeactivation('meditation_end', 3.0);
 			theCamera.SetCameraState(CS_Exploration);
 		}
 		else
 		{
 			Sleep(1.0);
 			theCamera.SetCameraState(CS_Exploration);
-			parent.WaitForBehaviorNodeDeactivation('meditation_end', 3.0);
+			parent.WaitForBehaviorNodeDeactivation('meditation_end', 1.8);
 		}
-//		theCamera.RaiseForceEvent('meditation_reset');
+		//theCamera.RaiseForceEvent('meditation_reset');
 		//theCamera.WaitForBehaviorNodeDeactivation('cam_meditation_end', 7.0);
 
 

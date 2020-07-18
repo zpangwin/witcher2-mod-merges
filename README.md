@@ -246,7 +246,7 @@ Options:
 * Customized max bets as follows: use difficult scaling system from Better Poker but also augment with percentage like from Tweaked Minigame Bets EXCEPT use the Max() function rather than the Min() function when determining BP vs TMB value.
 * [876-Win Fistfight QTEs by Nastyemu](https://www.nexusmods.com/witcher2/mods/876)
 * Custom: short-circuited many QTE checks so that many QTEs will succeed regardless of if you press buttons correctly or not.
-
+* [915-Faster Exploration Run Speed by Heramepheus](https://www.nexusmods.com/witcher2/mods/915)
 
 
 

@@ -18,6 +18,9 @@ import state Movable in CPlayer extends Base
 	default				m_scheduledState				= PS_None;
 
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//1.2.1
+	private var bFastMove : bool;
+	private var moveSpeedTime : EngineTime;
 
 	event OnEnterState()
 	{
@@ -63,7 +66,23 @@ import state Movable in CPlayer extends Base
 
 	event OnGameInputEvent( key : name, value : float )
 	{
-		if( key == 'GI_WalkFlag' && value > 0.5f )
+		if( key == 'GI_WalkSwitch' && parent.GetCurrentStateName() == 'Exploration' )
+		{
+			if( value > 0.5f )
+			{
+				moveSpeedTime = theGame.GetEngineTime() + 0.3;
+			}
+			else if( theGame.GetEngineTime() < moveSpeedTime )
+			{
+				bFastMove = !bFastMove;
+				if( bFastMove )
+					parent.SetAnimationTimeMultiplier(1.50);
+				else
+					parent.SetAnimationTimeMultiplier(1.15f);
+				return true;
+			}
+		}
+		else if( key == 'GI_WalkFlag' && value > 0.5f )
 		{
 			parent.SwitchWalkFlag();
 			return true;

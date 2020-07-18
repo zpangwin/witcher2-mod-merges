@@ -17,6 +17,9 @@ state Exploration in CPlayer extends ExtendedMovable
 
 	event OnEnterState()
 	{
+		if( bFastMove ) parent.SetAnimationTimeMultiplier(1.25); //1.2.1
+		parent.AddTimer('ResetCombat', 2.f); //1.2.1
+
 		parent.SetPlayerCombatStance(PCS_Low);
 
 		parent.ActionCancelAll();
@@ -45,6 +48,8 @@ state Exploration in CPlayer extends ExtendedMovable
 
 	event OnLeaveState()
 	{
+		thePlayer.SetAnimationTimeMultiplier(1.0f); //1.2.1
+
 		super.OnLeaveState();
 		parent.RemoveTimer('FindEnemy');
 	}
@@ -78,6 +83,20 @@ state Exploration in CPlayer extends ExtendedMovable
 		thePlayer.ActionRotateTo( Npc.GetWorldPosition() );
 	}
 
+	//1.3.2
+	event OnGameInputDoubleTap( key : name, value : float )
+	{
+		if( key == 'GI_AxisLeftX' || key == 'GI_AxisLeftY' )
+		{
+			bFastMove = !bFastMove;
+			if( bFastMove )
+				parent.SetAnimationTimeMultiplier( 1.50 );
+			else
+				parent.SetAnimationTimeMultiplier( 1.15f );
+
+			return true;
+		}
+	}
 	event OnGameInputEvent( key : name, value : float )
 	{
 		var enemy : CNewNPC;
