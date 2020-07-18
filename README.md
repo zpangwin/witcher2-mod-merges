@@ -234,7 +234,7 @@ Options:
 * Additional story ability fixes in the QAddAbilityToPlayer function in quest_functions.ws, as originally suggested by menyalin [here](https://forums.nexusmods.com/index.php?/topic/3652060-broken-story-abilities-half-pirouette-etc-fixing/) and clarified by Kalessin42 [here](https://forums.nexusmods.com/index.php?/topic/5578077-story-ability-bug-fixes/#entry65086196)
 * [886-Walls have ears and Suspect Thorak no longer fail after returning from the mist by Klubargutan](https://www.nexusmods.com/witcher2/mods/886)
 * [763-Radovid Persuasion Fix by Tgirgis](https://www.nexusmods.com/witcher2/mods/763)
-
+* [908-The Scent of Incense Fix by Divius](https://www.nexusmods.com/witcher2/mods/908)
 
 
 
