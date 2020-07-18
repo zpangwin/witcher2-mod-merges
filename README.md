@@ -236,7 +236,7 @@ Options:
 * [763-Radovid Persuasion Fix by Tgirgis](https://www.nexusmods.com/witcher2/mods/763)
 * [908-The Scent of Incense Fix by Divius](https://www.nexusmods.com/witcher2/mods/908)
 * [887-Draugirs now correctly drop trophies fix by Klubargutan](https://www.nexusmods.com/witcher2/mods/887)
-
+* [885-Wild Hunt journal entries fix and ability to discuss the Wild Hunt poem with Dandelion on Iorveths path by Klubargutan](https://www.nexusmods.com/witcher2/mods/885)
 
 
 
