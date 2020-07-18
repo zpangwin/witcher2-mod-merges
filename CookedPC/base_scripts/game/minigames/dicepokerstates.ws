@@ -62,7 +62,7 @@ state PlayerSelect in W2MinigameDicePoker
 
 		parent.SelectAllDices( DicePoker_Player, false );
 
-		parent.CameraCloseUp();
+		//parent.CameraCloseUp(); //Rey
 
 		parent.StartPlayerSelection();
 	}
@@ -111,7 +111,7 @@ state PlayerBetting in W2MinigameDicePoker
 
 		if( parent.m_currentThrow == 1 )
 		{
-			parent.CameraSide();
+			parent.CameraTop(); //Rey
 		}
 		else
 		{
@@ -139,12 +139,49 @@ state PlayerBetting in W2MinigameDicePoker
 		// Select stake
 		if( firstBet )
 		{
-			//START, MODDED: Set new (min/max)Amounts
-			minimalBet = Min( 1, parent.m_playerStatuses[ DicePoker_Player ].m_money );
-			maximalBet = Min( 10*parent.m_npc.GetDicePokerMaxBet(), parent.m_playerStatuses[ DicePoker_Player ].m_money );
-			//END, MODDED
+			//=========================================
+			// VANILLA - START
+			//=========================================
 			//minimalBet = Min( parent.m_npc.GetDicePokerMinBet(), parent.m_playerStatuses[ DicePoker_Player ].m_money );
 			//maximalBet = Min( parent.m_npc.GetDicePokerMaxBet(), parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			//=========================================
+			// VANILLA - END
+			//=========================================
+
+			//=========================================
+			// MOD - START
+			//=========================================
+			minimalBet = Min( 1, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+
+			/*
+			Red's max bets suck in general - better and more logical way below
+			0 - DicePoker_Master, - 200
+			1 - DicePoker_Hard, - 100
+			2 - DicePoker_Normal, - 50
+			3 - DicePoker_Easy, - 25
+			else - 25
+			*/
+			// just in case set this to 25 if for some reason the character doesn't have the diff level set
+			maximalBet = Min( 25, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			// master
+			if (parent.m_npc.GetDicePokerLevel() == 0){
+				maximalBet = Min( 200, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			}
+			// hard
+			if (parent.m_npc.GetDicePokerLevel() == 1){
+				maximalBet = Min( 100, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			}
+			// normal
+			if (parent.m_npc.GetDicePokerLevel() == 2){
+				maximalBet = Min( 50, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			}
+			// easy
+			if (parent.m_npc.GetDicePokerLevel() == 3){
+				maximalBet = Min( 25, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			}
+			//=========================================
+			// MOD - END
+			//=========================================
 			
 			parent.m_guiPanel.Betting( maximalBet, minimalBet,
 				"[[locale.dice.PlaceYourBet]]", "[[locale.dice.Bet]]", "[[locale.dice.Pass]]" );
@@ -235,7 +272,7 @@ state PlayerThrowing in W2MinigameDicePoker
 {
 	entry function StatePlayerThrowing()
 	{
-		parent.CameraSide();
+		parent.CameraTop(); //Rey
 
 		if( theGame.IsUsingPad() )
 		{

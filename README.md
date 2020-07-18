@@ -242,7 +242,7 @@ Options:
 * Adding 1 additional Talent per level since TW1 gives 3 per level while vanilla TW2 gives 1 per level. Based on notes from XXZOCKERXXJOE [here](https://forums.nexusmods.com/index.php?showtopic=6993371/#entry72704613)
 * [816-Easier Experienced Attribute by Debatra](https://www.nexusmods.com/witcher2/mods/816) - changes Experienced attribute requirement from killing 9 dummies to killing 2 dummies (so you don't have to put as much effort into tracking them down and can get the benefits early enough that it is actually useful)
 * [838-Tweaked Minigame Bets by relicshadow](https://www.nexusmods.com/witcher2/mods/838) - alters max bets of all 3 minigames (fist fight, arm wrestle and dice poker); new maxes are 10 times the original amount (so e.g. 2 orens max is now 20 orens)
-
+* [906-Better Poker by Rey](https://www.nexusmods.com/witcher2/mods/906) - partial - I did not merge the stuff that prevents throwing dice out of the box (as it would nulify EmptyHand changes) but i did merge the camera fixes and the max bets scaling with difficulty
 
 
 
