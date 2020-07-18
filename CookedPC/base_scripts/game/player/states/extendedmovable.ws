@@ -341,6 +341,16 @@ state ExtendedMovable in CPlayer extends Movable
 			return false;
 		}
 
+		else if ( key == 'GI_CatToggle' && !thePlayer.IsNotGeralt()  )
+		{
+			if( value > 0.5 )
+			{
+				thePlayer.EnableCatEffect( !thePlayer.IsCatEffectEnabled() );
+				return true;
+			}
+			return false;
+		}
+		
 		// Not handled
 		return super.OnGameInputEvent( key, value );
 	}

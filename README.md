@@ -249,7 +249,7 @@ Options:
 * [915-Faster Exploration Run Speed by Heramepheus](https://www.nexusmods.com/witcher2/mods/915)
 * [868-Win Arm Wrestling And Poker Everytime Fix Dice Camera Too by djbauer](https://www.nexusmods.com/witcher2/mods/868); reverted (was curious how to do it but did not really want for my playthrough)
 * Custom: Increased Health regen rate during combat (now 25% normal regen rate instead of 0.5%); made Health and Vigor regen active while toxic. Based on notes in descption of [61-Increase Combat Regen Rate by Kevinnium](https://www.nexusmods.com/witcher2/mods/61)
-
+* [918-Toggleable Cat Effect with a Hotkey by Wolverine1984](https://www.nexusmods.com/witcher2/mods/918) - Note: requires keybinding to be setup in User.ini; see mod description
 
 
 
