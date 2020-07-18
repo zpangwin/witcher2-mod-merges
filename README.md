@@ -238,6 +238,7 @@ Options:
 * [887-Draugirs now correctly drop trophies fix by Klubargutan](https://www.nexusmods.com/witcher2/mods/887)
 * [885-Wild Hunt journal entries fix and ability to discuss the Wild Hunt poem with Dandelion on Iorveths path by Klubargutan](https://www.nexusmods.com/witcher2/mods/885)
 * [832-Meliteles Heart - Combat Stats Fixes by AWP3RATOR](https://www.nexusmods.com/witcher2/mods/832) - clean version of mod 799-Melitele's Heart As It Was MEANT to BE by thebunnyrules; does not break tutorial or add extra undocumented shit like thebunnyrules version
+* [Increased level cap using method mentioned by Asrakorn](https://forums.nexusmods.com/index.php?showtopic=1339343/#entry27017249) - also note that the mod 674 that the thread is about only works on the DVD version of the game, not the Steam version while the Asrakorn method works on all versions.
 
 
 

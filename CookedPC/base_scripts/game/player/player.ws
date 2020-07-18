@@ -4014,7 +4014,7 @@ mBoolean( true ) );
 		var levelname : name;
 		var talents : int;
 
-		if (level < 35)
+		if (level < 70)
 		{
 			level = level + 1;
 
