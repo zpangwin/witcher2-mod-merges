@@ -5,8 +5,8 @@ import function FindEnemiesInCombatArea() : array< CActor >;
 // ---------------------------------------------------------
 
 class CSTakedown extends CStateMachine
-{	
-	event OnCSTakedown_1ManDown( target : CActor );	
+{
+	event OnCSTakedown_1ManDown( target : CActor );
 	event OnCSTakedown_1Man( target : CActor, adrenaline : bool );
 	event OnCSTakedown_2Man( target1, target2 : CActor, adrenaline : bool );
 	event OnCSTakedown_3Man( target1, target2, target3 : CActor, adrenaline : bool );
@@ -27,7 +27,7 @@ state Idle in CSTakedown
 	var wasImmortal : bool;
 	var wasInvurnerable : bool;
 	entry function Idle();
-	
+
 	function GetStringCSNumber( id : int ) : string
 	{
 		if ( id < 10 ) return "0" + id; else return "" + id;
@@ -38,7 +38,7 @@ state Idle in CSTakedown
 // ---------------------------------------------------------
 
 	function SetPlayerImmortal()
-	{	
+	{
 		//if(thePlayer.IsImmortal())
 		//{
 			//wasImmortal = true;
@@ -70,17 +70,17 @@ state Idle in CSTakedown
 		var cutceneRange : EFinisherDistance;
 		var fSpot : CFinisherSpot;
 		var geratlRot : EulerAngles;
-		
+
 		//Minimal distance for finding a finisher spot
 		closestDistanceToSpot = 100.0;
 		closestDistanceToSpotSqrt = closestDistanceToSpot*closestDistanceToSpot;
-		
+
 		//Maximum z difference between start position and spot position
 		maxZDiff = 4.0;
-		
+
 		theGame.GetNodesByTag('fspot', finisherSpots);
 		size = finisherSpots.Size();
-		
+
 		//Find nearest spot with Z difference test
 		for(i = 0; i < size; i += 1)
 		{
@@ -91,7 +91,7 @@ state Idle in CSTakedown
 				if( ZDif(startPosition, nodePosition, maxZDiff) )
 				{
 					fSpot = (CFinisherSpot)finisherSpots[i];
-					//Test if the finisher spot is in the same finisher area as the player 
+					//Test if the finisher spot is in the same finisher area as the player
 					//or player is outside of any finisher area
 					if(fSpot.GetFinisherArea() == thePlayer.GetPlayerFinisherArea())
 					{
@@ -120,8 +120,8 @@ state Idle in CSTakedown
 		}
 		return foundSpot;
 	}
-	
-	entry function CSTakedown_1ManDown( target : CActor ) 
+
+	entry function CSTakedown_1ManDown( target : CActor )
 	{
 		var actors : array < CEntity >;
 		var names : array < string >;
@@ -133,18 +133,18 @@ state Idle in CSTakedown
 		var i : int;
 		var deathData : SActorDeathData;
 		var finisherRange : EFinisherDistance;
-		
+
 		finisherRange = FD_Medium;
 		if ( ! target || target.IsBoss() ) return;
 		csIds = GetStringCSNumber( RoundF( RandRangeF( 1, 4 ) ) );
-		
+
 		names.PushBack("witcher");
 		names.PushBack("man1");
 		actors.PushBack( (CEntity)thePlayer );
 		actors.PushBack( (CEntity)target );
-		
+
 		deathData.deadState = true;
-		
+
 		pos = thePlayer.GetWorldPosition();
 		if ( !FindFinisherSpot(finisherRange, pos, csPos, rot) )
 		{
@@ -154,7 +154,7 @@ state Idle in CSTakedown
 		}
 		if ( target.IsMonster() && target.GetMonsterType() != MT_HumanGhost)
 		{
-			thePlayer.OnTakedownActor( target );		
+			thePlayer.OnTakedownActor( target );
 		}
 		else
 		{
@@ -182,7 +182,7 @@ state Idle in CSTakedown
 			target.EnterDead(deathData);
 			CalculateGainedExperienceAfterKill(target, true, true, false);
 			//thePlayer.SetAdrenaline( 0 );
-			GetActorsInRange(enemiesClose, 30.0, '', thePlayer);	
+			GetActorsInRange(enemiesClose, 30.0, '', thePlayer);
 			for( i=0; i < enemiesClose.Size(); i+=1 )
 			{
 				enemiesClose[i].SetHideInGame( false );
@@ -197,8 +197,8 @@ state Idle in CSTakedown
 				theHud.AllowOpeningMainMenu();
 			}
 		}
-	}	
-	
+	}
+
 // ---------------------------------------------------------
 //                     ONE MAN FINISHER
 // ---------------------------------------------------------
@@ -213,15 +213,15 @@ state Idle in CSTakedown
 		var usesSecondaryWeapon : bool;
 		var allFinishersUsed : bool;
 		var finishersUsed : int;
-		
+
 		if(thePlayer.GetInventory().GetItemEntityUnsafe(thePlayer.GetCurrentWeapon()).IsWitcherSecondaryWeapon())
 		{
 			usesSecondaryWeapon = true;
 		}
-		
+
 		finisherNumRand.Clear();
 		if(enemiesNum == 3)
-		{	
+		{
 			if(finisherDistance == FD_Medium)
 			{
 				finihsherId = 6;
@@ -250,8 +250,8 @@ state Idle in CSTakedown
 			{
 				finisherNumRand.Remove(3);
 			}
-			
-			
+
+
 			size = finisherNumRand.Size();
 
 			finishersUsed =  parent.finisherNum3.Size();
@@ -289,7 +289,7 @@ state Idle in CSTakedown
 			if(usesSecondaryWeapon)
 			{
 				finisherNumRand.Remove(4);
-				
+
 			}
 			if(!thePlayer.HasSilverSword() || !thePlayer.HasSteelSword())
 			{
@@ -363,7 +363,7 @@ state Idle in CSTakedown
 				finisherNumRand.Remove(11);
 				finisherNumRand.Remove(16);
 			}
-			
+
 			size = finisherNumRand.Size();
 			finishersUsed =  parent.finisherNum1.Size();
 			if(finishersUsed >= size)
@@ -386,7 +386,7 @@ state Idle in CSTakedown
 	{
 		var monsterType : EMonsterType;
 		monsterType = monster.GetMonsterType();
-		
+
 		switch (monsterType)
 		{
 			case MT_Rotfiend:
@@ -450,7 +450,7 @@ state Idle in CSTakedown
 				break;
 			}
 		}
-		
+
 		return false;
 	}
 	function GetMonsterFinisherCutscene(monster : CActor) : string
@@ -685,7 +685,7 @@ state Idle in CSTakedown
 		var z1, z2 : float;
 		z1 = position1.Z;
 		z2 = position2.Z;
-		
+
 		if(AbsF(z1 - z2) < zdif)
 		{
 			return true;
@@ -763,7 +763,7 @@ state Idle in CSTakedown
 		}
 		return finisherDist;
 	}
-	entry function CSTakedown_1Man( target : CActor, adrenaline : bool ) 
+	entry function CSTakedown_1Man( target : CActor, adrenaline : bool )
 	{
 		var actors : array < CEntity >;
 		var names : array < string >;
@@ -782,43 +782,43 @@ state Idle in CSTakedown
 		var enemiesCloseHostile : int;
 		var npc : CNewNPC;
 		var doInstantKill : bool;
-		
+
 		targets.PushBack(target);
-		
+
 		if ( target.GetCurrentStateName() == 'Stun' ) {
-			
+
 			GetActorsInRange(enemiesClose, 15.0, '', thePlayer);
 			enemiesCloseHostile = 0;
-			
+
 			for ( i=0; i < enemiesClose.Size(); i+=1 ) {
 				npc = (CNewNPC)enemiesClose[i];
 				if ( npc && npc.IsAlive() && npc.GetAttitude(thePlayer) == AIA_Hostile ) {
 					enemiesCloseHostile += 1;
 				}
 			}
-			
+
 			if ( enemiesCloseHostile == 1 && RandF() * 100 < 50 ) {
 				doInstantKill = false;
 			} else {
 				doInstantKill = true;
 			}
 		}
-		
+
 		if( doInstantKill ) {
 			target.Kill(false, thePlayer, deathData);
 			target.StopEffect('stun_fx');
 			target.PlayEffect('instant_kill_fx');
 
-			for( i=0; i < enemiesClose.Size(); i+=1 ) {		
+			for( i=0; i < enemiesClose.Size(); i+=1 ) {
 				npc = (CNewNPC)enemiesClose[i];
 				if ( npc && npc.IsAlive() && npc.GetAttitude(thePlayer) == AIA_Hostile ) {
 					npc.StopEffect('stun_fx');
 					npc.OnCriticalEffectStop( CET_Stun );
 				}
 			}
-			return; 
+			return;
 		}
-		
+
 		if(adrenaline)
 		{
 			thePlayer.SetAdrenaline( 0 );
@@ -833,18 +833,18 @@ state Idle in CSTakedown
 			return;
 		}
 		names.PushBack("witcher");
-		
+
 		actors.PushBack( (CEntity)thePlayer );
 		actors.PushBack( (CEntity)target );
 		pos = thePlayer.GetWorldPosition();
-		
-		
+
+
 		cutsceneRange = FD_Close;
 		if(target.IsMonster() && target.GetMonsterType() != MT_HumanGhost)
 		{
 			cutsceneRange = GetMonsterCutsceneDistance(target.GetMonsterType());
 		}
-		
+
 		if(!target.CanPlayFinisherCutscene())
 		{
 			target.PlayStrongBloodOnHit();
@@ -885,7 +885,7 @@ state Idle in CSTakedown
 		}
 		if ( target.IsMonster() && !IsMonsterFinisher(target) && target.GetMonsterType() != MT_HumanGhost)
 		{
-			thePlayer.OnTakedownActor( target );		
+			thePlayer.OnTakedownActor( target );
 		}
 		else
 		{
@@ -932,7 +932,7 @@ state Idle in CSTakedown
 			thePlayer.ShowNearbyEnemies(posCut, parent.showRange);
 
 		}
-		
+
 		if(theGame.GetIsPlayerOnArena())
 		{
 			if(theGame.GetIsPlayerOnArena())
@@ -940,7 +940,7 @@ state Idle in CSTakedown
 				thePlayer.ShowArenaPoints(thePlayer.GetCharacterStats().GetAttribute('arena_fin1_bonus'));
 			}
 		}
-		
+
 		if ( adrenaline && thePlayer.GetWitcherType( WitcherType_Magic ) )
 		{
 			thePlayer.AddTimer('TriggerHeliotropTimer', 0.2, false);
@@ -949,12 +949,12 @@ state Idle in CSTakedown
 		{
 			theHud.AllowOpeningMainMenu();
 		}
-	}	
-	
+	}
+
 // ---------------------------------------------------------
 //                     TWO MAN FINISHER
 // ---------------------------------------------------------
-	entry function CSTakedown_2Man( target1, target2 : CActor, adrenaline : bool ) 
+	entry function CSTakedown_2Man( target1, target2 : CActor, adrenaline : bool )
 	{
 		var actors : array < CEntity >;
 		var names : array < string >;
@@ -975,7 +975,7 @@ state Idle in CSTakedown
 		targets.PushBack(target2);
 		deathData.deadState = true;
 		deathData.ragDollAfterDeath = false;//true;
-		if ( ( ! target1 || target1.IsBoss() ) && ( ! target2 || target2.IsBoss() ) )  
+		if ( ( ! target1 || target1.IsBoss() ) && ( ! target2 || target2.IsBoss() ) )
 		{
 			if ( adrenaline && thePlayer.GetWitcherType( WitcherType_Magic ) )
 			{
@@ -996,18 +996,18 @@ state Idle in CSTakedown
 		{
 			posCut = pos;
 			rot = thePlayer.GetWorldRotation();
-			CSTakedown_1Man( target1, adrenaline ); 
+			CSTakedown_1Man( target1, adrenaline );
 			if ( adrenaline && thePlayer.GetWitcherType( WitcherType_Magic ) )
 			{
 				thePlayer.UseAnimationWithHeliotrop(true);
 				thePlayer.AddTimer('TriggerHeliotropTimer', 0.2, false);
 			}
 			return;
-			
+
 		}
 		if ( (target1.IsMonster() && target1.GetMonsterType() != MT_HumanGhost) || (target2.IsMonster() && target2.GetMonsterType() != MT_HumanGhost) )
 		{
-			if ( target1.IsMonster() ) OnCSTakedown_1Man(target1, true);	
+			if ( target1.IsMonster() ) OnCSTakedown_1Man(target1, true);
 			if ( target2.IsMonster() ) OnCSTakedown_1Man(target2, true);
 			return;
 		}
@@ -1047,7 +1047,7 @@ state Idle in CSTakedown
 			CalculateGainedExperienceAfterKill(target2, true, true, false);
 			thePlayer.ShowNearbyEnemies(posCut, parent.showRange);
 		}
-		
+
 		if(theGame.GetIsPlayerOnArena())
 		{
 			if(theGame.GetIsPlayerOnArena())
@@ -1055,7 +1055,7 @@ state Idle in CSTakedown
 				thePlayer.ShowArenaPoints(thePlayer.GetCharacterStats().GetAttribute('arena_fin2_bonus'));
 			}
 		}
-		
+
 		if ( adrenaline && thePlayer.GetWitcherType( WitcherType_Magic ) )
 		{
 			thePlayer.AddTimer('TriggerHeliotropTimer', 0.2, false);
@@ -1064,12 +1064,12 @@ state Idle in CSTakedown
 		{
 			theHud.AllowOpeningMainMenu();
 		}
-	}	
-	
+	}
+
 // ---------------------------------------------------------
 //                     THREE MAN FINISHER
 // ---------------------------------------------------------
-	entry function CSTakedown_3Man( target1, target2, target3 : CActor, adrenaline : bool ) 
+	entry function CSTakedown_3Man( target1, target2, target3 : CActor, adrenaline : bool )
 	{
 		var actors : array < CEntity >;
 		var names : array < string >;
@@ -1082,7 +1082,7 @@ state Idle in CSTakedown
 		var deathData : SActorDeathData;
 		var targets : array<CActor>;
 		var cutsceneRange : EFinisherDistance;
-				
+
 		cutsceneRange = FD_Medium;
 		if(adrenaline)
 		{
@@ -1093,7 +1093,7 @@ state Idle in CSTakedown
 		targets.PushBack(target3);
 		deathData.deadState = true;
 		deathData.ragDollAfterDeath = false;//true;
-		
+
 		if ( ( ! target1 || target1.IsBoss() ) && ( ! target2 || target2.IsBoss() ) && ( ! target3 || target3.IsBoss() ) )
 		{
 			if ( adrenaline && thePlayer.GetWitcherType( WitcherType_Magic ) )
@@ -1102,7 +1102,7 @@ state Idle in CSTakedown
 				thePlayer.AddTimer('TriggerHeliotropTimer', 0.2, false);
 			}
 			return;
-		} 
+		}
 		//GetStringCSNumber( RoundF( RandRangeF( 1, 9 ) ) );
 		names.PushBack("witcher");
 		names.PushBack("man1");
@@ -1112,12 +1112,12 @@ state Idle in CSTakedown
 		actors.PushBack( (CEntity)target1 );
 		actors.PushBack( (CEntity)target2 );
 		actors.PushBack( (CEntity)target3 );
-		
+
 		if ( (target1.IsMonster() && target1.GetMonsterType() != MT_HumanGhost)  || (target2.IsMonster() && target2.GetMonsterType() != MT_HumanGhost) || (target3.IsMonster() && target3.GetMonsterType() != MT_HumanGhost) )
 		{
-			if ( target1.IsMonster() ) OnCSTakedown_1Man(target1, true);	
-			if ( target2.IsMonster() ) OnCSTakedown_1Man(target2, true);		
-			if ( target3.IsMonster() ) OnCSTakedown_1Man(target3, true);	
+			if ( target1.IsMonster() ) OnCSTakedown_1Man(target1, true);
+			if ( target2.IsMonster() ) OnCSTakedown_1Man(target2, true);
+			if ( target3.IsMonster() ) OnCSTakedown_1Man(target3, true);
 			return;
 		}
 		else
@@ -1127,7 +1127,7 @@ state Idle in CSTakedown
 			{
 				posCut = pos;
 				rot = thePlayer.GetWorldRotation();
-				CSTakedown_1Man( target1, adrenaline ); 
+				CSTakedown_1Man( target1, adrenaline );
 				if ( adrenaline && thePlayer.GetWitcherType( WitcherType_Magic ) )
 				{
 					thePlayer.UseAnimationWithHeliotrop(true);
@@ -1135,7 +1135,7 @@ state Idle in CSTakedown
 				}
 				return;
 			}
-	
+
 			csIds = GetFinisherCsId(3, cutsceneRange);
 			pos = thePlayer.GetWorldPosition();
 			pos2 = target1.GetWorldPosition();
@@ -1174,9 +1174,9 @@ state Idle in CSTakedown
 			CalculateGainedExperienceAfterKill(target1, true, true, false);
 			CalculateGainedExperienceAfterKill(target2, true, true, false);
 			CalculateGainedExperienceAfterKill(target3, true, true, false);
-			thePlayer.ShowNearbyEnemies(posCut, parent.showRange);	
+			thePlayer.ShowNearbyEnemies(posCut, parent.showRange);
 		}
-		
+
 		if(theGame.GetIsPlayerOnArena())
 		{
 			if(theGame.GetIsPlayerOnArena())
@@ -1184,7 +1184,7 @@ state Idle in CSTakedown
 				thePlayer.ShowArenaPoints(thePlayer.GetCharacterStats().GetAttribute('arena_fin3_bonus'));
 			}
 		}
-		
+
 		if ( adrenaline && thePlayer.GetWitcherType( WitcherType_Magic ) )
 		{
 			thePlayer.AddTimer('TriggerHeliotropTimer', 0.2, false);
@@ -1193,16 +1193,16 @@ state Idle in CSTakedown
 		{
 			theHud.AllowOpeningMainMenu();
 		}
-	}	
-	
-	
+	}
+
+
 // ---------------------------------------------------------
 //                     ENTRY EVENTS
 // ---------------------------------------------------------
 	event OnCSTakedown_1ManDown( target : CActor )
 	{
 		CSTakedown_1ManDown( target );
-	}	
+	}
 	event OnCSTakedown_1Man( target : CActor, adrenaline : bool )
 	{
 		CSTakedown_1Man( target, adrenaline );

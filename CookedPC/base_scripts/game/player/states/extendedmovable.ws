@@ -3,16 +3,16 @@ state ExtendedMovable in CPlayer extends Movable
 	private var objectToKick  : CKickAbleObject;
 	private var changeStyleTime : EngineTime;
 	private var changeStyleCooldown : float;
-	
+
 	default changeStyleCooldown = 2.0;
-	
+
 	event OnGameInputEvent( key : name, value : float )
-	{		
+	{
 		if ( theGame.IsBlackscreen() )
 		{
 			return true;
 		}
-		
+
 		// keys that are available always nomatter if hotkeys blocked
 		// DEBUG
 		if ( theGame.IsCheatEnabled( CHEAT_InstantKill ) )
@@ -28,7 +28,7 @@ state ExtendedMovable in CPlayer extends Movable
 				return true;
 			}
 		}
-		
+
 		// What the hell is this?????
 		// This was a custom script fired on backspace press down, it was very usefull for
 		// a quick script launching (for debug and testing).
@@ -41,7 +41,7 @@ state ExtendedMovable in CPlayer extends Movable
 			}
 			return false;
 		}*/
-		
+
 		if ( parent.AreHotKeysBlocked() ) return false;
 
 		if ( key == 'GI_Adrenaline' )
@@ -108,7 +108,7 @@ state ExtendedMovable in CPlayer extends Movable
 				theGame.TutorialPanelOpenByPlayer( true );
 				if( theGame.tutorialPanelNew )
 					thePlayer.ToggleTutorialPanel( true );
-				else	
+				else
 					thePlayer.ToggleTutorialPanel( false );
 			}
 			return true;
@@ -122,7 +122,7 @@ state ExtendedMovable in CPlayer extends Movable
 				return true;
 			}
 			return false;
-		*/	
+		*/
 		}
 
 		else if ( key == 'GI_Character' )
@@ -209,11 +209,11 @@ state ExtendedMovable in CPlayer extends Movable
 		{
 			if( value > 0.5 && thePlayer.CanSelectNewSign())
 			{
-				if ( thePlayer.selectedSign == ST_Aard ) 
+				if ( thePlayer.selectedSign == ST_Aard )
 				{
 					thePlayer.SelectSign( ST_Yrden, false );
 				}
-				else if ( thePlayer.selectedSign == ST_Yrden ) 
+				else if ( thePlayer.selectedSign == ST_Yrden )
 				{
 					thePlayer.SelectSign( ST_Igni, false );
 				}
@@ -221,13 +221,13 @@ state ExtendedMovable in CPlayer extends Movable
 				{
 					thePlayer.SelectSign( ST_Quen, false );
 				}
-				else if ( thePlayer.selectedSign == ST_Quen ) 
+				else if ( thePlayer.selectedSign == ST_Quen )
 				{
-					thePlayer.SelectSign( ST_Axii, false );	
+					thePlayer.SelectSign( ST_Axii, false );
 				}
-				else if ( thePlayer.selectedSign == ST_Axii ) 
+				else if ( thePlayer.selectedSign == ST_Axii )
 				{
-					thePlayer.SelectSign( ST_Aard, false);	
+					thePlayer.SelectSign( ST_Aard, false);
 				}
 				return true;
 			}
@@ -237,7 +237,7 @@ state ExtendedMovable in CPlayer extends Movable
 		{
 			if( value > 0.5 && thePlayer.CanSelectNewSign())
 			{
-					thePlayer.SelectSign( ST_Aard, false);	
+					thePlayer.SelectSign( ST_Aard, false);
 					parent.TriggerSelectedSign( parent.GetEnemy() );
 					return true;
 			}
@@ -247,7 +247,7 @@ state ExtendedMovable in CPlayer extends Movable
 		{
 			if( value > 0.5 && thePlayer.CanSelectNewSign())
 			{
-					thePlayer.SelectSign( ST_Yrden, false);	
+					thePlayer.SelectSign( ST_Yrden, false);
 					parent.TriggerSelectedSign( parent.GetEnemy() );
 					return true;
 			}
@@ -257,7 +257,7 @@ state ExtendedMovable in CPlayer extends Movable
 		{
 			if( value > 0.5 && thePlayer.CanSelectNewSign())
 			{
-					thePlayer.SelectSign( ST_Igni, false);	
+					thePlayer.SelectSign( ST_Igni, false);
 					parent.TriggerSelectedSign( parent.GetEnemy() );
 					return true;
 			}
@@ -267,7 +267,7 @@ state ExtendedMovable in CPlayer extends Movable
 		{
 			if( value > 0.5 && thePlayer.CanSelectNewSign())
 			{
-					thePlayer.SelectSign( ST_Quen, false);	
+					thePlayer.SelectSign( ST_Quen, false);
 					parent.TriggerSelectedSign( parent.GetEnemy() );
 					return true;
 			}
@@ -277,7 +277,7 @@ state ExtendedMovable in CPlayer extends Movable
 		{
 			if( value > 0.5 && thePlayer.CanSelectNewSign())
 			{
-					thePlayer.SelectSign( ST_Axii, false);	
+					thePlayer.SelectSign( ST_Axii, false);
 					parent.TriggerSelectedSign( parent.GetEnemy() );
 					parent.SetBehaviorVariable("AxiiHold", 1.0);
 					parent.SetIsCastingAxii(true);
@@ -290,13 +290,13 @@ state ExtendedMovable in CPlayer extends Movable
 			}
 			return false;
 		}
-		else if ( key == 'GI_UseAbility' ) 
+		else if ( key == 'GI_UseAbility' )
 		{
 			if( value > 0.5 )
 			{
 				if ( ! parent.IsNotGeralt() )
 				{
-					if (  thePlayer.IsManualControl()  && !thePlayer.AreCombatHotKeysBlocked() )//&& !thePlayer.IsDodgeing()) 
+					if (  thePlayer.IsManualControl()  && !thePlayer.AreCombatHotKeysBlocked() )//&& !thePlayer.IsDodgeing())
 					{
 						if(thePlayer.GetCurrentPlayerState() != PS_CombatSteel && thePlayer.GetCurrentPlayerState() != PS_CombatSilver && thePlayer.GetCurrentPlayerState() != PS_CombatFistfightDynamic)
 						{
@@ -340,18 +340,18 @@ state ExtendedMovable in CPlayer extends Movable
 			}
 			return false;
 		}
-		
+
 		// Not handled
 		return super.OnGameInputEvent( key, value );
 	}
-	
+
 	final function KillAllEnemies( lethal : bool )
 	{
 		var enemies : array< CActor >;
 		var size, i : int;
-		
-		enemies = parent.FindEnemiesInCombatArea();	
-			
+
+		enemies = parent.FindEnemiesInCombatArea();
+
 		size = enemies.Size();
 		for ( i = size-1; i >=0; i -= 1 )
 		{
@@ -370,16 +370,16 @@ state ExtendedMovable in CPlayer extends Movable
 			}
 		}
 	}
-	
+
 	event OnInteraction( actionName : name, activator : CEntity )
-	{	
+	{
 		/*var thrownItemCat : name = parent.GetInventory().GetItemCategory( parent.thrownItemId );
-		
+
 		if ( ! parent.IsNotGeralt() )
 		{
-			if ( actionName == 'UseSign' && thePlayer.IsManualControl() ) 
+			if ( actionName == 'UseSign' && thePlayer.IsManualControl() )
 			{
-				if ( thePlayer.selectedSign == ST_Heliotrop ) 
+				if ( thePlayer.selectedSign == ST_Heliotrop )
 				{
 					thePlayer.SelectSign( ST_Aard, false );
 				}
@@ -387,7 +387,7 @@ state ExtendedMovable in CPlayer extends Movable
 			}
 		}*/
 	}
-	
+
 	event OnAnimEvent( animEventName : name, animEventTime : float, animEventType : EAnimationEventType )
 	{
 		if ( animEventName == 'KickMoment' && objectToKick )
@@ -407,20 +407,20 @@ state ExtendedMovable in CPlayer extends Movable
 		{
 			return false;
 		}
-		
+
 		if ( parent.RaiseForceEvent('Kick') == false )
 		{
 			return false;
 		}
-		
+
 		if ( objectToKick )
 		{
 			Log( "error" );
 			return false;
 		}
-		
+
 		objectToKick = kickObject;
-		
+
 		return true;
 	}
 }

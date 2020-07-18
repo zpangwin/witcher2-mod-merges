@@ -7,12 +7,12 @@
 
 
 state Dead in CNewNPC extends Base
-{	
-	private var canLeave : bool;	
+{
+	private var canLeave : bool;
 	private var deathEventNames : array<name>;
 	private var explosionParams : SDeathExplosionParams;
 	private var storedDeathData : SActorDeathData;
-		
+
 	event OnAnimEvent( eventName : name, eventTime : float, eventType : EAnimationEventType )
 	{
 		var golem : W2MonsterGolem;
@@ -81,45 +81,45 @@ state Dead in CNewNPC extends Base
 			}
 		}
 		parent.GetComponent("talk").SetEnabled( false );
-		
+
 		parent.SetAlive(false);
 		canLeave = false;
-		
+
 		// CLEAR ROTATION TARGET
 		parent.ClearRotationTarget();
-				
-		// DISABLE  PATHENGINE		
+
+		// DISABLE  PATHENGINE
 		parent.EnablePathEngineAgent( false );
-		
+
 		// INFORM COMMUNITY SYSTEM
 		OnCommunityNPCDeath( parent );
-		
+
 		// FACTS DB
 		AddFactsDBEntry();
-		
+
 	}
-	
+
 	event OnLeaveState()
 	{
-		// REENABLE  PATHENGINE		
+		// REENABLE  PATHENGINE
 		parent.EnablePathEngineAgent( true );
 	}
-	
+
 	event OnLeavingState()
 	{
 		return canLeave;
 	}
-	
+
 	event OnDespawn( forced : bool )
 	{
 		canLeave = true;
 	}
-	
+
 	function AddFactsDBEntry()
 	{
 		var tags : array< name >;
 		var i : int;
-		
+
 		tags = parent.GetTags();
 		for( i=0; i<tags.Size(); i+=1 )
 		{
@@ -140,7 +140,7 @@ state Dead in CNewNPC extends Base
 	{
 		var itemsDropped : bool;
 		var res : bool;
-		var los : float;		
+		var los : float;
 		var eventName : name;
 		var destroyed : bool;
 		//var dismembered : bool;
@@ -159,16 +159,16 @@ state Dead in CNewNPC extends Base
 			// Avoid ActionCancelAll
 			super.OnEnterState();
 		}
-		
+
 		deathEventNames.Clear();
 		if ( parent.IsWeakened() )
-		{			
-			deathEventNames.PushBack('Death3');	
+		{
+			deathEventNames.PushBack('Death3');
 		}
 		else if(parent.IsKnockedDown())
 		{
-		
-			deathEventNames.PushBack('DeathGround');	
+
+			deathEventNames.PushBack('DeathGround');
 			deathData.ragDollAfterDeath = false;
 			if(theGame.GetIsPlayerOnArena())
 			{
@@ -176,21 +176,21 @@ state Dead in CNewNPC extends Base
 			}
 		}
 		else
-		{			
+		{
 			deathEventNames.Clear();
 			//deathEventNames.PushBack('Death1');
 			deathEventNames.PushBack('Death2');
-		}		
+		}
 		// INFORM PLAYER
 		thePlayer.SetKilledWithoutHurt( thePlayer.GetKilledWithoutHurt() + 1 );
-		if ( thePlayer.GetKilledWithoutHurt() == 10 ) theGame.UnlockAchievement('ACH_PERFECIONIST'); 
-		thePlayer.OnNPCDeath(parent);		
-		
+		if ( thePlayer.GetKilledWithoutHurt() == 10 ) theGame.UnlockAchievement('ACH_PERFECIONIST');
+		thePlayer.OnNPCDeath(parent);
+
 		if( !deathData.silent )
 		{
 			parent.ActionCancelAll();
 			//dismembered = Dismember();
-			
+
 			if( parent.IsCriticalEffectApplied(CET_Freeze) )
 			{
 				destroyed = parent.DestroyedOnFreeze();
@@ -200,9 +200,9 @@ state Dead in CNewNPC extends Base
 					parent.SetHideInGame( true );
 				}
 			}
-			
+
 			if ( parent.GetMonsterType() != MT_Rotfiend )
-			{ 
+			{
 				parent.AddTimer( 'DelayLootDrop', 0.2f, false );
 			}
 			//NPCs don't drop items on arena
@@ -214,23 +214,23 @@ state Dead in CNewNPC extends Base
 			{
 				itemsDropped = virtual_parent.HandleItemsOnDeath();
 			}
-		
+
 			if( !destroyed )
 			{
 				res = Dismember();
 				if( true )
-				{	
-					// PLAY DEATH EVENT			
+				{
+					// PLAY DEATH EVENT
 					if(!deathData.deadState)
 					{
 						if(!deathData.fallDownDeath)
 						{
 							parent.PlayDeathSounds();
 						}
-					
-						eventName = GetDeathEventName();			
+
+						eventName = GetDeathEventName();
 						if( !parent.RaiseForceEvent( eventName ) )
-						{		
+						{
 							if( !parent.RaiseForceEvent( 'Death1' ) || !parent.RaiseForceEvent( 'Death2' ) )
 							{
 								Log( "state Dead RaiseForceEvent failed "+parent.GetName() );
@@ -244,11 +244,11 @@ state Dead in CNewNPC extends Base
 						if(deathData.ragDollAfterDeath && !parent.IsKnockedDown() && !virtual_parent.IsWeakened())
 							parent.SetRagdoll(true);
 					}
-					
+
 					parent.SetBehaviorVariable("death", 1.0 );
 				}
 			}
-			
+
 
 			// Set dying state
 			if(virtual_parent.GetMonsterType() == MT_Wraith || virtual_parent.GetMonsterType() == MT_Bruxa)
@@ -256,34 +256,34 @@ state Dead in CNewNPC extends Base
 				//virtual_parent.StopEffect('default_fx');
 				//virtual_parent.PlayEffect('teleport_in');
 				//Sleep(1.5);
-							
+
 				//virtual_parent.SetHideInGame(true);
 			}
-		
+
 			parent.SetDyingState();
 		}
 
 		parent.PlayEffect ( 'disapear' );
-		
+
 		// SELF DESTRUCT
 		StateDestruct( deathData, itemsDropped );
 	}
-	
+
 	entry function StateDestruct( optional deathData : SActorDeathData, optional dontDropItems : bool )
 	{
 		var i : int;
 		i = 0;
-		
+
 		if ( !dontDropItems )
 		{
 			if ( parent.GetMonsterType() == MT_Rotfiend )
-			{ 
+			{
 				parent.AddTimer( 'DelayLootDrop', 3.0f, false );
 			}
 		}
-		
+
 		parent.EnablePathEngineAgent( false );
-		
+
 		if (parent.IsRagdollObstacle())
 		{
 			Sleep( 15.f );
@@ -291,7 +291,7 @@ state Dead in CNewNPC extends Base
 		else
 		{
 			Sleep( 5.0f );
-			
+
 			// EMC - Longer delay before corpse rot
 			if ( theGame.GetIsPlayerOnArena() ) {
 				while( !parent.CanBeDesctructed() && i < 120 ) {
@@ -307,11 +307,11 @@ state Dead in CNewNPC extends Base
 		}
 		SelfDestruct();
 	}
-	
+
 	timer function DelayLootDrop( time : float )
 	{
 		var itemTags : array< name >;
-		
+
 		// THROW AWAY ITEMS
 		itemTags.PushBack( 'NoDrop' );
 		if(!theGame.GetIsPlayerOnArena())
@@ -319,12 +319,12 @@ state Dead in CNewNPC extends Base
 			parent.GetInventory().ThrowAwayItemsFiltered( itemTags );
 		}
 	}
-	
+
 	private function SelfDestruct()
 	{
 		parent.Destroy();
 	}
-	
+
 	function GetDeathEventName() : name
 	{
 		var s : int;
@@ -334,16 +334,16 @@ state Dead in CNewNPC extends Base
 			return '';
 		}
 		else
-		{	
+		{
 			return deathEventNames[Rand(s)];
 		}
 	}
-	
-	
+
+
 	latent function Dismember() : bool
-	{	
+	{
 		var res : bool;
-		if ( /*parent.allowToCut.LeftArm*/ !virtual_parent.IsMonster() && parent.readyToCut.LeftArm ) 
+		if ( /*parent.allowToCut.LeftArm*/ !virtual_parent.IsMonster() && parent.readyToCut.LeftArm )
 		{
 			Log("[ Cut Body Part] -> Cutting arm_L ");
 			parent.EnablePathEngineAgent( false );
@@ -353,7 +353,7 @@ state Dead in CNewNPC extends Base
 			thePlayer.ResetAllowCutParts();
 			res = true;
 		}
-		if ( /*parent.allowToCut.RightArm*/ !virtual_parent.IsMonster() && parent.readyToCut.RightArm ) 
+		if ( /*parent.allowToCut.RightArm*/ !virtual_parent.IsMonster() && parent.readyToCut.RightArm )
 		{
 			Log("[ Cut Body Part] -> Cutting arm_R ");
 			parent.EnablePathEngineAgent( false );
@@ -363,7 +363,7 @@ state Dead in CNewNPC extends Base
 			thePlayer.ResetAllowCutParts();
 			res = true;
 		}
-		/*if (  !virtual_parent.IsMonster() && parent.readyToCut.Torso ) 
+		/*if (  !virtual_parent.IsMonster() && parent.readyToCut.Torso )
 		{
 			Log("[ Cut Body Part] -> Cutting torso ");
 			parent.EnablePathEngineAgent( false );
@@ -373,10 +373,10 @@ state Dead in CNewNPC extends Base
 			thePlayer.ResetAllowCutParts();
 			res = true;
 		}*/
-		
+
 		return res;
-		
-		
+
+
 	}
 
 	entry function Explosion(explosionData : SDeathExplosionParams)
@@ -389,16 +389,16 @@ state Dead in CNewNPC extends Base
 		var explosionPos : Vector;
 		var attackType : name;
 		attackType = explosionData.attackType;
-		
+
 		parent.StopEffect('default_fx');
-		
+
 		if(attackType == '')
 		{
 			attackType = 'Attack';
 		}
 		templ = explosionData.explosionTemplate;
 		explosionEntity = theGame.CreateEntity( templ, parent.GetWorldPosition(), parent.GetWorldRotation() );
-		
+
 		if(!explosionEntity)
 			return;
 		explosionPos = explosionEntity.GetWorldPosition();

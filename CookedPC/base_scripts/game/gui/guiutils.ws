@@ -1,14 +1,14 @@
 import class CGuiUtils extends CObject
 {
 	var m_itemBag	: array< SItemUniqueId >;
-	
+
 	private var m_percentSign : string;
 	default m_percentSign = "%";
-	
+
 	import final function GetCraftedItemNameForIngredients( ingredientsNames : array< name >, ingredientsQuantities : array< int > ) : name;
 	import final function GetImageSizeFromFileName( fileName : string, out imageWidth : int, out imageHeight : int ) : bool;
 	import final function ParseAbilitiesTokens( token : string, sourceString : string ) : string;
-	
+
 	public function Initialize()
 	{
 		// Set percent sign
@@ -21,50 +21,50 @@ import class CGuiUtils extends CObject
 			m_percentSign = "%";
 		}
 	}
-	
+
 	public final function AddItemToBag( itemId: SItemUniqueId)
 	{
 		m_itemBag.PushBack(itemId);
 	}
-	
+
 	public final function GetTooltipDesc( inventory : CInventoryComponent, itemId : SItemUniqueId ) : string
 	{
 		var itemName : name = inventory.GetItemName( itemId );
 		var output : string = "";
 		var count : int;
 		var i : int;
-		if ( inventory.ItemHasTag( itemId, 'AlchemyIngridient' ) ) { output = output + GetLocStringByKeyExt( "type_alchingr" ) + "/"; count+=1; }                                                                                                                
-		if ( inventory.ItemHasTag( itemId, 'Recipe' ) ) { output = output + GetLocStringByKeyExt( "type_alchrec" )+ "/"; count+=1; }                                                                                                                     
-		if ( inventory.ItemHasTag( itemId, 'Armor' ) ) { output = output + GetLocStringByKeyExt( "type_armor" )+ "/"; count+=1; }                                                                                                                      
-		if ( inventory.ItemHasTag( itemId, 'ArmorUpgrade' ) ) { output = output + GetLocStringByKeyExt( "type_armorupgr" )+ "/"; count+=1; }                                                                                                                   
-		if ( inventory.ItemHasTag( itemId, 'Petard' ) ) { output = output + GetLocStringByKeyExt( "type_bomb" )+ "/"; count+=1; }                                                                                                                        
-		if ( inventory.ItemHasTag( itemId, 'SortTypeBook' ) ) { output = output + GetLocStringByKeyExt( "type_book" )+ "/"; count+=1; }                                                                                                                        
-		if ( inventory.GetItemCategory(itemId) == 'boots' ) { output = output + GetLocStringByKeyExt( "type_boots" )+ "/"; count+=1; }                                                                                                                      
-		if ( inventory.GetItemCategory(itemId) == 'errands' ) { output = output + GetLocStringByKeyExt( "type_contract" )+ "/"; count+=1; }                                                                                                                    
-		if ( inventory.ItemHasTag( itemId, 'CraftingIngridient' ) ) { output = output + GetLocStringByKeyExt( "type_craftingr" )+ "/"; count+=1; }                                                                                                                   
-		if ( inventory.ItemHasTag( itemId, 'Schematic' ) ) { output = output + GetLocStringByKeyExt( "type_craftrec" )+ "/"; count+=1; }                                                                                                                    
-		if ( inventory.GetItemCategory(itemId) == 'gloves' ) { output = output + GetLocStringByKeyExt( "type_gloves" )+ "/"; count+=1; }                                                                                                                      
-		if ( inventory.GetItemCategory(itemId) == 'key' ) { output = output + GetLocStringByKeyExt( "type_key" )+ "/"; count+=1; }                                                                                                                         
-		if ( inventory.ItemHasTag( itemId, 'Mutagen' ) ) { output = output + GetLocStringByKeyExt( "type_mutagen" )+ "/"; count+=1; }                                                                                                                     
-		if ( inventory.GetItemCategory(itemId) == 'pants' ) { output = output + GetLocStringByKeyExt( "type_pants" )+ "/"; count+=1; }                                                                                                                       
-		if ( inventory.ItemHasTag( itemId, 'Elixir' ) ) { output = output + GetLocStringByKeyExt( "type_potion" )+ "/"; count+=1; }                                                                                                                      
-		if ( inventory.ItemHasTag( itemId, 'Rune' ) ) { output = output + GetLocStringByKeyExt( "type_rune" )+ "/"; count+=1; }                                                                                                                        
-		if ( inventory.GetItemCategory(itemId) == 'silversword' ) { output = output + GetLocStringByKeyExt( "type_swordsilver" )+ "/"; count+=1; }                                                                                                                 
-		if ( inventory.GetItemCategory(itemId) == 'steelsword' && !inventory.ItemHasTag(itemId, 'Secondary') ) { output = output + GetLocStringByKeyExt( "type_swordsteel" )+ "/"; count+=1; }                                                                                                                  
-		if ( inventory.ItemHasTag(itemId, 'Secondary') ) { output = output + GetLocStringByKeyExt( "type_weapon" )+ "/"; count+=1; }                                                                                                                  
-		if ( inventory.GetItemCategory(itemId) == 'rangedweapon' ) { output = output + GetLocStringByKeyExt( "type_thrown" )+ "/"; count+=1; }                                                                                                                      
-		if ( inventory.ItemHasTag( itemId, 'Trap' ) ) { output = output + GetLocStringByKeyExt( "type_trap" ) + "/"; count+=1; }                                                                                                                         
-		if ( inventory.ItemHasTag( itemId, 'SortTypeDismantle' ) || inventory.GetItemCategory(itemId) == 'other' ) { output = output + GetLocStringByKeyExt( "type_trash" )+ "/"; count+=1; }                                                                                                                       
-		if ( inventory.ItemHasTag( itemId, 'Trophy' ) ) { output = output + GetLocStringByKeyExt( "type_trophy" )+ "/"; count+=1; }                                                                                                                      
-		if ( inventory.ItemHasTag( itemId, 'Valuable' ) ) { output = output + GetLocStringByKeyExt( "type_valuable" )+ "/"; count+=1; }                                                                                                                 
-		if ( inventory.ItemHasTag( itemId, 'Oil' ) || inventory.ItemHasTag( itemId, 'Rune' ) ) { output = output + GetLocStringByKeyExt( "type_weaponupgr" )+ "/"; count+=1; } 
-		if ( inventory.ItemHasTag( itemId, 'Lure' ) ) { output = output + GetLocStringByKeyExt( "type_lure" )+ "/"; count+=1; } 
-		if ( inventory.ItemHasTag( itemId, 'Quest' ) || inventory.ItemHasTag( itemId, 'SortTypeQuest' ) || ( inventory.GetItemCategory(itemId) == 'quest' ) ) { output = output + GetLocStringByKeyExt( "type_quest" )+ "/"; count+=1; } 
+		if ( inventory.ItemHasTag( itemId, 'AlchemyIngridient' ) ) { output = output + GetLocStringByKeyExt( "type_alchingr" ) + "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Recipe' ) ) { output = output + GetLocStringByKeyExt( "type_alchrec" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Armor' ) ) { output = output + GetLocStringByKeyExt( "type_armor" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'ArmorUpgrade' ) ) { output = output + GetLocStringByKeyExt( "type_armorupgr" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Petard' ) ) { output = output + GetLocStringByKeyExt( "type_bomb" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'SortTypeBook' ) ) { output = output + GetLocStringByKeyExt( "type_book" )+ "/"; count+=1; }
+		if ( inventory.GetItemCategory(itemId) == 'boots' ) { output = output + GetLocStringByKeyExt( "type_boots" )+ "/"; count+=1; }
+		if ( inventory.GetItemCategory(itemId) == 'errands' ) { output = output + GetLocStringByKeyExt( "type_contract" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'CraftingIngridient' ) ) { output = output + GetLocStringByKeyExt( "type_craftingr" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Schematic' ) ) { output = output + GetLocStringByKeyExt( "type_craftrec" )+ "/"; count+=1; }
+		if ( inventory.GetItemCategory(itemId) == 'gloves' ) { output = output + GetLocStringByKeyExt( "type_gloves" )+ "/"; count+=1; }
+		if ( inventory.GetItemCategory(itemId) == 'key' ) { output = output + GetLocStringByKeyExt( "type_key" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Mutagen' ) ) { output = output + GetLocStringByKeyExt( "type_mutagen" )+ "/"; count+=1; }
+		if ( inventory.GetItemCategory(itemId) == 'pants' ) { output = output + GetLocStringByKeyExt( "type_pants" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Elixir' ) ) { output = output + GetLocStringByKeyExt( "type_potion" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Rune' ) ) { output = output + GetLocStringByKeyExt( "type_rune" )+ "/"; count+=1; }
+		if ( inventory.GetItemCategory(itemId) == 'silversword' ) { output = output + GetLocStringByKeyExt( "type_swordsilver" )+ "/"; count+=1; }
+		if ( inventory.GetItemCategory(itemId) == 'steelsword' && !inventory.ItemHasTag(itemId, 'Secondary') ) { output = output + GetLocStringByKeyExt( "type_swordsteel" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag(itemId, 'Secondary') ) { output = output + GetLocStringByKeyExt( "type_weapon" )+ "/"; count+=1; }
+		if ( inventory.GetItemCategory(itemId) == 'rangedweapon' ) { output = output + GetLocStringByKeyExt( "type_thrown" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Trap' ) ) { output = output + GetLocStringByKeyExt( "type_trap" ) + "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'SortTypeDismantle' ) || inventory.GetItemCategory(itemId) == 'other' ) { output = output + GetLocStringByKeyExt( "type_trash" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Trophy' ) ) { output = output + GetLocStringByKeyExt( "type_trophy" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Valuable' ) ) { output = output + GetLocStringByKeyExt( "type_valuable" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Oil' ) || inventory.ItemHasTag( itemId, 'Rune' ) ) { output = output + GetLocStringByKeyExt( "type_weaponupgr" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Lure' ) ) { output = output + GetLocStringByKeyExt( "type_lure" )+ "/"; count+=1; }
+		if ( inventory.ItemHasTag( itemId, 'Quest' ) || inventory.ItemHasTag( itemId, 'SortTypeQuest' ) || ( inventory.GetItemCategory(itemId) == 'quest' ) ) { output = output + GetLocStringByKeyExt( "type_quest" )+ "/"; count+=1; }
 		if ( StrLen(output)-1 > 1 )
 		{
 			output = StrLeft(output, StrLen(output)-1 );
 		}
-		
+
 		return output;
 	}
 
@@ -74,13 +74,13 @@ import class CGuiUtils extends CObject
 		var tagItemTags : array< name >;
 		var tagLocTag : string = "";
 		var tagLocNameTagged : string = "";
-		
+
 		var tagCreatedId : SItemUniqueId;
 		var tagCreatedName : name;
 		var tagCreatedItem : bool = false;
-		
+
 		inventory.GetItemTags( tagItemId, tagItemTags );
-		
+
 		if ( tagItemCategory == 'schematic' ) {
 			tagCreatedName = inventory.GetCraftedItemName( tagItemId );
 			tagCreatedId = inventory.AddItem( StringToName( tagCreatedName ), 1, false );
@@ -88,7 +88,7 @@ import class CGuiUtils extends CObject
 			inventory.GetItemTags( tagCreatedId, tagItemTags );
 			tagCreatedItem = true;
 		}
-		
+
 		if ( tagItemTags.Contains('DarkDiffA1') || tagItemTags.Contains('DarkDiffA2') || tagItemTags.Contains('DarkDiffA3') ) {
 			tagLocTag = GetLocStringByKeyExt( "menudifficultyveryhard" );
 		} else if ( tagItemTags.Contains('SortTypeQuest') || tagItemCategory == 'quest') {
@@ -136,7 +136,7 @@ import class CGuiUtils extends CObject
 		} else if ( tagItemTags.Contains('SortTypeIngridient') ) {
 			tagLocTag = GetLocStringByKeyExt( "[[locale.inv.listcraftingingredients]]" );
 		}
-		
+
 		if ( tagCreatedItem ) {
 			tagLocNameTagged = "(" + StrLeft( GetLocStringByKeyExt( "[[locale.inv.listcraftingingredients]]" ), 3 ) + ", " + StrLeft( tagLocTag, 3) + ") " + GetLocStringByKeyExt( tagCreatedName );
 			inventory.RemoveItem( tagCreatedId, 1 );
@@ -145,14 +145,14 @@ import class CGuiUtils extends CObject
 		} else {
 			tagLocNameTagged = "(" + StrLeft( tagLocTag, 3) + ") " + GetLocStringByKeyExt( tagItemName );
 		}
-		
+
 		// Remove temporary items
 		inventory.RemoveItem( tagItemId, 1 );
-		
+
 		return tagLocNameTagged;
 	}
-	
-	public final function FillItemObject( inventory : CInventoryComponent, stats : CCharacterStats, itemId : SItemUniqueId, itemIdx : int, AS_item : int, 
+
+	public final function FillItemObject( inventory : CInventoryComponent, stats : CCharacterStats, itemId : SItemUniqueId, itemIdx : int, AS_item : int,
 										  slotItems : array< SItemUniqueId >, optional custom : name )
 	{
 		var itemName		: string			= inventory.GetItemName( itemId );
@@ -162,46 +162,46 @@ import class CGuiUtils extends CObject
 		var itemOils		: array< SBuff >;
 		var attributes		: array< name >;
 		var i, k			: int;
-		
+
 		var AS_attribute			: int;
 		var valAdd,		valMul		: float;
 		var valAddMax,	valMulMax	: float;
 		var valueS					: string;
-		
+
 		var AS_attributes	: int;
-		
+
 		var url : string;
 		var iconWidth, iconHeight : int;
-		
+
 		var itemTags : array< name >;
-		
+
 		var descFull : string;
-		
+
 		var craftedItemName : name;
-		
+
 		var allIngredientsNames : array< name >;
 		var ingredientMask	: int;
 		var AS_structure	: int;
 		var ingredients		: array< SItemIngredient >;
 		var fullDescTootlip : string;
-		
+
 		var AS_schemPart	: int; // voSchematicPart
-		
+
 		inventory.GetItemTags( itemId, itemTags );
 
-		
+
 		if ( inventory.IsItemMounted( itemId ) || inventory.IsItemHeld( itemId ) || slotItems.Contains( itemId ) )
 		{
 			itemMask |= 0x00000004;
 		}
-		
+
 		// rython TODO: sprawdz czy plik "icons/items/" + itemName + "_64x64.dds" istnieje
 		// jesli nie to defaultowa sciezke do defaultowego pliku dds podaj.
 		//if ( !theHud.FindIconPath( "default_64x64.dds", url, iconWidth, iconHeight ) )
 		//{
 			//url = "img://globals/gui/default_64x64.dds";
 		//}
-		
+
 		theHud.SetFloat	( "ID",			itemIdx,										AS_item );
 		theHud.SetString( "Name",		GetItemNameTagged( inventory, itemName ),				AS_item );
 		//theHud.SetString( "Name",		itemNameHtml,				AS_item );
@@ -212,20 +212,20 @@ import class CGuiUtils extends CObject
 		theHud.SetString( "Mask",		(string)itemMask,								AS_item );
 		theHud.SetFloat ( "Mass",		inventory.GetItemAttributeAdditive( itemId, 'item_weight' ), AS_item );
 		theHud.SetFloat	( "Price",		GetItemPrice( itemId, inventory ),	AS_item );
-		
+
 		// Elixirs
 		if ( itemTags.Contains('Elixir') )
 		{
 			theHud.SetString( "Flav",		"",			AS_item ); // TODO
 			theHud.SetFloat( "ToxicLevel",	inventory.GetItemAttributeAdditive( itemId, 'tox_level' ),	AS_item );
 		}
-		
+
 		theHud.SetFloat	( "Count", inventory.GetItemQuantity( itemId ),	AS_item );
-		
+
 		if ( custom == 'alchemy' )
 		{
 			FillAllIngredientsNames( allIngredientsNames );
-			
+
 			if ( itemTags.Contains('Recipe') )
 			{
 				craftedItemName = inventory.GetCraftedItemName( itemId );
@@ -235,7 +235,7 @@ import class CGuiUtils extends CObject
 			{
 				fullDescTootlip = ListAttributes( "Abilities", inventory, stats, itemId, AS_item );
 			}
-		
+
 			// ElementKind
 			if ( itemTags.Contains('AlchemyIngridient') )
 			{
@@ -250,7 +250,7 @@ import class CGuiUtils extends CObject
 
 				theHud.SetFloat( "ElementKind", ingredientMask, AS_item );
 			}
-		
+
 			// Structure
 			if ( itemTags.Contains('Recipe') )
 			{
@@ -266,7 +266,7 @@ import class CGuiUtils extends CObject
 					TYPE_FULGUR      : Number = 0x01000000;
 				*/
 				AS_structure = theHud.CreateArray( "Structure", AS_item );
-			
+
 				inventory.GetItemIngredients( itemId, ingredients );
 				for ( i = 0; i < ingredients.Size(); i += 1 )
 				{
@@ -276,32 +276,32 @@ import class CGuiUtils extends CObject
 						theHud.PushFloat( AS_structure, ingredientMask );
 					}
 				}
-			
+
 				theHud.ForgetObject( AS_structure );
 			}
 		}
 		else if ( custom == 'schematic' )
 		{
 			craftedItemName = inventory.GetCraftedItemName( itemId );
-		
+
 			// fill price for creating item from schematic
 			theHud.SetFloat	( "CraftingPrice",	GetSchematicItemPrice( itemId, inventory ), AS_item );
-			
+
 			// fill weight for created item
 			theHud.SetFloat	( "Mass",	GetItemNameMass( craftedItemName, inventory ), AS_item );
 
 			// fill crafted item abilities
 			// TODO: Remove this call ( so says Richu )
 			ListAttributesByItemName( "Abilities", inventory, craftedItemName, AS_item );
-		
+
 			// fill schematic structure
 			AS_structure = theHud.CreateArray( "Structure", AS_item );
-		
+
 			inventory.GetItemIngredients( itemId, ingredients );
 			for ( i = 0; i < ingredients.Size(); i += 1 )
 			{
 				AS_schemPart = theHud.CreateAnonymousObject();
-				
+
 				theHud.SetFloat(  "ID", 		0,																AS_schemPart );
 				theHud.SetString( "Name",  		GetItemNameTagged( inventory, ingredients[i].itemName ), 		AS_schemPart );
 				theHud.SetFloat(  "Count", 		ingredients[i].quantity, 										AS_schemPart );
@@ -309,12 +309,12 @@ import class CGuiUtils extends CObject
 				theHud.SetFloat ( "Mass",  		GetItemNameMass( ingredients[i].itemName, inventory ), 			AS_schemPart );
 				theHud.SetFloat	( "Price", 		GetItemNamePrice( ingredients[i].itemName, inventory ),			AS_schemPart );
 				theHud.SetString( "DescFull", 	GetLocStringByKeyExt( "Tooltip" + ingredients[i].itemName ),	AS_schemPart );
-				
+
 				theHud.PushObject( AS_structure, AS_schemPart );
-				
+
 				theHud.ForgetObject( AS_schemPart );
 			}
-			
+
 			theHud.ForgetObject( AS_structure );
 		}
 		// Attributes
@@ -322,7 +322,7 @@ import class CGuiUtils extends CObject
 		{
 			fullDescTootlip = ListAttributes( "Abilities", inventory, stats, itemId, AS_item );
 		}
-		
+
 		// Bonuses
 		{
 			if ( itemCategory == 'armor' || itemCategory == 'silversword' || itemCategory == 'steelsword' )
@@ -330,13 +330,13 @@ import class CGuiUtils extends CObject
 				thePlayer.GetActiveOilsForItem( itemId, itemOils );
 			}
 			inventory.GetItemEnhancementItems( itemId, itemRunes );
-			
+
 			if ( itemRunes.Size() > 0 || itemOils.Size() > 0 )
 			{
 				ListBonusesForItem( AS_item, itemRunes, itemOils );
 			}
 		}
-		
+
 		i = inventory.GetItemEnhancementSlotsCount( itemId );
 		if ( i < 0 || i > 3 )
 		{
@@ -344,7 +344,7 @@ import class CGuiUtils extends CObject
 		}
 		theHud.SetFloat	( "RuneSlotsNum",	i,						AS_item );
 		theHud.SetFloat	( "RuneSlotsAvail",	i - itemRunes.Size(),	AS_item );
-		
+
 		if ( ! itemTags.Contains('NoDescription') )
 		{
 			if ( inventory.ItemHasTag(itemId,'Vitriol') ) descFull += "<img width='10' height='10' src='img://globals/gui/icons/items/vitriol_64x64.dds'> ";
@@ -356,7 +356,7 @@ import class CGuiUtils extends CObject
 			if ( inventory.ItemHasTag(itemId,'Caelum') ) descFull += "<img src='img://globals/gui/icons/items/caelum_64x64.dds' width='10' height='10'> ";
 			if ( inventory.ItemHasTag(itemId,'Sol') ) descFull += "<img src='img://globals/gui/icons/items/sol_64x64.dds' width='10' height='10'> ";
 			if ( inventory.ItemHasTag(itemId,'Fulgur') ) descFull += "<img src='img://globals/gui/icons/items/fulgur_64x64.dds' width='10' height='10'> ";
-			
+
 			if ( itemId == inventory.GetItemId('Respec') ) {
 				theHud.SetString( "DescFull", GetLocStringByKeyExt( "x_tut61_title" ) + descFull + "<br>" + fullDescTootlip, AS_item );
 			} else if ( itemTags.Contains('NoTooltip') ) {
@@ -372,7 +372,7 @@ import class CGuiUtils extends CObject
 		var gotIt : int = 0;
 		var allItems : array < SItemUniqueId >;
 		var i : int;
-		
+
 		thePlayer.GetInventory().GetAllItems( allItems );
 		for( i=0; i<allItems.Size(); i+=1 )
 		{
@@ -380,7 +380,7 @@ import class CGuiUtils extends CObject
 		}
 		return gotIt;
 	}
-	
+
 	public function ListAttributes( objName : string, inventory : CInventoryComponent, stats : CCharacterStats, itemId : SItemUniqueId, AS_item : int, optional isInCrafting : int  ) : string
 	{
 		var AS_attribute			: int;
@@ -397,15 +397,15 @@ import class CGuiUtils extends CObject
 		var sign					: string;
 		var ingredients 			: array < SItemIngredient >;
 		var i						: int;
-		
+
 		AS_attributes = theHud.CreateArray( objName, AS_item );
-			
+
 			// Add item damage min-max
 			{
 				stats.GetItemAttributeValuesWithPrereqAndInv(itemId, inventory, 'damage_min', valAdd,		valMul,    displayPercMul, displayPercAdd );
 				stats.GetItemAttributeValuesWithPrereqAndInv(itemId, inventory, 'damage_max', valAddMax,	valMulMax, displayPercMul, displayPercAdd );
 				valueS = "";
-				
+
 				if ( (valAdd != 0 || valAddMax != 0) && valMul != 1 )
 				{
 					valAdd *= valMul;
@@ -466,10 +466,10 @@ import class CGuiUtils extends CObject
 						}
 					}
 				}
-				
+
 				if ( valueS != "" )
 				{
-					
+
 					AS_attribute = theHud.CreateAnonymousObject();
 					theHud.SetFloat	( "ID",			0x00000041,								AS_attribute ); // TYPE_DAMAGE, BASIC
 					theHud.SetString( "Name",		GetLocStringByKeyExt( "damage" ),		AS_attribute );
@@ -477,8 +477,8 @@ import class CGuiUtils extends CObject
 					theHud.SetString( "Value",		valueS,									AS_attribute );
 					theHud.PushObject( AS_attributes, AS_attribute );
 					theHud.ForgetObject( AS_attribute );
-					
-					
+
+
 					//result = GetLocStringByKeyExt( "damage" ) + " " + valueS + "<br>";
 				}
 			}
@@ -486,37 +486,37 @@ import class CGuiUtils extends CObject
 			//result += ListAttribute( stats, inventory, itemId, AS_attributes, 'damage_reduction_block', 0x00000021 );
 			result += ListAttribute( stats, inventory, itemId, AS_attributes, 'vitality', 0x00000101 );
 			result += ListAttribute( stats, inventory, itemId, AS_attributes, 'endurance', 0x00000201 );
-			
+
 			attributes.Clear();
 			inventory.GetItemAttributesByType( itemId, 'regeneration', attributes );
 			result += ListAttributesForItem( stats, inventory, itemId, AS_attributes, attributes, 0x00000400 );
-			
+
 			attributes.Clear();
 			inventory.GetItemAttributesByType( itemId, 'resistance', attributes );
 			result += ListAttributesForItem( stats, inventory, itemId, AS_attributes, attributes, 0x00001000 );
-			
+
 			attributes.Clear();
 			inventory.GetItemAttributesByType( itemId, 'critical', attributes );
 			result += ListAttributesForItem( stats, inventory, itemId, AS_attributes, attributes, 0x00002000 );
-			
+
 			attributes.Clear();
 			inventory.GetItemAttributesByType( itemId, 'endurance', attributes );
 			result += ListAttributesForItem( stats, inventory, itemId, AS_attributes, attributes, 0x00004000 );
-			
+
 			attributes.Clear();
 			inventory.GetItemAttributesByType( itemId, 'vitality', attributes );
 			result += ListAttributesForItem( stats, inventory, itemId, AS_attributes, attributes, 0x00004000 );
-			
+
 			attributes.Clear();
 			inventory.GetItemAttributesByType( itemId, 'bonus', attributes );
 			result += ListAttributesForItem( stats, inventory, itemId, AS_attributes, attributes, 0x00004000 );
-			
+
 			if ( inventory.ItemHasTag(itemId,'Schematic') || inventory.ItemHasTag(itemId,'Recipe' ) )
 			{
 				craftedItemName = inventory.GetCraftedItemName( itemId );
 				createdItem = inventory.AddItem( craftedItemName, 1, false );
 				schematItem = inventory.AddItem( inventory.GetItemName( itemId ), 1, false );
-				result += "<img src='img://globals/gui/icons/items/" + StrReplaceAll(craftedItemName, " ", "") + "_64x64.dds' width='22' height='22'>" 
+				result += "<img src='img://globals/gui/icons/items/" + StrReplaceAll(craftedItemName, " ", "") + "_64x64.dds' width='22' height='22'>"
 					+ "<font color='#FFFFFF'>" + StrUpperUTF( GetLocStringByKeyExt( craftedItemName ) )
 					+ "</font><br>" + GetLocStringByKeyExt( StringToName( "Tooltip"+ NameToString(craftedItemName) ) ) + "<br>";
 				result += ListAttributes( objName, inventory, stats, createdItem , AS_item );
@@ -524,7 +524,7 @@ import class CGuiUtils extends CObject
 				if ( inventory.ItemHasTag(itemId,'Recipe') ) result += "<br><BR><font color='#FFFFFF'>"+ GetLocStringByKeyExt("AlchIngrTooltipCreate") + "<br>";
 				inventory.GetItemIngredients( schematItem , ingredients );
 				for( i=0; i<ingredients.Size(); i+=1 )
-				{		
+				{
 					result = result + "<font color='#FFFFFF'><img width='16' height='16' src='img://globals/gui/icons/items/" + StrReplaceAll(ingredients[i].itemName," ","") + "_64x64.dds'>";
 					if ( inventory.ItemHasTag(itemId,'Schematic') )
 					{
@@ -540,16 +540,16 @@ import class CGuiUtils extends CObject
 
 				if( ( itemId == inventory.GetItemId('Dark difficulty silversword A1') || itemId == inventory.GetItemId('Dark difficulty silversword A2') || itemId == inventory.GetItemId('Dark difficulty silversword A3')
                  || itemId == inventory.GetItemId('Dark difficulty steelsword A1')  || itemId == inventory.GetItemId('Dark difficulty steelsword A2')  || itemId == inventory.GetItemId('Dark difficulty steelsword A3') )
-				 && inventory.IsItemMounted( itemId ) ) 
+				 && inventory.IsItemMounted( itemId ) )
 				{
 					result += "<br><font color='#d1cfcf'>" + GetLocStringByKeyExt( "darkdiff_tooltip_info" ) + "<br>"; // info about curse
 				}
-			
+
 			if ( inventory.ItemHasTag(itemId,'DarkDiffA1') )
 			{
-					result += "<br><font color='#FFFFFF'>" + StrUpperUTF( GetLocStringByKeyExt( "darkdiff_act1_set"  ) ); // set 
-					
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyArmorA1')) ) 
+					result += "<br><font color='#FFFFFF'>" + StrUpperUTF( GetLocStringByKeyExt( "darkdiff_act1_set"  ) ); // set
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyArmorA1')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyArmorA1"  ); // yes
 				}
@@ -563,8 +563,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyArmorA1" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyBootsA1')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyBootsA1')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyBootsA1" ); // yes
 				}
@@ -578,8 +578,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyBootsA1" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyGlovesA1')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyGlovesA1')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyGlovesA1" ); // yes
 				}
@@ -593,8 +593,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyGlovesA1" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyPantsA1')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyPantsA1')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyPantsA1" ); // yes
 				}
@@ -608,8 +608,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyPantsA1" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty silversword A1')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty silversword A1')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "Dark difficulty silversword A1" ); // yes
 				}
@@ -623,8 +623,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "Dark difficulty silversword A1" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty steelsword A1')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty steelsword A1')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "Dark difficulty steelsword A1" ); // yes
 				}
@@ -637,16 +637,16 @@ import class CGuiUtils extends CObject
 					{
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "Dark difficulty steelsword A1" ); // no
 					}
-				}				
-				
+				}
+
 			}
-			
+
 			if ( inventory.ItemHasTag(itemId,'DarkDiffA2') )
 			{
-					
-					result += "<br><font color='#FFFFFF'>" + StrUpperUTF( GetLocStringByKeyExt( "darkdiff_act2_set"  ) ); // set 
-					
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyArmorA2')) ) 
+
+					result += "<br><font color='#FFFFFF'>" + StrUpperUTF( GetLocStringByKeyExt( "darkdiff_act2_set"  ) ); // set
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyArmorA2')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyArmorA2"  ); // yes
 				}
@@ -660,8 +660,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyArmorA2" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyBootsA2')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyBootsA2')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyBootsA2" ); // yes
 				}
@@ -675,8 +675,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyBootsA2" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyGlovesA2')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyGlovesA2')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyGlovesA2" ); // yes
 				}
@@ -690,8 +690,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyGlovesA2" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyPantsA2')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyPantsA2')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyPantsA2" ); // yes
 				}
@@ -705,8 +705,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyPantsA2" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty silversword A2')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty silversword A2')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "Dark difficulty silversword A2" ); // yes
 				}
@@ -720,8 +720,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "Dark difficulty silversword A2" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty steelsword A2')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty steelsword A2')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "Dark difficulty steelsword A2" ); // yes
 				}
@@ -734,16 +734,16 @@ import class CGuiUtils extends CObject
 					{
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "Dark difficulty steelsword A2" ); // no
 					}
-				}				
-				
+				}
+
 			}
-			
+
 			if ( inventory.ItemHasTag(itemId,'DarkDiffA3') )
 			{
-					
-					result += "<br><font color='#FFFFFF'>" + StrUpperUTF( GetLocStringByKeyExt( "darkdiff_act3_set"  ) ); // set 
-					
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyArmorA3')) ) 
+
+					result += "<br><font color='#FFFFFF'>" + StrUpperUTF( GetLocStringByKeyExt( "darkdiff_act3_set"  ) ); // set
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyArmorA3')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyArmorA3"  ); // yes
 				}
@@ -757,8 +757,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyArmorA3" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyBootsA3')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyBootsA3')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyBootsA3" ); // yes
 				}
@@ -772,8 +772,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyBootsA3" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyGlovesA3')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyGlovesA3')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyGlovesA3" ); // yes
 				}
@@ -787,8 +787,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyGlovesA3" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyPantsA3')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('DarkDifficultyPantsA3')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "DarkDifficultyPantsA3" ); // yes
 				}
@@ -802,8 +802,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "DarkDifficultyPantsA3" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty silversword A3')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty silversword A3')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "Dark difficulty silversword A3" ); // yes
 				}
@@ -817,8 +817,8 @@ import class CGuiUtils extends CObject
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "Dark difficulty silversword A3" ); // no
 					}
 				}
-				
-				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty steelsword A3')) ) 
+
+				if(thePlayer.GetInventory().IsItemMounted(thePlayer.GetInventory().GetItemId('Dark difficulty steelsword A3')) )
 				{
 					result += "<br><font color='#40ff40'>" +  GetLocStringByKeyExt( "Dark difficulty steelsword A3" ); // yes
 				}
@@ -831,17 +831,17 @@ import class CGuiUtils extends CObject
 					{
 						result += "<br><font color='#ff8080'>" +  GetLocStringByKeyExt( "Dark difficulty steelsword A3" ); // no
 					}
-				}				
+				}
 				result += "<br>";
 			}
 
-	
-			
+
+
 			theHud.ForgetObject( AS_attributes );
-			
+
 			return result;
 	}
-	
+
 	private final function ListBonusesForItem( AS_item : int, runes : array< name >, oils : array< SBuff > )
 	{
 		var oil				: SBuff;
@@ -849,19 +849,19 @@ import class CGuiUtils extends CObject
 		var AS_bonuses		: int;
 		var AS_bonus		: int;
 		var value			: string;
-		
+
 		AS_bonuses = theHud.CreateArray( "Bonuses", AS_item );
-		
+
 		// Runes
 		for ( i = runes.Size()-1; i >= 0; i -= 1 )
 		{
 			AS_bonus = theHud.CreateAnonymousObject();
-			
+
 			//theHud.SetFloat	( "ID",		i,											AS_bonus );
 			theHud.SetString( "Name",	GetLocStringByKeyExt( runes[i] ),			AS_bonus );
 			theHud.SetString( "Icon",	"icons/items/" + runes[i] + "_64x64.dds",	AS_bonus );
 			theHud.SetString( "Value",	"",											AS_bonus );
-			
+
 			theHud.PushObject( AS_bonuses, AS_bonus );
 			theHud.ForgetObject( AS_bonus );
 		}
@@ -869,37 +869,37 @@ import class CGuiUtils extends CObject
 		for ( i = oils.Size()-1; i >= 0; i -= 1 )
 		{
 			oil = oils[i];
-			
+
 			AS_bonus = theHud.CreateAnonymousObject();
-			
+
 			value = "(" + (int)oil.m_duration + "s)";
-			
+
 			//theHud.SetFloat( "ID",		1000 + i,									AS_bonus );
 			theHud.SetString( "Name",		GetLocStringByKeyExt( oil.m_name ),			AS_bonus );
 			theHud.SetString( "Icon",		"icons/items/" + oil.m_name + "_64x64.dds",	AS_bonus );
 			theHud.SetString( "Value",		value,										AS_bonus );
-			
+
 			theHud.PushObject( AS_bonuses, AS_bonus );
 			theHud.ForgetObject( AS_bonus );
 		}
-		
+
 		theHud.ForgetObject( AS_bonuses );
 	}
-	
-	private final function ListAttributesForItem( stats : CCharacterStats, inventory : CInventoryComponent, itemId : SItemUniqueId, 
+
+	private final function ListAttributesForItem( stats : CCharacterStats, inventory : CInventoryComponent, itemId : SItemUniqueId,
 												  AS_attributes : int , attributes : array< name >, mask : int ) : string
 	{
 		var i : int;
 		var result : string;
-		
+
 		for ( i = attributes.Size()-1; i >= 0; i -= 1 )
 		{
 			result += ListAttribute( stats, inventory, itemId, AS_attributes, attributes[i], mask );
 		}
-		
+
 		return result;
 	}
-	
+
 	private final function ListAttributeBase( valAdd : float, valMul : float, displayPercMul : bool, displayPercAdd : bool ) : string
 	{
 		var value : string;
@@ -927,7 +927,7 @@ import class CGuiUtils extends CObject
 				value = FloatToStringPrec( valAdd, 2 );
 			}
 		}
-		
+
 		valMul -= 1.f;
 		if ( valMul > 0.f )
 		{
@@ -957,7 +957,7 @@ import class CGuiUtils extends CObject
 		}
 		return value;
 	}
-	
+
 	private final function ListAttributeCommon( valAdd : float, valMul : float, displayPercMul : bool, displayPercAdd : bool,
 												AS_attributes : int, attrName : name, mask : int ) : string
 	{
@@ -971,22 +971,22 @@ import class CGuiUtils extends CObject
 		value = ListAttributeBase( valAdd, valMul, displayPercMul, displayPercAdd);
 		value2 = RoundF(valAdd / 60);
 		value3 = RoundF(valAdd);
-		
+
 		if ( value != "" && value != "+0" && value != "0" )
 		{
 			AS_attribute = theHud.CreateAnonymousObject();
-			
+
 			attrNameLoc = GetLocStringByKeyExt( attrName );
-			
+
 			theHud.SetFloat	( "ID",			mask,										AS_attribute );
 			theHud.SetString( "Name",		attrNameLoc,								AS_attribute );
 			theHud.SetString( "Icon",		"icons/attrs/" + attrName + "_64x64.dds",	AS_attribute );
 			theHud.SetString( "Value",		value,										AS_attribute );
-		
+
 			theHud.PushObject( AS_attributes, AS_attribute );
-			
+
 			theHud.ForgetObject( AS_attribute );
-			
+
 			color = "#c5c8ff";
 			if ( valAdd < 0 || valMul < 1.0 )
 			{
@@ -1002,11 +1002,11 @@ import class CGuiUtils extends CObject
 			} else
 				result += "<font color='"+color+"'>" + attrNameLoc + "</font><font color='#FFFFFF'> " + value + "</font><br>";
 		}
-		
+
 		return result;
 	}
-	
-	private final function ListAttribute( stats : CCharacterStats, inventory : CInventoryComponent, itemId : SItemUniqueId, 
+
+	private final function ListAttribute( stats : CCharacterStats, inventory : CInventoryComponent, itemId : SItemUniqueId,
 										  AS_attributes : int, attrName : name, mask : int ) : string
 	{
 		var valAdd, valMul					: float;
@@ -1027,10 +1027,10 @@ import class CGuiUtils extends CObject
 		var left, right : string;
 		var currTxt : string;
 		var result : array< int >;
-	
+
 		//itemsIdsStr = "123|1|555|66";
 		//itemsIdsStr = "123";
-	
+
 		currTxt = input;
 		right = input;
 		while ( StrSplitFirst( currTxt, "|", left, right ) )
@@ -1041,16 +1041,16 @@ import class CGuiUtils extends CObject
 		}
 		//Log( "Item id: " + right );
 		result.PushBack( StringToInt(right) );
-		
+
 		return result;
 	}
-	
+
 	// Returns alchemy ingredient name that item has
 	public final function GetItemIngredientName( itemId : SItemUniqueId ) : name
 	{
 		var itemTags : array< name >;
 		thePlayer.GetInventory().GetItemTags( itemId, itemTags );
-		
+
 		if (itemTags.Contains('Vitriol')) 			return 'Vitriol';
 		else if (itemTags.Contains('Rebis'))		return 'Rebis';
 		else if (itemTags.Contains('Caelum'))		return 'Caelum';
@@ -1060,15 +1060,15 @@ import class CGuiUtils extends CObject
 		else if (itemTags.Contains('Vermilion'))	return 'Vermilion';
 		else if (itemTags.Contains('Hydragenum'))	return 'Hydragenum';
 		else if (itemTags.Contains('Fulgur'))		return 'Fulgur';
-		
+
 		return '';
 	}
-	
+
 	public function GetItemPrice( itemId : SItemUniqueId, inv : CInventoryComponent ) : int
 	{
 		return GetItemNamePrice( inv.GetItemName( itemId ), inv );
 	}
-	
+
 	public function GetItemNamePrice( itemName : name, inv : CInventoryComponent ) : int
 	{
 		var item_price : float;
@@ -1078,9 +1078,9 @@ import class CGuiUtils extends CObject
 		var dbgName : name;
 		var priceSkillMult : float;
 		var itemTags : array< name >;
-		
+
 		inv.GetItemNameTags( itemName, itemTags );
-		
+
 		// quest items are priceless
 		if( ! itemTags.Contains( 'Special' ) )
 		{
@@ -1099,17 +1099,17 @@ import class CGuiUtils extends CObject
 		multi = priceSkillMult ;
 
 		merchant = (CNewNPC)thePlayer.shopowner;
-		
-		if (merchant) 
+
+		if (merchant)
 		{
 			multi *= merchant.GetPriceMult();
 			inv_merchant = (CInventoryComponent)merchant.GetComponentByClassName( 'CInventoryComponent' );
 			dbgName = itemName;
 		}
-	
+
 			//base price
 			item_price = inv.GetItemNameAttributeAdditive( itemName, 'item_price' );
-			
+
 			if (  ( ! itemTags.Contains( 'Elixir' ) && ! itemTags.Contains( 'Rune' ) && ! itemTags.Contains( 'Petard' ) && ! itemTags.Contains( 'Oil' ) && ! itemTags.Contains( 'Special' ) && ! itemTags.Contains( 'Ranged' ) && ! itemTags.Contains( 'Schematic' ) && ! itemTags.Contains( 'Trap' )) )
 			//if ( !itemTags.Contains( 'Petard' ) )
 			{
@@ -1158,18 +1158,18 @@ import class CGuiUtils extends CObject
 			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'TypeMagic')) {item_price = item_price * 1.1;}
 			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'TypeRare')) {item_price = item_price * 1.25;}
 			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'TypeEpic')) {item_price = item_price * 1.5;}
-			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'Armor')) {item_price = item_price * 2;}	
+			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'Armor')) {item_price = item_price * 2;}
 			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'Gloves')) {item_price = item_price * 2;}
 			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'Pants')) {item_price = item_price * 2;}
-			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'Boots')) {item_price = item_price * 2;}	
+			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'Boots')) {item_price = item_price * 2;}
 			if (inv.ItemHasTag(inv.GetItemId( itemName ), 'Weapon')) {item_price = item_price * 1;}	else
-			{ item_price = item_price * 0.5; } 
+			{ item_price = item_price * 0.5; }
 			}
-		
+
 		if ( inv == thePlayer.GetInventory() )
 		{
 			return (1 + RoundFEx(item_price / 10));
-		} 
+		}
 		else
 		{
 			return RoundFEx((item_price * 2.5) * multi + 1);
@@ -1180,14 +1180,14 @@ import class CGuiUtils extends CObject
 	{
 		var abl_final : float;
 		var price : float;
-		var abl_name : name; 
-	
+		var abl_name : name;
+
 		abl_final = inv.GetItemAttributeAdditive(itemId, StringToName( nazwa ));
-		
+
 		if ( abl_final < 0 ) return 0;
-		
+
 		price = abl_final * ( mnoznik * 1 );
-	
+
 		return price;
 	}
 	*/
@@ -1195,17 +1195,17 @@ import class CGuiUtils extends CObject
 	{
 		var abl_final : float;
 		var price : float;
-		var abl_name : name; 
-	
+		var abl_name : name;
+
 		abl_final = inv.GetItemNameAttributeAdditive( itemName, StringToName( nazwa ) );
-		
+
 		if ( abl_final < 0 ) return 0;
-		
+
 		price = abl_final * ( mnoznik * 1 );
-	
+
 		return price;
 	}
-	
+
 	private function GetIndredientMaskByName( ingredientName : name ) : int
 	{
 		if ( ingredientName == 'Vitriol' )
@@ -1250,7 +1250,7 @@ import class CGuiUtils extends CObject
 			return 0;
 		}
 	}
-	
+
 	private function FillAllIngredientsNames( out ingredientNames : array< name > )
 	{
 		ingredientNames.Clear();
@@ -1264,22 +1264,22 @@ import class CGuiUtils extends CObject
 		ingredientNames.PushBack( 'Sol' );
 		ingredientNames.PushBack( 'Fulgur' );
 	}
-	
+
 	private function GetIngredientIconName( ingredientName : name ) : string
 	{
 		return "img://globals/gui/icons/items/" + StrReplaceAll(ingredientName, " ", "") + "_64x64.dds";
 	}
-	
+
 	private function GetSchematicItemPrice( itemId : SItemUniqueId, inventory : CInventoryComponent ) : float
 	{
 		return inventory.GetItemAttributeAdditive( itemId, 'item_craft_price' );
 	}
-	
+
 	private function GetItemNameMass( itemName : name, inventory : CInventoryComponent ) : float
 	{
 		return inventory.GetItemNameAttributeAdditive( itemName, 'item_weight' );
 	}
-	
+
 	//////////////////////////////////////////////////////////////////////////////////////
 	// Info about items without item id, only by item name
 	//////////////////////////////////////////////////////////////////////////////////////
@@ -1295,11 +1295,11 @@ import class CGuiUtils extends CObject
 		var attributes		: array< name >;
 		var damageStrLoc : string;
 		var result : string;
-		
+
 		// Attributes
-		
+
 			AS_attributes = theHud.CreateArray( objName, AS_item );
-			
+
 			// Add item damage min-max
 			{
 				inventory.GetItemNameAttributeValues(itemName, 'damage_min', valAdd,	valMul, displayPercMul, displayPercAdd );
@@ -1319,20 +1319,20 @@ import class CGuiUtils extends CObject
 					else
 						valueS = valueS + RoundFEx((valMul - 1.f) * 100.f) + m_percentSign;
 				}
-				
+
 				if ( valueS != "" )
 				{
 					damageStrLoc = GetLocStringByKeyExt( 'Damage' );
-					
+
 					AS_attribute = theHud.CreateAnonymousObject();
 					theHud.SetFloat	( "ID",			0x00000041,								AS_attribute );
 					theHud.SetString( "Name",		damageStrLoc,							AS_attribute );
-				
+
 					//theHud.SetString( "Icon",		"icons/items/" + attrName + ".swf",		AS_attribute );
 					theHud.SetString( "Value",		valueS,									AS_attribute );
 					theHud.PushObject( AS_attributes, AS_attribute );
 					theHud.ForgetObject( AS_attribute );
-					
+
 					//result = damageStrLoc + " " + valueS + "<br>";
 				}
 			}
@@ -1341,20 +1341,20 @@ import class CGuiUtils extends CObject
 			result += ListAttributeForItemName( inventory, itemName, AS_attributes, 'damage_reduction_block', 0x00000021 );
 			result += ListAttributeForItemName( inventory, itemName, AS_attributes, 'vitality', 0x00000101 );
 			result += ListAttributeForItemName( inventory, itemName, AS_attributes, 'endurance', 0x00000201 );
-			
+
 			// Example: <res_knockdown mult="true" always_random="false" min="1.02" max="1.02" type="resistance"/>
 			attributes.Clear();
 			inventory.GetItemNameAttributesByType( itemName, 'regeneration', attributes );
 			result += ListAttributesForItemName( inventory, itemName, AS_attributes, attributes, 0x00000400 );
-			
+
 			attributes.Clear();
 			inventory.GetItemNameAttributesByType( itemName, 'resistance', attributes );
 			result += ListAttributesForItemName( inventory, itemName, AS_attributes, attributes, 0x00001000 );
-			
+
 			attributes.Clear();
 			inventory.GetItemNameAttributesByType( itemName, 'critical', attributes );
 			result += ListAttributesForItemName( inventory, itemName, AS_attributes, attributes, 0x00002000 );
-			
+
 			attributes.Clear();
 			inventory.GetItemNameAttributesByType( itemName, 'endurance', attributes );
 			result += ListAttributesForItemName( inventory, itemName, AS_attributes, attributes, 0x00004000 );
@@ -1362,16 +1362,16 @@ import class CGuiUtils extends CObject
 						attributes.Clear();
 			inventory.GetItemNameAttributesByType( itemName, 'vitality', attributes );
 			result += ListAttributesForItemName( inventory, itemName, AS_attributes, attributes, 0x00004000 );
-			
+
 			attributes.Clear();
 			inventory.GetItemNameAttributesByType( itemName, 'bonus', attributes );
 			result += ListAttributesForItemName( inventory, itemName, AS_attributes, attributes, 0x00004000 );
-			
+
 			theHud.ForgetObject( AS_attributes );
 
 			return result;
 	}
-	
+
 	private final function ListAttributesForItemName( inventory : CInventoryComponent, itemName : name, AS_attributes : int , attributes : array< name >, mask : int ) : string
 	{
 		var i      : int;
@@ -1381,28 +1381,28 @@ import class CGuiUtils extends CObject
 			result += ListAttributeForItemName( inventory, itemName, AS_attributes, attributes[i], mask );
 		}
 	}
-	
+
 	private final function ListAttributeForItemName( inventory : CInventoryComponent, itemName : name, AS_attributes : int , attrName : name, mask : int ) : string
 	{
 		var valAdd, valMul					: float;
 		var displayPercMul, displayPercAdd	: bool;
 
 		inventory.GetItemNameAttributeValues( itemName, attrName, valAdd, valMul, displayPercMul, displayPercAdd );
-		
+
 		return ListAttributeCommon( valAdd, valMul, displayPercMul, displayPercAdd, AS_attributes, attrName, mask );
 	}
-	
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
-	
+
 	public function IsItemNamePowerSource( itemName : name ) : bool
 	{
-		return itemName == 'COP_Vitality' || itemName == 'COP_Endurance' || 
+		return itemName == 'COP_Vitality' || itemName == 'COP_Endurance' ||
 			   itemName == 'COP_Signs'    || itemName == 'COP_Damage'    ||
-			   itemName == 'COP_Armor'    || itemName == 'AlchemyAdrenaline' || 
+			   itemName == 'COP_Armor'    || itemName == 'AlchemyAdrenaline' ||
                itemName == 'QuenEffect';
 	}
 
-	
+
 	public final function GetCurrentWeightString() : string
 	{
 		return (int)thePlayer.GetCurrentWeight() + " / " + (int)thePlayer.GetMaxWeight();
