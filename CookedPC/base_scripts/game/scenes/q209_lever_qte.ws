@@ -5,7 +5,7 @@
 class LeverQTEListener extends QTEListener
 {
 	var lastMashTime : EngineTime;
-	
+
 	event OnQTEMash( player : CPlayer, key : name, qteValue : float )
 	{
 		lastMashTime = theGame.GetEngineTime();
@@ -32,35 +32,35 @@ latent quest function Q_209_LeverQte ( qteDurationTime: float, qteInitialValue: 
 	var direction : Vector;
 	var position : Vector;
 	var qteStartInfo : SMashQTEStartInfo = SMashQTEStartInfo();
-	
+
 	witcher = thePlayer;
 	leverTarget = theGame.GetEntityByTag( leverTag );
 	listener = new LeverQTEListener in witcher;
 	witcher.SetQTEListener( listener );
-	
+
 	direction = VecFromHeading( leverTarget.GetHeading() );
 	position = leverTarget.GetWorldPosition() + direction * 0.8;
-	
+
 	witcher.ActionSlideToWithHeading( position, leverTarget.GetHeading() + 180, 0.5 );
-	
+
 	witcher.AttachBehavior( 'q209_qte_lever' );
-	
+
 	witcher.WaitForBehaviorNodeDeactivation ( 'QTELeverStarted' );
-	
+
 	qteStartInfo.action = 'QTE1';
 	qteStartInfo.initialValue = qteInitialValue;
 	qteStartInfo.timeOut = qteDurationTime;
 	qteStartInfo.decayPerSecond = valueDecayPerSecond;
 	qteStartInfo.increasePerMash = valueIncreasePerMash;
 	qteStartInfo.ignoreWrongInput = true;
-	witcher.StartMashFullQTEAsync( qteStartInfo );	
+	witcher.StartMashFullQTEAsync( qteStartInfo );
 	result = witcher.GetLastQTEResult();
-		
+
 	while ( result == QTER_InProgress )
 	{
 		curTime = theGame.GetEngineTime();
 		timeDelta = EngineTimeToFloat( curTime ) - EngineTimeToFloat( listener.lastMashTime );
-		
+
 		if( timeDelta <= 0.2f )
 		{
 			witcher.RaiseEvent( 'progress' );
@@ -71,11 +71,11 @@ latent quest function Q_209_LeverQte ( qteDurationTime: float, qteInitialValue: 
 			witcher.RaiseEvent( 'regress' );
 			leverTarget.RaiseEvent( 'regress' );
 		}
-		
+
 		result = witcher.GetLastQTEResult();
-		
+
 		Sleep( 0.1 );
-	} 
+	}
 
 	if( result == QTER_Succeeded )
 	{
@@ -97,6 +97,6 @@ latent quest function Q_209_LeverQte ( qteDurationTime: float, qteInitialValue: 
 	witcher.WaitForBehaviorNodeDeactivation( 'qte_finished' );
 
 	witcher.DetachBehavior( 'q209_qte_lever' );
-		
+
 	return result == QTER_Succeeded;
 }

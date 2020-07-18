@@ -1,5 +1,5 @@
 //skrypt odpalajacy dla aktora chodzenie po sciezce z followerem i czekanie na gracza zaleznie od dystansu
-latent storyscene function WalkAlongThePathWaitForPlayerInScene(player: CStoryScenePlayer, targetPathTag : name, targetEndofPathTag : name, targetActorTag : name, optional actorFollowerTag : array<name>, 
+latent storyscene function WalkAlongThePathWaitForPlayerInScene(player: CStoryScenePlayer, targetPathTag : name, targetEndofPathTag : name, targetActorTag : name, optional actorFollowerTag : array<name>,
 distanceToStop : float, distanceToGo : float, distanceToChangeSpeed : float, upThePath : bool, optional moveTypename : EMoveType, optional absSpeed : float, optional interceptSectionName : string ) : bool
 {
 	var target : CEntity;
@@ -9,16 +9,16 @@ distanceToStop : float, distanceToGo : float, distanceToChangeSpeed : float, upT
 	var endofpath : CEntity;
 	var distanceToEnd : float;
 	var i : int;
-	
+
 	endofpath = (CEntity)theGame.GetNodeByTag( targetEndofPathTag );
 	target = (CEntity)theGame.GetNodeByTag( targetPathTag );
 	actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );
 	while ( !actor )
 	{
-		actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );	
+		actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );
 		Sleep (0.5f);
 	}
-	
+
 	path = target.GetPathComponent();
 	if ( path )
 	{
@@ -38,18 +38,18 @@ distanceToStop : float, distanceToGo : float, distanceToChangeSpeed : float, upT
 			follower.GetArbitrator().ClearGoal();
 			follower.GetArbitrator().AddGoalPointOfInterest( POIT_Follow, actor, 1.f, 0.f, true );
 		}
-	} 
-	
+	}
+
 	while ( true )
 	{
 		distanceToEnd = VecDistance2D( actor.GetWorldPosition(), endofpath.GetWorldPosition() );
 		//Log("dystans do end of path " +distanceToEnd);
 		if ( distanceToEnd < 0.5f )
 			return true;
-		
+
 		Sleep( 1.f );
 	}
-	
+
 	// JP: ponizsze sie nigdy nie wykona
 	for ( i = 0; i < actorFollowerTag.Size(); i += 1 )
 	{
@@ -59,26 +59,26 @@ distanceToStop : float, distanceToGo : float, distanceToChangeSpeed : float, upT
 			//follower.StateIdle();
 		}
 	}
-	
-	return true;	
+
+	return true;
 }
 
 //skrypt odpalajacy dla aktora chodzenie po sciezce z followerem i czekanie na gracza zaleznie od dystansu
-latent storyscene function WalkToTargetWaitForPlayerInScene(player: CStoryScenePlayer, targetTag : name, targetActorTag : name, 
+latent storyscene function WalkToTargetWaitForPlayerInScene(player: CStoryScenePlayer, targetTag : name, targetActorTag : name,
 	distanceToStop : float, distanceToGo : float, moveTypename : EMoveType, absSpeed : float ) : bool
 {
 	var target : CEntity;
 	var actor  : CNewNPC;
 	var i : int;
-	
+
 	target = (CEntity)theGame.GetNodeByTag( targetTag );
 	actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );
 	while ( !actor )
 	{
-		actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );	
+		actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );
 		Sleep (0.5f);
 	}
-	
+
 	if ( target )
 	{
 		actor.GetArbitrator().ClearGoal();
@@ -88,16 +88,16 @@ latent storyscene function WalkToTargetWaitForPlayerInScene(player: CStorySceneP
 	{
 		Log("WalkAlongThePathWaitForPlayerInScene: No target found");
 	}
-	
+
 	while ( true )
 	{
 		if ( VecDistance2D( actor.GetWorldPosition(), target.GetWorldPosition() ) < 0.5f )
 			return true;
-		
+
 		Sleep( 1.f );
 	}
-	
-	return true;	
+
+	return true;
 }
 enum EArenaWingmanType
 {
@@ -135,13 +135,13 @@ storyscene function SetMaxMoveSpeedType( player: CStoryScenePlayer, moveType : E
 {
 	var followers : array<CNewNPC>;
 	var i : int;
-	
+
 	if ( moveType == MT_AbsSpeed )
 	{
 		Log( "Wrong move type" );
 		return false;
 	}
-		
+
 	for ( i = 0; i < formationFollowerTags.Size(); i += 1 )
 	{
 		theGame.GetNPCsByTag( formationFollowerTags[i], followers );
@@ -169,7 +169,7 @@ latent storyscene function SceneCheckDeadCount( player: CStoryScenePlayer, tag :
 		{
 			return true;
 		}
-		Log( "---------> KILL LIST COUNT = " + FactsQuerySum( "actor_" + tag + "_was_killed" ) ); 
+		Log( "---------> KILL LIST COUNT = " + FactsQuerySum( "actor_" + tag + "_was_killed" ) );
 		Sleep( 0.2f );
 	}
 }
@@ -184,14 +184,14 @@ latent storyscene function SceneCheckUnconciousCount( player: CStoryScenePlayer,
 		{
 			return true;
 		}
-		Log( "---------> UNCONCIOUS LIST COUNT = " + FactsQuerySum( "actor_" + tag + "_was_stunned" ) ); 
+		Log( "---------> UNCONCIOUS LIST COUNT = " + FactsQuerySum( "actor_" + tag + "_was_stunned" ) );
 		Sleep( 0.2f );
 	}
 }
 
 //funkcja sprawdzaj¹ca czy dana postaæ ¿yje, funkcja sptrawdza to tylko raz i wypuszcza sygna³
 
-storyscene function SceneCheckIfIsAlive( player: CStoryScenePlayer, tag: name ) : bool 
+storyscene function SceneCheckIfIsAlive( player: CStoryScenePlayer, tag: name ) : bool
 {
 	var targetActor : CActor;
 
@@ -201,21 +201,21 @@ storyscene function SceneCheckIfIsAlive( player: CStoryScenePlayer, tag: name ) 
 
 //funkcja sprawdzaj¹ca godzinê
 
-storyscene function SceneCheckTime( player: CStoryScenePlayer, from_hour: int, to_hour: int ) : bool 
+storyscene function SceneCheckTime( player: CStoryScenePlayer, from_hour: int, to_hour: int ) : bool
 {
 	var hour : int;
 
 	hour = GameTimeHours( theGame.GetGameTime() );
-	
+
 	if ( hour >= from_hour && hour <= to_hour)
 	{
 		return true;
 	}
-	
+
 	return false;
 }
 
-//Funkcja zak³adaj¹ca graczowi tryb chodzenia, oraz zdejmuj¹ca go jak chcemy 
+//Funkcja zak³adaj¹ca graczowi tryb chodzenia, oraz zdejmuj¹ca go jak chcemy
 
 storyscene function SetPlayerWalkMode ( player: CStoryScenePlayer, IsWalking: bool ) : bool
 {
@@ -231,8 +231,8 @@ storyscene function CheckCombatMode ( player: CStoryScenePlayer ) : bool
 	{
 		return true;
 	}
-	
-	return false;	
+
+	return false;
 }
 
 //SL: Funkcja czekajaca az gracz opusci combat mode
@@ -243,29 +243,29 @@ latent storyscene function WaitUntilPlayerLeavesCombatMode ( player: CStoryScene
 	{
 		Sleep( 0.5f );
 	}
-	
-	return true;	
+
+	return true;
 }
 
 //SL: Funkcja zabija wszystkie postacie o zadanym TAGu
 storyscene function KillAllNPCWithTag( player: CStoryScenePlayer, targetTag : name ) : bool
 {
-	
+
 	var actors : array <CActor>;
 	var i      : int;
 	var actor : CActor;
-	
+
 	theGame.GetActorsByTag(targetTag, actors);
-	
+
 	for (i = 0; i < actors.Size(); i += 1 )
-	{	
+	{
 		actor = actors[i];
-		
+
 		actor.ClearImmortality();
-		actor.Kill();		
+		actor.Kill();
 	}
-	
-	
+
+
 	return true;
 }
 
@@ -275,9 +275,9 @@ latent storyscene function SceneCameraLookAtTarget( player: CStoryScenePlayer, t
 {
 	var target : CNode;
 	var geralt : CPlayer;
-	
+
 	geralt = thePlayer;
-	
+
 	if(!stop)
 	{
 		target = theGame.GetNodeByTag( targetTag );
@@ -312,9 +312,9 @@ latent storyscene function SceneCameraLookAtTarget2( player: CStoryScenePlayer, 
 {
 	var target : CNode;
 	var geralt : CPlayer;
-	
+
 	geralt = thePlayer;
-	
+
 	if(!stop)
 	{
 		target = theGame.GetNodeByTag( targetTag );
@@ -352,24 +352,24 @@ storyscene function EnableComponent ( player: CStoryScenePlayer, shouldBeEnabled
 	var count, i : int;
 	var single_entity : CEntity;
 	var single_component : CComponent;
-	
+
 
 	theGame.GetNodesByTag( objectTag, entity);
 	count = entity.Size();
-	
+
 	for ( i = 0; i < count; i += 1 )
 	{
 		single_entity = (CEntity) entity[i];
 		if ( ! single_entity )
 			continue;
-		
+
 		single_component = single_entity.GetComponent( componentName );
 		if ( ! single_component )
 			continue;
-		
+
 		single_component.SetEnabled( shouldBeEnabled );
 	}
-	
+
 	return true;
 }
 
@@ -395,34 +395,34 @@ latent storyscene function MoveToObjectUntilReached( player: CStoryScenePlayer, 
 	var formation				: CFormation;
 	var pattern					: IFormationPattern;
 	var movementMode 			: CMoveFPGoTo;
-	
+
 	Actor = theGame.GetNPCByTag(ActorTag);
 	if ( !Actor )
 	{
 		Log ("Actor not found! Breaking MoveTo!");
 		return false;
 	}
-	
+
 	Destination = theGame.GetNodeByTag( DestinationTag );
 	if ( !Destination )
 	{
 		Log ("Destination point not found! Breaking MoveTo!");
-		return false;		
+		return false;
 	}
-	
+
 	Actor.ClearRotationTarget();
 	Actor.GetArbitrator().ClearGoal();
 	Actor.GetArbitrator().AddGoalMoveToTarget( Destination, moveType, speed, 0.5f, EWM_Exit );
 	targetPos = Destination.GetWorldPosition();
-	
+
 	while ( true )
 	{
 		actorPos = Actor.GetWorldPosition();
 		distToTarget = VecDistance2D( actorPos, targetPos );
-		
+
 		if(distToTarget <= 1.0f)
 		{
-			return true; 
+			return true;
 		}
 		Sleep( 1.0f );
 	}
@@ -449,19 +449,19 @@ latent storyscene function MoveToObject (player: CStoryScenePlayer, DestinationT
 		Log ("Actor not found! Breaking AsyncMoveToObject!");
 		return false;
 	}
-	
+
 	Destination = theGame.GetNodeByTagWithTimeout( DestinationTag, 3.0 );
 	if ( !Destination )
 	{
 		Log ("Destination point not found! Breaking AsyncMoveToObject!");
 		return false;
 	}
-	
+
 
 	Actor.GetArbitrator().ClearGoal();
 	Actor.GetArbitrator().AddGoalMoveToTarget( Destination, moveType, speed, 0.5f, EWM_Exit );
-		
-	return true; 
+
+	return true;
 }
 
 //Funkcja wy³aczaj¹ca wandering
@@ -470,13 +470,13 @@ latent storyscene function TurnOffWandering (player: CStoryScenePlayer, ActorTag
 {
 	var Actor: CNewNPC;
 	Actor = theGame.GetNPCByTag(ActorTag);
-	
+
 	while ( !Actor )
 	{
 		Actor = theGame.GetNPCByTag(ActorTag);
 		Sleep ( 0.5f );
 	}
-	
+
 	//Actor.SetMayRandWander( Wandering );
 	return true;
 }
@@ -487,7 +487,7 @@ storyscene function SetAttitudeInScene (player: CStoryScenePlayer, actorTag: nam
 	var actors: array <CNewNPC>;
 	var player_in_scene : CActor;
 	var count, i : int;
-	
+
 	player_in_scene = thePlayer;
 	theGame.GetNPCsByTag( actorTag, actors );
 
@@ -508,8 +508,8 @@ storyscene function SetNPCAttitudeToTarget(player: CStoryScenePlayer, npcTag : n
 	var targets: array <CNewNPC>;
 	var count, npcCount, i, j : int;
 	var npc : CNewNPC;
-	
-	theGame.GetNPCsByTag( npcTag, npcs );	
+
+	theGame.GetNPCsByTag( npcTag, npcs );
 	theGame.GetNPCsByTag( targetTag, targets );
 
 	npcCount = npcs.Size();
@@ -551,9 +551,9 @@ latent storyscene function AddItemOnNPCScene (player: CStoryScenePlayer, npc: na
 		npc_newnpc = theGame.GetNPCByTag(npc);
 		npc_newnpc.GetInventory().AddItem( item_name );
 	}
-	
+
 	return true;
-	
+
 }
 
 //usuwanie przedmiotu z NPCa
@@ -562,7 +562,7 @@ storyscene function RemoveItemFromNPCScene(player : CStoryScenePlayer, npc : nam
 	var actor	: CActor		= theGame.GetActorByTag( npc );
 	var itemId	: SItemUniqueId = actor.GetInventory().GetItemId( item_name );
 	actor.GetInventory().RemoveItem( itemId );
-	return true;	
+	return true;
 }
 
 //sprawdzenie czy obiekt dostal aardem
@@ -575,7 +575,7 @@ latent storyscene function CheckIfAardHit (player: CStoryScenePlayer, ObjectTag 
 	{
 		Sleep (0.05f);
 	}
-	
+
 	return true;
 }
 
@@ -584,7 +584,7 @@ latent storyscene function SetNPCIdleStateScene (player: CStoryScenePlayer, acto
 {
 	var npcs : array<CNewNPC>;
 	var i 	 : int;
-	
+
 	for (i = 0; i < actorTag.Size(); i += 1 )
 	{
 		theGame.GetNPCsByTag( actorTag[i], npcs );
@@ -594,7 +594,7 @@ latent storyscene function SetNPCIdleStateScene (player: CStoryScenePlayer, acto
 		npcs[i].GetArbitrator().ClearAllGoals();
 		npcs[i].GetArbitrator().AddGoalIdle( true );
 	}
-	
+
 	return true;
 }
 storyscene function PlayEffect (player: CStoryScenePlayer, entityTag : name, effectName : name, activate : bool, sfx : bool) : bool
@@ -602,9 +602,9 @@ storyscene function PlayEffect (player: CStoryScenePlayer, entityTag : name, eff
 	var entities : array <CNode>;
 	var i      : int;
 	var entity : CEntity;
-	
+
 	theGame.GetNodesByTag(entityTag, entities);
-	
+
 	for (i = 0; i < entities.Size(); i += 1 )
 	{
 		entity = (CEntity) entities[i];
@@ -627,7 +627,7 @@ storyscene function PlayEffect (player: CStoryScenePlayer, entityTag : name, eff
 			}
 		}
 	}
-	
+
 	return true;
 }
 
@@ -638,28 +638,28 @@ storyscene function TeleportActorWithRotation ( player: CStoryScenePlayer, actor
 	var targetDestination : Vector;
 	var targetRot : EulerAngles;
 	var node : CNode;
-	
+
 	node = theGame.GetNodeByTag( targetDestinationTag );
-	
+
 	if ( !node )
 	{
 		Log (" Teleport failed! node of given target is NULL" );
 		return false;
 	}
-	
+
 	actor = theGame.GetActorByTag( actorTag );
-	
+
 	if ( !actor )
 	{
 		Log (" Teleport failed! actor is NULL" );
 		return false;
 	}
-	
+
 	targetDestination = node.GetWorldPosition();
 	targetRot	= node.GetWorldRotation();
-	
+
 	actor.TeleportWithRotation(targetDestination, targetRot );
-	
+
 	return true;
 }
 
@@ -670,29 +670,29 @@ latent storyscene function q105_StartBossFight (player: CStoryScenePlayer, Tenta
 	var Player 					 : CPlayer;
 	var zgn 					 : Zagnica;
 	var magicBarrier, sheala	 : CEntity;
-	
+
 	lookatTarget = zgn.GetComponent( "mouth_focus" ).GetWorldPosition();
 	Player = thePlayer;
 	sheala = theGame.GetEntityByTag( 'sheala' );
 
 	zgn = (Zagnica) theGame.CreateEntity( Tentadrake, theGame.GetNodeByTag('zgn_spawnpoint').GetWorldPosition(), theGame.GetNodeByTag('zgn_spawnpoint').GetWorldRotation() );
-	
+
 	magicBarrier = (CEntity) theGame.GetNodeByTag( 'electric_obstacle' );
 	theCamera.RaiseEvent( 'Camera_Zagnica' );
-	
+
 	zgn.TeleportWithRotation( theGame.GetNodeByTag('zgn_spawnpoint').GetWorldPosition(), theGame.GetNodeByTag('zgn_spawnpoint').GetWorldRotation() );
-	 
+
 	zgn.StartPhase1();
 	Player.EnablePhysicalMovement( true );
 	magicBarrier.PlayEffect( 'electric' );
-	
+
 	theCamera.FocusOn( zgn.GetComponent( "mouth_focus" ) );
-	
+
 //	Player.SetBodyPartState( 'witcher_body_1', 'bomb', true );
 //	theCamera.RaiseEvent( 'Camera_Zagnica' );
 //	theCamera.LookAtStaticTarget( lookatTarget );
 	Log( "Fight with Zagnica started" );
-	
+
 	return true;
 }
 
@@ -710,15 +710,15 @@ storyscene function Check_if_Fact_exist ( player: CStoryScenePlayer, Fact_ID : n
 {
 	var factExist : bool;
 	var factValue : int;
-	
+
 	factExist = FactsDoesExist ( Fact_ID );
-	factValue = FactsQueryLatestValue ( Fact_ID ); 
-	
+	factValue = FactsQueryLatestValue ( Fact_ID );
+
 		if ( factExist == true && factValue == Fact_Value )
 		{
 			return true;
 		}
-		
+
 		else
 		{
 			return false;
@@ -738,28 +738,28 @@ storyscene function GetWeaponFromPlayer (player: CStoryScenePlayer, containerTag
 	var itemId	   : SItemUniqueId;
 	var skip       : bool;
 
-	
+
 	container = (CEntity)theGame.GetNodeByTag(containerTag);
 	inv = (CInventoryComponent)container.GetComponentByClassName( 'CInventoryComponent' );
 	player_inv = thePlayer.GetInventory();
-	
+
 	player_inv.GetAllItems( allItems );
-	
+
 	if (remove)
 	{
 		for ( i = 0; i < allItems.Size(); i += 1 )
-		{	
+		{
 			itemId = allItems[i];
-			
+
 			item_type = player_inv.GetItemAttributeAdditive(itemId, 'itemtype');
 			skip = false;
 			if( dontRemoveNonLethal && !IsItemLethal( player_inv.GetItemName( itemId ) ) )
 			{
 				skip = true;
 			}
-			
+
 			if( !skip )
-			{				
+			{
 				//if (item_type == 1.0 || item_type == 2.0) // add potion name to item list
 				if( IsItemWeapon( player_inv.GetItemName( itemId ) ) )
 				{
@@ -771,7 +771,7 @@ storyscene function GetWeaponFromPlayer (player: CStoryScenePlayer, containerTag
 	else
 	{
 		item_count = inv.GetItemCount();
-		
+
 		for ( i = 0; i < allItems.Size(); i += 1 )
 		{
 			inv.GiveItem( player_inv, allItems[i] );
@@ -785,12 +785,12 @@ storyscene function GetWeaponFromPlayer (player: CStoryScenePlayer, containerTag
 storyscene function SetDoorState (player: CStoryScenePlayer, doorTag: name, door_state : EDoorState, immediate : bool ) : bool
 {
 	var request : CDoorStateRequest;
-	
+
 	request = new CDoorStateRequest in theGame;
 	request.doorState = door_state;
 	request.immediate = immediate;
 	theGame.AddStateChangeRequest( doorTag, request );
-	
+
 	return true;
 }
 
@@ -820,14 +820,14 @@ storyscene function SetSceneChaseSequence ( player: CStoryScenePlayer, ChasersTa
 	var Chasers : array<CNewNPC>;
 	var Victim : CNode;
 	var i : int;
-	
+
 	Victim = theGame.GetNodeByTag( VictimTag );
 	if ( ! Victim )
 	{
 		Log ("Victim not found! Breaking SetSceneChaseSequence!");
 		return false;
 	}
-	
+
 	for (i = 0; i < ChasersTag.Size(); i += 1 )
 	{
 		theGame.GetNPCsByTag( ChasersTag[i], Chasers );
@@ -837,11 +837,11 @@ storyscene function SetSceneChaseSequence ( player: CStoryScenePlayer, ChasersTa
 		Chasers[i].GetArbitrator().ClearGoal();
 		Chasers[i].GetArbitrator().AddGoalPointOfInterest( POIT_Chase, Victim, 2.0f, timeout, true );
 	}
-	
+
 	return true;
 }
 
-//funkcja w³¹czajaca i wy³¹czaj¹ca medytacjê 
+//funkcja w³¹czajaca i wy³¹czaj¹ca medytacjê
 
 storyscene function BlockMeditaction ( player: CStoryScenePlayer, isBlocked : bool ) : bool
 {
@@ -852,10 +852,10 @@ storyscene function BlockMeditaction ( player: CStoryScenePlayer, isBlocked : bo
 storyscene function SetPhysicalMovementOnPlayer ( player: CStoryScenePlayer, enabled : bool ) : bool
 {
 	var Player : CPlayer;
-	
+
 	Player = thePlayer;
 	Player.EnablePhysicalMovement( enabled );
-	
+
 	return true;
 }
 
@@ -875,13 +875,13 @@ latent storyscene function MoveToObjectMultipleActors (player: CStoryScenePlayer
 	var Destination: CNode;
 	var i : int;
 	var size : int;
-	
+
 	Destination = theGame.GetNodeByTag( DestinationTag );
 	if ( ! Destination )
 	{
 		return false;
 	}
-	
+
 	size = ActorsTag.Size();
 	for ( i = 0; i < size; i += 1 )
 	{
@@ -892,23 +892,23 @@ latent storyscene function MoveToObjectMultipleActors (player: CStoryScenePlayer
 	{
 		return false;
 	}
-	
+
 	size = Actors.Size();
 	for ( i = 0; i < size; i += 1 )
-	{		
+	{
 		Actors[i].GetArbitrator().ClearGoal();
 		Actors[i].GetArbitrator().AddGoalMoveToTarget( Destination, moveType, speed, radius, EWM_Exit );
 	}
-	
-	return true; 
+
+	return true;
 }
 // Funkcja wy³¹czaj¹ca Sneak Mode
 storyscene function SneakModeOff (player: CStoryScenePlayer) : bool
 {
 	var geralt : CPlayer;
-	
+
 	geralt = thePlayer;
-	
+
 	geralt.SetSneakMode(false);
 	geralt.ChangePlayerState( PS_Exploration );
 }
@@ -920,9 +920,9 @@ storyscene function SneakModeOff (player: CStoryScenePlayer) : bool
 	var object : CEntity;
 
 	object = theGame.GetEntityByTag( objectTag );
-	
+
 	object.ForceNewDestructionState( destructionState );
-	
+
 	return true;
 }*/
 
@@ -930,19 +930,19 @@ storyscene function SneakModeOff (player: CStoryScenePlayer) : bool
 storyscene function SceneRaiseAnimationEvent ( player: CStoryScenePlayer, actorTag : name, behaviorGraphName : name, eventName : name, force : bool) : bool
 {
 	var actor : CActor;
-	
+
 	Log( "ERROR - SceneRaiseAnimationEvent - Nie uzywac tego!!!" );
-	
-	// PTom: To jest bardzo niebezpieczny kod! Do przerobienia. 
+
+	// PTom: To jest bardzo niebezpieczny kod! Do przerobienia.
 	actor = theGame.GetActorByTag ( actorTag );
 	actor.ActivateBehavior( behaviorGraphName );
-	
+
 	if ( force == true)
 		actor.RaiseForceEvent( eventName );
-	
+
 	else
 		actor.RaiseEvent( eventName );
-	
+
 	return true;
 }
 // Funkcja wlaczajaca interaction Talk
@@ -951,7 +951,7 @@ storyscene function EnableTalkComponent ( player: CStoryScenePlayer, shouldBeEna
 {
 	var object	: CActor;
 	var component : CComponent;
-	
+
 	object = theGame.GetActorByTag( actorTag );
 	component = object.GetComponent ( "talk" );
 	component.SetEnabled( shouldBeEnabled );
@@ -963,13 +963,13 @@ storyscene function TeleportOutOfScene( player : CStoryScenePlayer, actorTag: na
 {
 	var npc : CNewNPC;
 	var destination : CNode;
-	
+
 	npc = (CNewNPC) ( theGame.GetActorByTag( actorTag ) );
 	destination = theGame.GetNodeByTag( destinationTag );
-	
+
 	player.RemoveActorFromScene( npc.GetVoicetag() );
 	npc.Teleport( destination.GetWorldPosition() );
-	
+
 	return true;
 }
 
@@ -980,10 +980,10 @@ storyscene function SetMappin( player : CStoryScenePlayer, ObjectTag: name, Mapp
 	var displayMode : EMapPinDisplayMode;
 	var destination : CGameplayEntity;
 	destination = (CGameplayEntity) theGame.GetEntityByTag( ObjectTag );
-	
+
 	if ( ! destination )
 		return false;
-	
+
 	if( ! remove )
 	{
 		if ( minimapDisplay )	displayMode = MapPinDisplay_Both;
@@ -1004,7 +1004,7 @@ storyscene function ShowHideLayer ( player : CStoryScenePlayer, layerTag: name, 
 {
 	// DEPRECATED, use ShowLayerGroup() instead
 	//theGame.GetWorld().ShowLayers( layerTag, show );
-	
+
 	return true;
 }
 
@@ -1017,31 +1017,31 @@ latent storyscene function GatherActorsSetPOIT (player: CStoryScenePlayer, Desti
 	var i, j : int;
 	var size : int;
 	var npc : CNewNPC;
-	
+
 	destination = theGame.GetNodeByTag( DestinationTag );
 	if ( ! destination )
 	{
 		return false;
 	}
-	
+
 	size = ActorsTag.Size();
 	for ( i = 0; i < size; i += 1 )
 	{
 		GetActorsInRange( actors, actorSearchRange, ActorsTag[i], destination, NULL );
 	}
-		
+
 	size = actors.Size();
 	for ( j = 0; j < size; j += 1 )
 		{
 		npc = (CNewNPC)actors[j];
 			if (npc)
-			{				
+			{
 				npc.GetArbitrator().ClearGoal();
 				npc.GetArbitrator().AddGoalPointOfInterest( poit, destination, radius, timeout, observePOIT );
 			}
 		}
-	
-	return true; 
+
+	return true;
 }
 
 // Blackscreen z fade out i fade in
@@ -1068,7 +1068,7 @@ latent storyscene function BlackscreenWithFadeIn ( player : CStoryScenePlayer, f
 	{
 		theGame.FadeOut( 0.f );
 	}
-	
+
 	return true;
 }
 
@@ -1080,7 +1080,7 @@ latent storyscene function CSplayText ( player : CStoryScenePlayer, txt1 : strin
 	if ( txt1 != "" ) str1 = GetLocStringByKeyExt( txt1 );
 	if ( txt2 != "" ) str2 = GetLocStringByKeyExt( txt2 );
 	theHud.m_hud.setCSText( str1 , str2 );
-	thePlayer.AddTimer( 'clearHudTextField', duration, false );	
+	thePlayer.AddTimer( 'clearHudTextField', duration, false );
 	//theHud.m_messages.ShowCutsceneText( txt1, txt2 );
 	//Sleep ( duration );
 	//theHud.m_messages.HideCutsceneText();
@@ -1091,7 +1091,7 @@ latent storyscene function CSplayText ( player : CStoryScenePlayer, txt1 : strin
 latent storyscene function CSclearText ( player : CStoryScenePlayer ) : bool
 {
 	//theHud.m_messages.HideCutsceneText();
-	thePlayer.AddTimer( 'clearHudTextField', 0.1f, false );	
+	thePlayer.AddTimer( 'clearHudTextField', 0.1f, false );
 	return true;
 }
 
@@ -1104,28 +1104,28 @@ latent storyscene function GatherActorsMoveWithLead (player: CStoryScenePlayer, 
 	var size : int;
 	var npc,leader : CNewNPC;
 	var retries : int;
-	
+
 	destination = theGame.GetNodeByTag( destinationTag );
 	if ( ! destination )
 	{
 		return false;
 	}
-	
+
 	leader = theGame.GetNPCByTag( leaderTag );
 	if ( ! leader )
 	{
 		return false;
 	}
-		
+
 	leader.GetArbitrator().ClearGoal();
 	leader.GetArbitrator().AddGoalPointOfInterest( poit, destination, radius, leadTimeout, observePOIT );
-	
+
 	size = actorsTag.Size();
 	for ( i = 0; i < size; i += 1 )
 	{
 		GetActorsInRange( actors, actorSearchRange, actorsTag[i], leader, NULL );
 	}
-	
+
 	while ( true )
 	{
 		size = actors.Size();
@@ -1139,8 +1139,8 @@ latent storyscene function GatherActorsMoveWithLead (player: CStoryScenePlayer, 
 			}
 		}
 	}
-	
-	return true; 
+
+	return true;
 }
 
 // Funkcja odpalajaca odpowiedni stan wisielcow na rynku
@@ -1150,37 +1150,37 @@ latent storyscene function Q102_GALLOW ( player : CStoryScenePlayer, allStand : 
 	var jaskier : CEntity;
 	var zoltan : CEntity;
 	var gallow : CEntity;
-	var executioner : CEntity;	
-	
+	var executioner : CEntity;
+
 	var elfHanger : CAnimatedComponent;
 	var womanElfHanger : CAnimatedComponent;
-	
+
 	var ropeJaskier : CAnimatedComponent;
 	var ropeZoltan : CAnimatedComponent;
-	var ropeElfHanger : CAnimatedComponent;            
+	var ropeElfHanger : CAnimatedComponent;
 	var ropeWomanElfHanger : CAnimatedComponent;
-	
-	var leverElfHanger : CAnimatedComponent;           
+
+	var leverElfHanger : CAnimatedComponent;
 	var leverWomanElfHanger : CAnimatedComponent;
-	
-	
+
+
 	var vectorJaskier : Vector;
-	var vectorZoltan : Vector;	
+	var vectorZoltan : Vector;
 	var vectorElfHanger : Vector;
 	var vectorWomanElfHanger : Vector;
 	var vectorGallow : Vector;
 	var vectorWPhanger1 : Vector;
-	var vectorWPhanger2 : Vector;	
-	var vectorExecutioner : Vector;		
-	
-	var rotationJaskier : EulerAngles;	
-	var rotationZoltan : EulerAngles;	
+	var vectorWPhanger2 : Vector;
+	var vectorExecutioner : Vector;
+
+	var rotationJaskier : EulerAngles;
+	var rotationZoltan : EulerAngles;
 	var rotationElfHanger : EulerAngles;
 	var rotationWomanElfHanger : EulerAngles;
-	var rotationGallow : EulerAngles;	
+	var rotationGallow : EulerAngles;
 	var rotationWPhanger1 : EulerAngles;
-	var rotationWPhanger2 : EulerAngles;	
-	var rotationExecutioner : EulerAngles;	
+	var rotationWPhanger2 : EulerAngles;
+	var rotationExecutioner : EulerAngles;
 
 	var component : CDrawableComponent;
 
@@ -1188,11 +1188,11 @@ latent storyscene function Q102_GALLOW ( player : CStoryScenePlayer, allStand : 
 	vectorZoltan = theGame.GetNodeByTag('q102_zoltan').GetWorldPosition();
 	vectorElfHanger = theGame.GetNodeByTag('q102_hanger01_wp').GetWorldPosition();
 	vectorWomanElfHanger = theGame.GetNodeByTag('q102_hanger02_wp').GetWorldPosition();
-	vectorGallow = theGame.GetNodeByTag('q102_gallow_wp').GetWorldPosition();	
+	vectorGallow = theGame.GetNodeByTag('q102_gallow_wp').GetWorldPosition();
 	vectorWPhanger1 = theGame.GetNodeByTag('q102_hanger1_hang').GetWorldPosition();
 	vectorWPhanger2 = theGame.GetNodeByTag('q102_hanger2_hang').GetWorldPosition();
-	vectorExecutioner = theGame.GetNodeByTag('q102_executioner_wp').GetWorldPosition();	
-	
+	vectorExecutioner = theGame.GetNodeByTag('q102_executioner_wp').GetWorldPosition();
+
 	rotationJaskier = theGame.GetNodeByTag('q102_dandelion').GetWorldRotation();
 	rotationZoltan = theGame.GetNodeByTag('q102_zoltan').GetWorldRotation();
 	rotationElfHanger = theGame.GetNodeByTag('q102_hanger01_wp').GetWorldRotation();
@@ -1204,8 +1204,8 @@ latent storyscene function Q102_GALLOW ( player : CStoryScenePlayer, allStand : 
 
 	gallow = theGame.GetEntityByTag('q102_gallow');
 	jaskier = theGame.GetEntityByTag( 'Dandelion' );
-	zoltan = theGame.GetEntityByTag( 'Zoltan' );  
-	elfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_hanger01').GetComponent('Character'); 
+	zoltan = theGame.GetEntityByTag( 'Zoltan' );
+	elfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_hanger01').GetComponent('Character');
 	womanElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_hanger02').GetComponent('Character');
 	executioner = theGame.GetEntityByTag('q102_executioner');
 
@@ -1213,28 +1213,28 @@ latent storyscene function Q102_GALLOW ( player : CStoryScenePlayer, allStand : 
 	ropeZoltan = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('rope2');
 	ropeElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('rope3');
 	ropeWomanElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('rope4');
-	
+
 	leverElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('lever3');
-	leverWomanElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('lever4');  
+	leverWomanElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('lever4');
 
 	if( allStand )
 	{
 		while ( !jaskier || !zoltan || !elfHanger || !womanElfHanger )
 		{
 			jaskier = theGame.GetEntityByTag( 'Dandelion' );
-			zoltan = theGame.GetEntityByTag( 'Zoltan' );  
+			zoltan = theGame.GetEntityByTag( 'Zoltan' );
 			elfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_hanger01').GetComponent('Character');
 			womanElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_hanger02').GetComponent('Character');
 			Sleep ( 0.01f );
 		}
-		
-	
+
+
 		jaskier.TeleportWithRotation( vectorJaskier, rotationJaskier);
 		zoltan.TeleportWithRotation( vectorZoltan, rotationZoltan);
 		gallow.TeleportWithRotation( vectorGallow, rotationGallow);
 		theGame.GetEntityByTag('q102_hanger01').TeleportWithRotation( vectorElfHanger, rotationElfHanger);
 		theGame.GetEntityByTag('q102_hanger02').TeleportWithRotation( vectorWomanElfHanger, rotationWomanElfHanger);
-		
+
 		theGame.GetActorByTag('q102_hanger02').EnablePathEngineAgent( false );
 		theGame.GetActorByTag('q102_hanger01').EnablePathEngineAgent( false );
 
@@ -1242,36 +1242,36 @@ latent storyscene function Q102_GALLOW ( player : CStoryScenePlayer, allStand : 
 		{
 			theGame.GetActorByTag('q102_hanger02').GetRootAnimatedComponent().PushBehaviorGraph( 'q102_hangman' );
 		}
-		
+
 		if( theGame.GetActorByTag('q102_hanger01').GetBehaviorName() != 'q102_hangman' )
 		{
 			theGame.GetActorByTag('q102_hanger01').GetRootAnimatedComponent().PushBehaviorGraph( 'q102_hangman' );
 		}
-		
+
 		theGame.GetActorByTag('q102_hanger01').ActivateBoneAnimatedConstraint( gallow, 'pozycja_skazaniec3', 'shiftWeight', 'shift' );
 		theGame.GetActorByTag('q102_hanger02').ActivateBoneAnimatedConstraint( gallow, 'pozycja_skazaniec4', 'shiftWeight', 'shift' );
 		*/
 		jaskier.RaiseForceEvent('hanging_jaskier_off');
 		zoltan.RaiseForceEvent('hanging_off');
-		
+
 		ropeJaskier.RaiseBehaviorForceEvent('hanging_off');
 		ropeZoltan.RaiseBehaviorForceEvent('hanging_off');
 		ropeElfHanger.RaiseBehaviorForceEvent('hanging_off');
 		ropeWomanElfHanger.RaiseBehaviorForceEvent('hanging_off');
-		
+
 		leverElfHanger.RaiseBehaviorForceEvent('hanging_off');
 		leverWomanElfHanger.RaiseBehaviorForceEvent('hanging_off');
-		
+
 		((CActor) executioner).EnablePathEngineAgent( false );
 		executioner.TeleportWithRotation( vectorExecutioner, rotationExecutioner);
 		Sleep (0.1);
 		((CActor) executioner).EnablePathEngineAgent( true );
-		
+
 		return true;
 	}
 	else if ( firstHang )
 	{
-	
+
 		component = (CDrawableComponent) gallow.GetComponent( "rope4_mesh" );
 		component.SetVisible( false );
 
@@ -1279,81 +1279,81 @@ latent storyscene function Q102_GALLOW ( player : CStoryScenePlayer, allStand : 
 
 		theGame.GetActorByTag('q102_hanger01').EnablePathEngineAgent( false );
 		//theGame.GetActorByTag('q102_hanger01').ActivateBoneAnimatedConstraint( gallow, 'pozycja_skazaniec3', 'shiftWeight', 'shift' );
-		
+
 		gallow.TeleportWithRotation( vectorGallow, rotationGallow);
 		jaskier.TeleportWithRotation( vectorJaskier, rotationJaskier);
 		zoltan.TeleportWithRotation( vectorZoltan, rotationZoltan);
-		
+
 		theGame.GetEntityByTag('q102_hanger01').TeleportWithRotation( vectorElfHanger, rotationElfHanger);
-				
+
 		jaskier.RaiseForceEvent('hanging_jaskier_off');
 		zoltan.RaiseForceEvent('hanging_off');
 		elfHanger.RaiseBehaviorForceEvent('hanging_off');
-		
+
 		ropeJaskier.RaiseBehaviorForceEvent('hanging_off');
 		ropeZoltan.RaiseBehaviorForceEvent('hanging_off');
 		ropeElfHanger.RaiseBehaviorForceEvent('hanging_off');
-		
+
 		leverElfHanger.RaiseBehaviorForceEvent('hanging_off');
 		leverWomanElfHanger.RaiseBehaviorForceEvent('hanging_on');
-		
+
 		((CActor) executioner).EnablePathEngineAgent( false );
 		executioner.TeleportWithRotation( vectorExecutioner, rotationExecutioner);
 		Sleep (0.1);
 		((CActor) executioner).EnablePathEngineAgent( true );
-		
+
 		return true;
 	}
 	else if ( secondHang )
-	{		
+	{
 		component = (CDrawableComponent) gallow.GetComponent( "rope3_mesh" );
 		component.SetVisible( false );
-		
+
 		// theGame.GetWorld().LoadLayerAsync("scenes\q102_man_hanger", false); // DEPRECATED
 
 		jaskier.TeleportWithRotation( vectorJaskier, rotationJaskier);
 		zoltan.TeleportWithRotation( vectorZoltan, rotationZoltan);
-		
+
 		jaskier.RaiseForceEvent('hanging_jaskier_off');
 		zoltan.RaiseForceEvent('hanging_off');
-		
+
 		ropeJaskier.RaiseBehaviorForceEvent('hanging_off');
 		ropeZoltan.RaiseBehaviorForceEvent('hanging_off');
-		
+
 		leverElfHanger.RaiseBehaviorForceEvent('hanging_on');
 		leverWomanElfHanger.RaiseBehaviorForceEvent('hanging_on');
-		
+
 		return true;
 	}
-	
+
 		else if ( afterHanging )
 	{
 		theGame.GetActorByTag('q102_hanger02').EnablePathEngineAgent( false );
 		theGame.GetActorByTag('q102_hanger01').EnablePathEngineAgent( false );
-		
+
 		theGame.GetEntityByTag('q102_hanger01').TeleportWithRotation( vectorWPhanger1, rotationWPhanger1);
 		theGame.GetEntityByTag('q102_hanger02').TeleportWithRotation( vectorWPhanger2, rotationWPhanger2);
-		
+
 		//theGame.GetActorByTag('q102_hanger01').ActivateBoneAnimatedConstraint( gallow, 'pozycja_skazaniec3', 'shiftWeight', 'shift' );
 		//theGame.GetActorByTag('q102_hanger02').ActivateBoneAnimatedConstraint( gallow, 'pozycja_skazaniec4', 'shiftWeight', 'shift' );
-		
+
 		elfHanger.RaiseBehaviorForceEvent('hanging_on');
 		womanElfHanger.RaiseBehaviorForceEvent('hanging_on');
 
 		ropeElfHanger.RaiseBehaviorForceEvent('hanging_on');
 		ropeWomanElfHanger.RaiseBehaviorForceEvent('hanging_on');
-		
+
 		leverElfHanger.RaiseBehaviorForceEvent('hanging_on');
 		leverWomanElfHanger.RaiseBehaviorForceEvent('hanging_on');
-		
-		
+
+
 		zoltan.RaiseForceEvent('Idle');
 		jaskier.RaiseForceEvent('Idle');
 		ropeJaskier.RaiseBehaviorForceEvent('hanging_on');
 		ropeZoltan.RaiseBehaviorForceEvent('hanging_on');
 		return true;
 	}
-	
+
 	return true;
 }
 
@@ -1363,21 +1363,21 @@ storyscene function GiveItemInScene( player: CStoryScenePlayer, giverTag: name, 
 	var npc, receiver : CActor;
 	var itemId 	  	  : SItemUniqueId;
 	var npcInventory  : CInventoryComponent;
-	
+
 	npc 		 = theGame.GetActorByTag( giverTag );
 	receiver 	 = theGame.GetActorByTag( receiverTag );
 	npcInventory = npc.GetInventory();
 	itemId 	 = npcInventory.GetItemId( itemName );
-	
+
 	if ( quantity > npc.GetInventory().GetItemQuantity( itemId ) )
 	{
 		Log ("NPC " + giverTag + " doesn't have " + IntToString( quantity ) + " X " + itemName + "!");
 		quantity = npc.GetInventory().GetItemQuantity( itemId );
 	}
-	
+
 	npcInventory.AddItem( receiver.GetInventory().GetItemName( itemId ), quantity, true );
 	//npcInventory.GiveItem( receiver.GetInventory(), itemId, quantity );
-	
+
 	return true;
 }
 //Funkcja która pozwala na zabranie lub oddanie itemu NPC-owi
@@ -1392,29 +1392,29 @@ storyscene function GetWeaponFromNPC (player: CStoryScenePlayer, actorTag : name
 	var allItems	: array< SItemUniqueId >;
 	var itemId		: SItemUniqueId;
 
-	
+
 	container = (CEntity)theGame.GetNodeByTag(containerTag);
 	inv = (CInventoryComponent)container.GetComponentByClassName( 'CInventoryComponent' );
 	actor_inv = theGame.GetNPCByTag(actorTag).GetInventory();
-	
+
 	if (remove)
-	{	
+	{
 		actor_inv.GetAllItems( allItems );
 		for ( i = 0; i < allItems.Size(); i += 1 )
-		{	
+		{
 			itemId = allItems[i];
 			item_type = theGame.GetNPCByTag(actorTag).GetInventory().GetItemAttributeAdditive(itemId, 'itemtype');
-				
+
 			if (item_type == 1.0 || item_type == 2.0)
 			{
 				actor_inv.GiveItem(inv, itemId);
-			}	
+			}
 		}
 	}
 	else
 	{
 		inv.GetAllItems( allItems );
-		
+
 		for ( i = 0; i < allItems.Size(); i += 1 )
 		{
 			inv.GiveItem(actor_inv, allItems[i]);
@@ -1427,9 +1427,9 @@ storyscene function GetWeaponFromNPC (player: CStoryScenePlayer, actorTag : name
 storyscene function SetBodyPartStateInScene (player: CStoryScenePlayer, targetTag : name, bodyPartName : name, bodyPartState : name, optional applyNow : bool) : bool
 {
 	var entity : CEntity;
-	
+
 	entity = theGame.GetEntityByTag(targetTag);
-	
+
 	entity.SetBodyPartState( bodyPartName, bodyPartState, applyNow );
 
 	return true;
@@ -1476,12 +1476,12 @@ storyscene function AddItemToContainer (player: CStoryScenePlayer, itemName : na
 {
 	var inv 	   :  CInventoryComponent;
 	var container  : CEntity;
-	
+
 	container = (CEntity)theGame.GetNodeByTag(containerTag);
 	inv = (CInventoryComponent)container.GetComponentByClassName( 'CInventoryComponent' );
-	
+
 	inv.AddItem(itemName, quantity);
-	
+
 	return true;
 }
 
@@ -1492,7 +1492,7 @@ storyscene function DespawnNPCS(player: CStoryScenePlayer, npcTag : name): bool
 	var i : int;
 
 	theGame.GetNPCsByTag( npcTag, npcs );
-	
+
 	Log( "DespawnNPCS(): Found " + npcs.Size() + " NPCs with tag " + npcTag );
 
 	for ( i = 0; i < npcs.Size(); i += 1 )
@@ -1554,31 +1554,31 @@ storyscene function SetGeraltNaked( player: CStoryScenePlayer ) : bool
 	var cplayer : CPlayer;
 	var allItems : array< SItemUniqueId >;
 	var i : int;
-	
+
 	cplayer = thePlayer;
 
 	cplayer.GetInventory().GetAllItems( allItems );
-	
+
 	for ( i = 0; i < allItems.Size(); i += 1 )
-	{	
+	{
 		cplayer.GetInventory().UnmountItem( allItems[i], true);
 	}
-	
+
 	return true;
 }
 //Funkcja pozwalaj¹ca na rzucenie entity w zdefiniowany cel
-storyscene function ThrowObject (player: CStoryScenePlayer, objectTag : name, targetTag : name, angleInDegrees : float, multiplier : float ) : bool 
+storyscene function ThrowObject (player: CStoryScenePlayer, objectTag : name, targetTag : name, angleInDegrees : float, multiplier : float ) : bool
 {
 	var target : CNode;
 	var object : CEntity;
 	var targetPos : Vector;
- 
+
 	target = theGame.GetNodeByTag(targetTag);
 	object = theGame.GetEntityByTag(objectTag);
 	targetPos = target.GetWorldPosition();
- 
+
 	ThrowEntity(object, angleInDegrees, targetPos, multiplier);
- 
+
 	return true;
 }
 
@@ -1588,10 +1588,10 @@ storyscene function TempStun (player: CStoryScenePlayer, actorTag: name) : bool
 {
 	//var actor : CActor;
 	var actorNPC : CNewNPC;
-	
-	
+
+
 	//actor = theGame.GetActorByTag(actorTag);
-	actorNPC = theGame.GetNPCByTag(actorTag);	
+	actorNPC = theGame.GetNPCByTag(actorTag);
 	actorNPC.Stun();
 
 	return true;
@@ -1601,19 +1601,19 @@ storyscene function TempStun (player: CStoryScenePlayer, actorTag: name) : bool
 storyscene function PushOrPopBehaviorGraph ( player: CStoryScenePlayer, actorTag : name, behaviorGraphName : name, push : bool) : bool
 {
 	var actor : CActor;
-	
+
 	Log( "ERROR - PushOrPopBehaviorGraph - Nie uzywac tego!!!" );
-	
+
 	// PTom czy na pewno jest cos takiego potrzebne???
-	
+
 	actor = theGame.GetActorByTag ( actorTag );
-	
+
 	if (push == true)
 		actor.AttachBehavior( behaviorGraphName );
-		
+
 	else
 		actor.DetachBehavior( behaviorGraphName );
-		
+
 	return true;
 }
 
@@ -1624,19 +1624,19 @@ storyscene function CreateEntityInScene ( player: CStoryScenePlayer, entityTempl
 	var wpPosition : Vector;
 	var wpRotation : EulerAngles;
 	var wpEntity   : CNode;
-		
+
 	if( position == Vector(0,0,0,0) )
 	{
 		wpEntity   = theGame.GetNodeByTag( orPositionFromWpTag );
 		wpPosition = wpEntity.GetWorldPosition();
 		wpRotation = wpEntity.GetWorldRotation();
-	
+
 		theGame.CreateEntity( entityTemplate, wpPosition, wpRotation, optionalUseAppearancesFromIncludes, optionalForceBehaviorPose );
 	}
-	
+
 	else
 		theGame.CreateEntity( entityTemplate, position, rotation, optionalUseAppearancesFromIncludes, optionalForceBehaviorPose );
-		
+
 	return true;
 }
 
@@ -1645,23 +1645,23 @@ latent storyscene function SetCameraActive (player: CStoryScenePlayer, cameraTag
 {
 	var camera : CCamera;
 	var geralt : CPlayer;
-	
+
 	geralt = thePlayer;
 	camera = (CCamera)theGame.GetNodeByTag(cameraTag);
-	
+
 	if (activate)
 	{
 		camera.SetActive(true);
-		
+
 		if(blockPlayer)
 		{
 			geralt.SetManualControl(false, false);
 		} else
 		{
-			geralt.SetManualControl(true, true);	
+			geralt.SetManualControl(true, true);
 		}
 		Sleep(duration);
-		
+
 		camera.SetActive(false);
 		if(blockPlayer)
 		{
@@ -1671,11 +1671,11 @@ latent storyscene function SetCameraActive (player: CStoryScenePlayer, cameraTag
 	if (!activate)
 	{
 		camera.SetActive(false);
-		
+
 		//if(blockPlayer) - po huj to jest?? jak wylaczasz kamere daj sterowanie na gracza - ZAWSZE
 		//{
 			geralt.SetManualControl(true, true);
-		//}	
+		//}
 	}
 	return true;
 }
@@ -1687,19 +1687,19 @@ storyscene function SetIdleInRange (player: CStoryScenePlayer, centerPointTag : 
 	var i			: int;
 	var centerPoint : CNode;
 	var convNPC		: CNewNPC;
-	
+
 	if (!centerPoint)
 	{
 		Log( "SetIdleInRange: NO CENTER POINT FOUND!" );
 		return false;
 	}
 	centerPoint = theGame.GetNodeByTag( centerPointTag );
-	
+
 	for ( i = 0; i < actorsTag.Size(); i += 1 )
 	{
 		GetActorsInRange( npcs, actorSearchRange, actorsTag[i], centerPoint );
 	}
-		
+
 	for (i = 0; i < npcs.Size(); i += 1 )
 	{
 		convNPC = (CNewNPC) npcs[i];
@@ -1711,7 +1711,7 @@ storyscene function SetIdleInRange (player: CStoryScenePlayer, centerPointTag : 
 		convNPC.GetArbitrator().ClearAllGoals();
 		convNPC.GetArbitrator().AddGoalIdle( true );
 	}
-	
+
 	return true;
 }
 
@@ -1723,8 +1723,8 @@ storyscene function SetIdleInRange (player: CStoryScenePlayer, centerPointTag : 
 	var entity 	 : CEntity;
 	var count, i : int;
 	var defLayer : bool;
-	
-	
+
+
 	if ( debugLayerGroupName != "" )
 	{
 		// defLayer = theGame.GetWorld().IsLayerLoaded( debugLayerGroupName ); // DEPRECATED
@@ -1734,12 +1734,12 @@ storyscene function SetIdleInRange (player: CStoryScenePlayer, centerPointTag : 
 			return false;
 		}
 	}
-	
+
 	theGame.GetNodesByTag( nodeTag, node );
 	count = node.Size();
-	
+
 	for ( i = 0; i < count; i += 1 )
-	{	
+	{
 		entity = (CEntity) node[i];
 		if ( !entity )
 		{
@@ -1748,7 +1748,7 @@ storyscene function SetIdleInRange (player: CStoryScenePlayer, centerPointTag : 
 		}
 		entity.Destroy();
 	}
-	
+
 	return true;
 }
 */
@@ -1757,7 +1757,7 @@ storyscene function ActivateBurningObstacle ( player: CStoryScenePlayer, targetT
 {
 	var targets : array<CNode>;
 	var i, arraySize : int;
-	
+
 	theGame.GetNodesByTag( targetTag, targets );
 
 	arraySize = targets.Size();
@@ -1768,16 +1768,16 @@ storyscene function ActivateBurningObstacle ( player: CStoryScenePlayer, targetT
 		{
 			((CFieryObstacle)targets[i]).startBurning();
 		}
-		
+
 		return true;
-	} 
+	}
 	else
 	{
 		for( i = 0; i < arraySize; i += 1 )
 		{
 			((CFieryObstacle)targets[i]).stopBurning();
 		}
-		
+
 		return true;
 	}
 }
@@ -1786,9 +1786,9 @@ storyscene function ActivateBurningObstacle ( player: CStoryScenePlayer, targetT
 storyscene latent function PlayAnimation( player: CStoryScenePlayer, targetActorTag : name, animationName : name ) : bool
 {
 	var targetActor : CActor;
-	
+
 	targetActor = (CActor) theGame.GetEntityByTag( targetActorTag );
-	
+
 	return ( targetActor.ActionPlaySlotAnimation( "NPC_ANIM_SLOT", animationName, 0.2f, 0.2f ) );
 }
 */
@@ -1807,7 +1807,7 @@ storyscene function PlayMusic( player: CStoryScenePlayer, cueName : name ) : boo
 	theSound.PlayMusic( cueName );
 	return true;
 }
-	
+
 // Funkcja zatrzymuj¹ca aktualny motyw muzyczny
 storyscene function StopMusic( player: CStoryScenePlayer, cueName : name )
 {
@@ -1828,27 +1828,27 @@ storyscene function ActivateEnvironment ( player: CStoryScenePlayer, AreaEnviron
 storyscene function SetManualControlInScene( player: CStoryScenePlayer, movement : bool , camera : bool ) : bool
 	{
 		var geralt : CPlayer;
-		
+
 		geralt = thePlayer;
-		
+
 		if(!movement && !camera)
 		{
 			geralt.SetManualControl(false, false);
 		}
-		
+
 		if(!movement && camera)
 		{
 			geralt.SetManualControl(false, true);
 		}
-		
+
 		if(movement && camera)
 		{
 			geralt.SetManualControl(true, true);
 		}
-		
+
 		return true;
 	}
-	
+
 //Funkcja pozwalaj¹ca na za³adowanie lub od³adowanie grupu warstw
 
 storyscene function ManageLayerGroup ( player: CStoryScenePlayer, path : string, load : bool ): bool
@@ -1872,9 +1872,9 @@ storyscene function q000Trebuchet (player: CStoryScenePlayer, trebuchet: name, f
 
 	var trebuchets : array<CNode>;
 	var i : int;
-	
+
 	theGame.GetNodesByTag(trebuchet, trebuchets);
-	
+
 	for ( i = 0; i < trebuchets.Size(); i += 1 )
 	{
 		if (fire)
@@ -1900,43 +1900,43 @@ latent storyscene function MoveAlongPathInScene(player: CStoryScenePlayer, npcTa
 	var npc 					: CNewNPC;
 	var path   					: CPathComponent;
 	var targetPath 				: CEntity;
-	
-	
+
+
 	targetPath = theGame.GetEntityByTag(pathTag );
 	npc  = theGame.GetNPCByTag( npcTag );
-	
+
 	while ( !npc )
 	{
 		npc  = theGame.GetNPCByTag( npcTag );
 		Sleep (0.5f);
 	}
-	
+
 	path = targetPath.GetPathComponent();
 	if ( !path )
 	{
 		return false;
 	}
-	
+
 	npc.GetArbitrator().ClearGoal();
 	npc.GetArbitrator().AddGoalWalkAlongPath( path, upThePath, fromBegining, margin, moveType, speed);
-	
+
 	return true;
 }
 
-// Funkcja czekaj¹ca na odpowiedni poziom zycia npc w procentach 
+// Funkcja czekaj¹ca na odpowiedni poziom zycia npc w procentach
 latent storyscene function CheckHealthLevel(player: CStoryScenePlayer, npcTag : name, healthLevel : float) : bool
 {
      var npc : CNewNPC;
      var maxHealth, currentHealth, percentHealth : float;
-     
+
      if( npcTag != 'PLAYER' )
      {
 		npc  = theGame.GetNPCByTag( npcTag );
-		
+
 		maxHealth = npc.initialHealth;
 		currentHealth = npc.health;
 		percentHealth = currentHealth / maxHealth * 100.0f;
-     
+
 		while ( percentHealth >= healthLevel)
 		{
 			 currentHealth = npc.health;
@@ -1950,7 +1950,7 @@ latent storyscene function CheckHealthLevel(player: CStoryScenePlayer, npcTag : 
 		maxHealth = thePlayer.initialHealth;
 		currentHealth = thePlayer.health;
 		percentHealth = currentHealth / maxHealth * 100.0f;
-     
+
 		while ( percentHealth >= healthLevel)
 		{
 			 currentHealth = thePlayer.health;
@@ -1959,7 +1959,7 @@ latent storyscene function CheckHealthLevel(player: CStoryScenePlayer, npcTag : 
 			 Sleep( 0.1f );
 		}
 	 }
-	
+
      return true;
 }
 
@@ -1983,42 +1983,42 @@ latent storyscene function CheckIfTorchOn (player: CStoryScenePlayer, ObjectTag 
 	var door	: CDoor;
 	var i		: int;
 	var door_state : EDoorState;
-	
+
 	Object = (CEntity) theGame.GetNodeByTag( ObjectTag );
-	
-	
+
+
 	while( true )
 	{
 		Status = ((CSneakLightsArea)Object).LightAreaIsOn;
 
-		
+
 		if(Status == true)
 		{
 				door = (CDoor)theGame.GetNodeByTag( doorTag );
 				door.CloseDoor(immediate);
 				door.LockDoor(true);
-			
+
 			return true;
 		}
-		
+
 		if(Status == false)
 		{
 				door = (CDoor)theGame.GetNodeByTag( doorTag );
 				door.CloseDoor(immediate);
 				door.LockDoor(false);
-			
+
 			return false;
 		}
-	
-		
-		
+
+
+
 		Sleep (0.4f);
 	}
 }
 
 storyscene function SetPlayerSceneExitState(player: CStoryScenePlayer, exitState : EPlayerState ) : bool
 {
-	var currentState : EPlayerState;	
+	var currentState : EPlayerState;
 	currentState = thePlayer.GetCurrentPlayerState();
 	if( currentState != PS_Scene && currentState != PS_Cutscene )
 	{
@@ -2031,12 +2031,12 @@ storyscene function SetPlayerSceneExitState(player: CStoryScenePlayer, exitState
 storyscene function SetPlayerCombatSteelOnExitState( player: CStoryScenePlayer ) : bool
 {
 	var swordId : SItemUniqueId;
-	
+
 	swordId = thePlayer.GetInventory().GetItemByCategory( 'steelsword', true );
 	if( swordId == GetInvalidUniqueId() )
 	{
 		swordId = thePlayer.GetInventory().GetItemByCategory( 'silversword', true );
-		
+
 		if( swordId == GetInvalidUniqueId() )
 		{
 			thePlayer.OnSetSceneExitState( PS_CombatFistfightDynamic );
@@ -2047,7 +2047,7 @@ storyscene function SetPlayerCombatSteelOnExitState( player: CStoryScenePlayer )
 	}
 	else
 		thePlayer.OnSetSceneExitState( PS_CombatSteel );
-	
+
 	thePlayer.SetLastCombatStyle(PCS_Steel);
 	thePlayer.GetInventory().MountItem( swordId, true );
 	return true;
@@ -2057,12 +2057,12 @@ storyscene function SetPlayerCombatSteelOnExitState( player: CStoryScenePlayer )
 storyscene function SetPlayerCombatSilverOnExitState( player: CStoryScenePlayer ) : bool
 {
 	var swordId : SItemUniqueId;
-	
+
 	swordId = thePlayer.GetInventory().GetItemByCategory( 'silversword', true );
 	if( swordId == GetInvalidUniqueId() )
 	{
 		swordId = thePlayer.GetInventory().GetItemByCategory( 'steelsword', true );
-		
+
 		if( swordId == GetInvalidUniqueId() )
 		{
 			thePlayer.OnSetSceneExitState( PS_CombatFistfightDynamic );
@@ -2073,7 +2073,7 @@ storyscene function SetPlayerCombatSilverOnExitState( player: CStoryScenePlayer 
 	}
 	else
 		thePlayer.OnSetSceneExitState( PS_CombatSilver );
-	thePlayer.SetLastCombatStyle(PCS_Silver);	
+	thePlayer.SetLastCombatStyle(PCS_Silver);
 	thePlayer.GetInventory().MountItem( swordId, true );
 	return true;
 }
@@ -2092,7 +2092,7 @@ storyscene function sceneShowScope(player: CStoryScenePlayer, show : bool ) : bo
 	}
 
 	return true;
-	
+
 }
 
 // Funckja odpalajaca .bik'a czyli filmik w grze
@@ -2108,7 +2108,7 @@ latent storyscene function playBikVideoInGame(player: CStoryScenePlayer, video_n
 	}
 
 	return true;
-	
+
 }
 
 // Funckja odpalajaca panel rzemieslnictwa
@@ -2153,32 +2153,32 @@ storyscene function GameplayOptionAxii( player: CStoryScenePlayer, neededLevel :
 	var axiiLevel : int;
 	var chance : float;
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag(targetNPCTag);
-	
+
 	axiiLevel  = 0;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s1_1')) axiiLevel = 1;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s1_2')) axiiLevel = 2;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s1_3')) axiiLevel = 3;
-	
+
 	AddStoryAbilityCounter("story_s16", 1, 1);
-	
+
 	if ( npc.failedAksjacja ) axiiLevel = 0;
-	
-	if ( neededLevel==-1 ) 
+
+	if ( neededLevel==-1 )
 		{
 			theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_aks_16x16.dds'> " + GetLocStringByKeyExt( "Axii failed!" ) );
 			npc.SetIsFailedAksjacja();
 			thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 			return false;
-		}	
-	
-	if ( neededLevel == -1 || axiiLevel <= neededLevel ) 
+		}
+
+	if ( neededLevel == -1 || axiiLevel <= neededLevel )
 	{
-		if ( neededLevel != -1 && neededLevel < 4 && RandRangeF( 1, 100 ) > 10 ) 
-		{	
+		if ( neededLevel != -1 && neededLevel < 4 && RandRangeF( 1, 100 ) > 10 )
+		{
 			theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_aks_16x16.dds'> " + GetLocStringByKeyExt( "Axii successful!" ) );
-			if ( axiiLevel < 3 ) 
+			if ( axiiLevel < 3 )
 			{
 				AddStoryAbility("story_s1", axiiLevel + 1);
 			}
@@ -2192,7 +2192,7 @@ storyscene function GameplayOptionAxii( player: CStoryScenePlayer, neededLevel :
 			return false;
 		}
 	};
-	if ( axiiLevel == 0 ) 
+	if ( axiiLevel == 0 )
 	{
 		theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_aks_16x16.dds'> " + GetLocStringByKeyExt( "Axii successful!" ) );
 		if ( axiiLevel < 3 ) AddStoryAbility("story_s1", axiiLevel + 1);
@@ -2200,15 +2200,15 @@ storyscene function GameplayOptionAxii( player: CStoryScenePlayer, neededLevel :
 		thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 		return false;
 	}
-	
-	if ( axiiLevel > neededLevel ) 
+
+	if ( axiiLevel > neededLevel )
 	{
 		theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_aks_16x16.dds'> " + GetLocStringByKeyExt( "Axii successful!" ) );
 		thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 		if ( axiiLevel < 3 ) AddStoryAbility("story_s1", axiiLevel + 1);
 		return true;
 	}
-	
+
 	return true;
 }
 
@@ -2219,28 +2219,28 @@ storyscene function GameplayOptionIntimidate( player: CStoryScenePlayer, neededL
 	var intimidateLevel : int;
 	var chance : float;
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag(targetNPCTag);
-	
+
 	intimidateLevel  = 0;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s2_1')) intimidateLevel = 1;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s2_2')) intimidateLevel = 2;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s2_3')) intimidateLevel = 3;
 
 	if ( npc.failedZastraszenie ) intimidateLevel = 0;
-	
-	if ( neededLevel == -1 ) 
+
+	if ( neededLevel == -1 )
 		{
 			theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_zast_16x16.dds'> " + GetLocStringByKeyExt( "Intimidation failed!" ) );
 			npc.SetIsFailedZastraszenie();
 			thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 			return false;
 		}
-		
-	if ( neededLevel == -1 || intimidateLevel <= neededLevel ) 
+
+	if ( neededLevel == -1 || intimidateLevel <= neededLevel )
 	{
-		if ( neededLevel != -1 && neededLevel < 4 &&  RandRangeF( 1, 100 ) > 20 ) 
-		{	
+		if ( neededLevel != -1 && neededLevel < 4 &&  RandRangeF( 1, 100 ) > 20 )
+		{
 			theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_zast_16x16.dds'> " + GetLocStringByKeyExt( "Intimidation successful!" ) );
 			thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 			theGame.UnlockAchievement('ACH_SCARE_HIM');
@@ -2254,8 +2254,8 @@ storyscene function GameplayOptionIntimidate( player: CStoryScenePlayer, neededL
 			return false;
 		}
 	};
-	if ( intimidateLevel == 0 ) 
-	{	
+	if ( intimidateLevel == 0 )
+	{
 		theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_zast_16x16.dds'> " + GetLocStringByKeyExt( "Intimidation successful!" ) );
 		npc.SetIsFailedZastraszenie();
 		if ( intimidateLevel < 3 ) AddStoryAbility("story_s2", intimidateLevel + 1);
@@ -2263,7 +2263,7 @@ storyscene function GameplayOptionIntimidate( player: CStoryScenePlayer, neededL
 		thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 		return false;
 	}
-	if ( intimidateLevel > neededLevel ) 
+	if ( intimidateLevel > neededLevel )
 	{
 		theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_zast_16x16.dds'> " + GetLocStringByKeyExt( "Intimidation successful!" ) );
 		if ( intimidateLevel < 3 ) AddStoryAbility("story_s2", intimidateLevel + 1);
@@ -2271,7 +2271,7 @@ storyscene function GameplayOptionIntimidate( player: CStoryScenePlayer, neededL
 		thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 		return true;
 	}
-	
+
 	return true;
 }
 
@@ -2282,29 +2282,29 @@ storyscene function GameplayOptionPersuade( player: CStoryScenePlayer, neededLev
 	var persuadeLevel : int;
 	var chance : float;
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag(targetNPCTag);
-	
+
 	persuadeLevel  = 0;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s3_1')) persuadeLevel = 1;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s3_2')) persuadeLevel = 2;
 	if (thePlayer.GetCharacterStats().HasAbility('story_s3_3')) persuadeLevel = 3;
-	
+
 	if ( npc.failedPerswazja ) persuadeLevel = 0;
-	
-	if ( neededLevel == -1 ) 
+
+	if ( neededLevel == -1 )
 		{
 			theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_persw_16x16.dds'> " + GetLocStringByKeyExt( "Persuade failed!" ) );
 			npc.SetIsFailedPerswazja();
 			thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 			return false;
 		}
-	
-	
-	if ( neededLevel == -1 || persuadeLevel <= neededLevel ) 
+
+
+	if ( neededLevel == -1 || persuadeLevel <= neededLevel )
 	{
-		if ( neededLevel != -1 && neededLevel < 4 && RandRangeF( 1, 100 ) > 20 ) 
-		{	
+		if ( neededLevel != -1 && neededLevel < 4 && RandRangeF( 1, 100 ) > 20 )
+		{
 			theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_persw_16x16.dds'> " + GetLocStringByKeyExt( "Persuade successful!" ) );
 			thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 			if ( persuadeLevel < 3 ) AddStoryAbility("story_s3", persuadeLevel + 1);
@@ -2317,21 +2317,21 @@ storyscene function GameplayOptionPersuade( player: CStoryScenePlayer, neededLev
 			return false;
 		}
 	};
-	if ( persuadeLevel == 0 ) 
+	if ( persuadeLevel == 0 )
 	{
 		theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_persw_16x16.dds'> " + GetLocStringByKeyExt( "Persuade successful!" ) );
 		if ( persuadeLevel < 3 ) AddStoryAbility("story_s3", persuadeLevel + 1);
 		thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 		return false;
 	}
-	if ( persuadeLevel > neededLevel ) 
+	if ( persuadeLevel > neededLevel )
 	{
 		theHud.m_hud.setCSText( "", "<img src='img://globals/gui/icons/quest/icon_g_persw_16x16.dds'> " + GetLocStringByKeyExt( "Persuade successful!" ) );
 		if ( persuadeLevel < 3 ) AddStoryAbility("story_s3", persuadeLevel + 1);
 		thePlayer.AddTimer( 'clearHudTextField', 1.0f, false );
 		return true;
 	}
-	
+
 	return true;
 }
 
@@ -2394,7 +2394,7 @@ latent storyscene function GameplayOptionBet( player: CStoryScenePlayer, minAmou
 	var playerOrensCount : int = thePlayer.GetInventory().GetItemQuantityByName('Orens');
 
 	bribeMaxValue = maxAmount;
-	
+
 	if ( playerOrensCount < minAmount ) return false;
 	if ( playerOrensCount < maxAmount ) maxAmount = playerOrensCount;
 
@@ -2402,9 +2402,9 @@ latent storyscene function GameplayOptionBet( player: CStoryScenePlayer, minAmou
 	{
 		bribeMaxValue = playerOrensCount;
 	}
-	
+
 	bribeAmount = theHud.ShowBribe( minAmount, maxAmount, text );
-	
+
 	// Set last bribe only if it was successful.
 	// Failed bribes are ignored
 	if( bribeAmount > 0 )
@@ -2529,10 +2529,10 @@ storyscene latent function DisplayScrollText( player: CStoryScenePlayer, text : 
 }
 
 // funkcja pozwalajaca na zmiane appereanca po tagu
-storyscene function ApplyAppearance( player: CStoryScenePlayer, appearanceName : string, npcTag : name  ) : bool 
+storyscene function ApplyAppearance( player: CStoryScenePlayer, appearanceName : string, npcTag : name  ) : bool
 {
 	var actorNPC : CNewNPC;
-	
+
 
 	actorNPC  = theGame.GetNPCByTag( npcTag );
 
@@ -2542,10 +2542,10 @@ storyscene function ApplyAppearance( player: CStoryScenePlayer, appearanceName :
 }
 
 // funkcja pozwalajaca na zmiane appereanca po tagu
-storyscene function ApplyAppearanceForEntity( player: CStoryScenePlayer, appearanceName : string, entityTag : name  ) : bool 
+storyscene function ApplyAppearanceForEntity( player: CStoryScenePlayer, appearanceName : string, entityTag : name  ) : bool
 {
 	var entity : CEntity;
-	
+
 
 	entity  = theGame.GetEntityByTag( entityTag );
 
@@ -2596,7 +2596,7 @@ storyscene function RemoveFact( player: CStoryScenePlayer, factId : string ) : b
 		// Removes a single fact from the facts db.
 		FactsRemove( factId );
 	}
-	
+
 	return true;
 }
 
@@ -2613,9 +2613,9 @@ storyscene function SetGateState (player: CStoryScenePlayer, gateTag: name, on :
 	var gates	: array <CNode>;
 	var gate	: CSwitchableEntity;
 	var i		: int;
-	
+
 	theGame.GetNodesByTag( gateTag, gates );
-	
+
 	for (i = 0; i < gates.Size(); i += 1 )
 	{
 		gate = (CSwitchableEntity) gates[i];
@@ -2643,9 +2643,9 @@ storyscene function ShowGuiText(player: CStoryScenePlayer, stringName : string) 
 storyscene function q214_check_minigame (player: CStoryScenePlayer) : bool
 {
 	var entity	: q214_minigame;
-	
+
 	entity = ( q214_minigame) theGame.GetEntityByTag( 'q214_minigame' );
-		
+
 	if(entity)
 	{
 		entity.miniGameStart();
@@ -2660,9 +2660,9 @@ storyscene function q214_check_minigame (player: CStoryScenePlayer) : bool
 storyscene function q214_clear_minigame (player: CStoryScenePlayer) : bool
 {
 	var entity	: q214_minigame;
-	
+
 	entity = ( q214_minigame) theGame.GetEntityByTag( 'q214_minigame' );
-		
+
 	if(entity)
 	{
 		entity.clearFacts();
@@ -2679,9 +2679,9 @@ storyscene function q214_clear_minigame (player: CStoryScenePlayer) : bool
 storyscene function q214_selection (player: CStoryScenePlayer, a, b, c, d, e, f, g : bool) : bool
 {
 	var ea, eb, ec, ed, ee, ef, eg	: CEntity;
-	
+
 	ea = theGame.GetEntityByTag( 'q214_selection_a' );
-	eb = theGame.GetEntityByTag( 'q214_selection_b' );	
+	eb = theGame.GetEntityByTag( 'q214_selection_b' );
 	ec = theGame.GetEntityByTag( 'q214_selection_c' );
 	ed = theGame.GetEntityByTag( 'q214_selection_d' );
 	ee = theGame.GetEntityByTag( 'q214_selection_e' );
@@ -2689,8 +2689,8 @@ storyscene function q214_selection (player: CStoryScenePlayer, a, b, c, d, e, f,
 	eg = theGame.GetEntityByTag( 'q214_selection_g' );
 
 	ea.StopEffect('seletion');
-	eb.StopEffect('seletion');	
-	ec.StopEffect('seletion');	
+	eb.StopEffect('seletion');
+	ec.StopEffect('seletion');
 	ed.StopEffect('seletion');
 	ee.StopEffect('seletion');
 	ef.StopEffect('seletion');
@@ -2704,38 +2704,38 @@ storyscene function q214_selection (player: CStoryScenePlayer, a, b, c, d, e, f,
 	else if ( b )
 	{
 		eb.PlayEffect('seletion');
-		return true;	
+		return true;
 	}
 	else if ( c )
 	{
 		ec.PlayEffect('seletion');
-		return true;	
-	}	
+		return true;
+	}
 	else if ( d )
 	{
 		ed.PlayEffect('seletion');
-		return true;	
-	}	
+		return true;
+	}
 	else if ( e )
 	{
 		ee.PlayEffect('seletion');
-		return true;	
-	}	
+		return true;
+	}
 	else if ( f )
 	{
 		ef.PlayEffect('seletion');
-		return true;	
-	}	
+		return true;
+	}
 	else if ( g )
 	{
 		eg.PlayEffect('seletion');
-		return true;	
-	}	
+		return true;
+	}
 	else
 	{
 		ea.StopEffect('seletion');
-		eb.StopEffect('seletion');	
-		ec.StopEffect('seletion');	
+		eb.StopEffect('seletion');
+		ec.StopEffect('seletion');
 		ed.StopEffect('seletion');
 		ee.StopEffect('seletion');
 		ef.StopEffect('seletion');
@@ -2836,11 +2836,11 @@ storyscene function SetSepiaFullscreenEffect (player : CStoryScenePlayer, Enable
 	{
 		theGame.StopSepiaEffect( fadeOut );
 	}
-	
+
 return true;
 }
 
-latent storyscene function ChangeGeraltHair ( player : CStoryScenePlayer, hairstyle : EWitcherHairstyle ) : bool 
+latent storyscene function ChangeGeraltHair ( player : CStoryScenePlayer, hairstyle : EWitcherHairstyle ) : bool
 {
 	theGame.FadeOut();
 	thePlayer.SetCurrentHair( hairstyle );
@@ -2852,7 +2852,7 @@ latent storyscene function ChangeGeraltHair ( player : CStoryScenePlayer, hairst
 storyscene function RemoveBetValue ( player : CStoryScenePlayer ) : bool
 {
 	var amount : int = thePlayer.GetLastBribe();
-	
+
 	if ( amount <= thePlayer.GetInventory().GetItemQuantity( thePlayer.GetInventory().GetItemId('Orens') ) )
 	{
 		thePlayer.GetInventory().RemoveItem( thePlayer.GetInventory().GetItemId('Orens'), amount );
@@ -2873,14 +2873,14 @@ storyscene function AddDarkDifficultyModeItems( player : CStoryScenePlayer, npc:
 {
 	var npc_newnpc : CNewNPC = theGame.GetNPCByTag( npc );
 	var inventory : CInventoryComponent;
-	var playerInventory : CInventoryComponent; 
+	var playerInventory : CInventoryComponent;
 
 inventory = npc_newnpc.GetInventory();
 playerInventory = thePlayer.GetInventory();
-	
+
 	if ( theGame.GetDifficultyLevel() == 4 )
 	{
-		
+
 		if ( theHud.m_mapCommon.GetMapId() == 1 )
 		{
 			//ARMOR
@@ -2898,7 +2898,7 @@ playerInventory = thePlayer.GetInventory();
 			{
 				inventory.AddItem( 'Schematic DarkDifficultyGlovesA1' );
 			}
-			//PANTS	
+			//PANTS
 			if(!playerInventory.HasItem('Schematic DarkDifficultyPantsA1') && !inventory.HasItem('Schematic DarkDifficultyPantsA1'))
 			{
 				inventory.AddItem( 'Schematic DarkDifficultyPantsA1' );
@@ -2906,16 +2906,16 @@ playerInventory = thePlayer.GetInventory();
 			//SILVERSWORDS
 			if(!playerInventory.HasItem('Schematic Dark difficulty silversword A1') && !inventory.HasItem('Schematic Dark difficulty silversword A1'))
 			{
-				inventory.AddItem( 'Schematic Dark difficulty silversword A1' );	
+				inventory.AddItem( 'Schematic Dark difficulty silversword A1' );
 			}
 			//STEELSWORDS
 			if(!playerInventory.HasItem('Schematic Dark difficulty steelsword A1') && !inventory.HasItem('Schematic Dark difficulty steelsword A1'))
 			{
-				inventory.AddItem( 'Schematic Dark difficulty steelsword A1' );	
+				inventory.AddItem( 'Schematic Dark difficulty steelsword A1' );
 			}
 		}
 
-		
+
 		else if ( theHud.m_mapCommon.GetMapId() == 2 )
 		{
 			//ARMOR
@@ -2933,7 +2933,7 @@ playerInventory = thePlayer.GetInventory();
 			{
 				inventory.AddItem( 'Schematic DarkDifficultyGlovesA2' );
 			}
-			//PANTS	
+			//PANTS
 			if(!playerInventory.HasItem('Schematic DarkDifficultyPantsA2') && !inventory.HasItem('Schematic DarkDifficultyPantsA2'))
 			{
 				inventory.AddItem( 'Schematic DarkDifficultyPantsA2' );
@@ -2941,13 +2941,13 @@ playerInventory = thePlayer.GetInventory();
 			//SILVERSWORDS
 			if(!playerInventory.HasItem('Schematic Dark difficulty silversword A2') && !inventory.HasItem('Schematic Dark difficulty silversword A2'))
 			{
-				inventory.AddItem( 'Schematic Dark difficulty silversword A2' );	
+				inventory.AddItem( 'Schematic Dark difficulty silversword A2' );
 			}
 			//STEELSWORDS
 			if(!playerInventory.HasItem('Schematic Dark difficulty steelsword A2') && !inventory.HasItem('Schematic Dark difficulty steelsword A2'))
 			{
-				inventory.AddItem( 'Schematic Dark difficulty steelsword A2' );	
-			}			
+				inventory.AddItem( 'Schematic Dark difficulty steelsword A2' );
+			}
 		}
 		else if ( theHud.m_mapCommon.GetMapId() == 3 )
 		{
@@ -2966,7 +2966,7 @@ playerInventory = thePlayer.GetInventory();
 			{
 				inventory.AddItem( 'Schematic DarkDifficultyGlovesA3' );
 			}
-			//PANTS	
+			//PANTS
 			if(!playerInventory.HasItem('Schematic DarkDifficultyPantsA3') && !inventory.HasItem('Schematic DarkDifficultyPantsA3'))
 			{
 				inventory.AddItem( 'Schematic DarkDifficultyPantsA3' );
@@ -2974,13 +2974,13 @@ playerInventory = thePlayer.GetInventory();
 			//SILVERSWORDS
 			if(!playerInventory.HasItem('Schematic Dark difficulty silversword A3') && !inventory.HasItem('Schematic Dark difficulty silversword A3'))
 			{
-				inventory.AddItem( 'Schematic Dark difficulty silversword A3' );	
+				inventory.AddItem( 'Schematic Dark difficulty silversword A3' );
 			}
 			//STEELSWORDS
 			if(!playerInventory.HasItem('Schematic Dark difficulty steelsword A3') && !inventory.HasItem('Schematic Dark difficulty steelsword A3'))
 			{
-				inventory.AddItem( 'Schematic Dark difficulty steelsword A3' );	
-			}			
+				inventory.AddItem( 'Schematic Dark difficulty steelsword A3' );
+			}
 		}
 		return true;
 	}
@@ -3031,13 +3031,13 @@ storyscene function PlayAnimationEvent(player: CStoryScenePlayer, entityTag : na
 storyscene function TutorialToggleHighlightInScene( player: CStoryScenePlayer, entityTag : name, isHighlighted : bool ) : bool
 {
 	var entity : CEntity;
-	
+
 	entity = theGame.GetEntityByTag( entityTag );
-	
+
 	if( isHighlighted )
 	{
 		entity.PlayEffect( 'toturial_glow' );
-	}	 
+	}
 	else
 	{
 		entity.StopEffect( 'toturial_glow' );

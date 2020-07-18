@@ -9,11 +9,11 @@ class CMinigameDice
 {
 	var m_physics       : CPhysicsSystemComponent;
 	var m_effectEntity  : CEntity;
-	
+
 	var m_index         : int;
 	var m_rigidBodyIdx  : int;
 	var m_component     : CDrawableComponent;
-	
+
 	var m_collectVector : Vector;
 	var m_latentPosition : Vector;
 	var m_positionIdx	: int;
@@ -23,25 +23,25 @@ class CMinigameDice
 	default m_positionIdx = 0;
 	default m_isDisabled = false;
 	default m_isSelected = false;
-	
+
 	final function IsSelected() : bool { return m_isSelected; }
-	
+
 	final function Reset()
 	{
 		m_isDisabled = false;
 		m_isSelected = false;
 	}
-	
+
 	final function Disable()
 	{
 		m_isDisabled = true;
 	}
-	
+
 	final function IsDisabled() : bool
 	{
 		return m_isDisabled;
 	}
-	
+
 	final function SetHighlight( highlight : bool )
 	{
 		if( highlight )
@@ -53,17 +53,17 @@ class CMinigameDice
 			m_effectEntity.StopEffect( 'dices_fx' );
 		}
 	}
-	
+
 	final function Select( select : bool, indicate : bool )
 	{
 		var entity : CGameplayEntity;
-		
+
 		m_isSelected = select;
-		
+
 		if(  m_isSelected && indicate )
 		{
 			m_effectEntity.PlayEffect( 'selection_fx', m_component );
-			
+
 			// TODO: it probably should be inserted into fx itself
 			theSound.PlaySound( "global/global_dice_game/code_dice_select" );
 		}
@@ -78,16 +78,16 @@ class CMinigameDice
 			m_effectEntity.StopEffect( 'selection_fx' );
 		}
 	}
-	
+
 	final function GetResult() : int
 	{
 		var EX, EY, EZ   : Vector;
-		
+
 		if( m_isDisabled )
 		{
 			return 0;
 		}
-		
+
 		/*
 		// DEBUG SHIT
 		if( m_rigidBodyIdx == 0 )
@@ -132,7 +132,7 @@ class CMinigameDice
 		}*/
 
 		RotAxes( m_component.GetWorldRotation(), EY, EX, EZ );
-		
+
 		// EX = 4, -EX = 3, EY = 5, -EY = 2, EZ = 1, -EZ = 6
 		if ( AbsF( EX.Z ) > AbsF( EY.Z ) )
 		{
@@ -161,7 +161,7 @@ class CMinigameDice
 			}
 		}
 	}
-	
+
 	final function RotationForResult( result : int ) : EulerAngles
 	{
 		switch( result )
@@ -184,25 +184,25 @@ class CMinigameDice
 	final function Collect( collectPoint : Vector )
 	{
 		var rotation	: EulerAngles;
-		
+
 		DisablePhysics();
-		
+
 		rotation.Pitch = Rand( 360 ) - 180;
 		rotation.Yaw   = Rand( 360 ) - 180;
 		rotation.Roll  = Rand( 360 ) - 180;
-		
+
 		m_collectVector   = RotRight( rotation ) * ( 0.1f * ( m_index / 2 ) )
                  + RotUp( rotation )    * ( 0.1f * ( m_index % 2 ) );
-		
+
 		m_physics.TeleportRigidBody ( m_rigidBodyIdx, collectPoint + m_collectVector, rotation );
 	}
-	
+
 	final function Throw( throwingPoint : Vector, strength : float )
 	{
 		var vector		: Vector;
-		
+
 		EnablePhysics();
-		
+
 		vector = throwingPoint - m_component.GetWorldPosition();
 		m_physics.ApplyLinearImpulse( m_rigidBodyIdx, VecNormalize( vector ) * strength );
 	}
@@ -216,13 +216,13 @@ class CMinigameDice
 
 		// Reset transform
 		m_physics.ResetTransform( m_rigidBodyIdx );
-			
+
 		// Set rotation according to result
 		m_physics.TeleportRigidBody( m_rigidBodyIdx, m_component.GetWorldPosition(), RotationForResult( result ) );
-		
+
 		// LogChannel( 'Minigame', "Dice " + m_rigidBodyIdx + ": " + result );
 	}
-	
+
 	final function EnablePhysics()
 	{
 		m_physics.SetBodyAsDynamic( m_rigidBodyIdx );
@@ -232,18 +232,18 @@ class CMinigameDice
 	{
 		m_physics.SetBodyAsStatic( m_rigidBodyIdx );
 	}
-	
+
 	final function SetPositionRelative( position : Vector, clampBox : Box )
 	{
 		var targetPosition : Vector;
-		
+
 		targetPosition = m_component.GetWorldPosition() + position;
 		targetPosition.X = ClampF( targetPosition.X, clampBox.Min.X, clampBox.Max.X );
 		targetPosition.Y = ClampF( targetPosition.Y, clampBox.Min.Y, clampBox.Max.Y );
-		
+
 		m_physics.TeleportRigidBody ( m_rigidBodyIdx, targetPosition, m_component.GetWorldRotation() );
 	}
-	
+
 	final function Teleport( position : Vector )
 	{
 		m_physics.TeleportRigidBody( m_rigidBodyIdx, position, m_component.GetWorldRotation() );

@@ -7,9 +7,9 @@
 
 /*
 	Methods and classes implemented in HUD:
-	
+
 	Minigames.WristWrestling.*
-	
+
 	Minigames.WristWrestling.*	: <type>;	// <description>
 */
 
@@ -30,29 +30,29 @@ enum EMWW_GameDifficulty
 
 struct SMMW_GameParamsEntry
 {
-	public editable var m_hotSpotMinWidth : int; 
+	public editable var m_hotSpotMinWidth : int;
 	public editable var m_hotSpotMaxWidth : int;
 	public editable var m_gameDifficulty  : EMWW_GameDifficulty;
 	public editable var m_playerTag       : name;
-	
+
 	default m_gameDifficulty = MWWGD_Normal;
 }
 
 class W2MinigameWristWrestling extends CMinigame
 {
 	// Game configuration
-	public editable var m_hotSpotMinWidth : int; 
+	public editable var m_hotSpotMinWidth : int;
 	public editable var m_hotSpotMaxWidth : int;
 	public editable var m_gameType        : EMWW_GameType;
 	public editable var m_difficulty      : EMWW_GameDifficulty;
 	public editable var m_gameParams      : array< SMMW_GameParamsEntry >;
 	public editable var m_startPos        : string;
-	
+
 	default m_hotSpotMinWidth = 6;
 	default m_hotSpotMaxWidth = 20;
 	default m_gameType = MWWGT_Newton;
 	default m_difficulty = MWWGD_Normal;
-	
+
 	// GUI configuration (change values only if flash changes)
 	var m_guiBarMinValue    : int; // GUI flash minimum bar value (-250)
 	var m_guiBarMaxValue    : int; // GUI flash maximum bar value (+250)
@@ -68,20 +68,20 @@ class W2MinigameWristWrestling extends CMinigame
 	var m_guiPointerPos     : int; // [-250,250]
 	var m_guiHotSpotWidth   : int;
 	var m_guiHotSpotPos     : int;
-	
+
 	// Overriden params
-	var m_overridenHotSpotMinWidth  : int; 
+	var m_overridenHotSpotMinWidth  : int;
 	var m_overridenHotSpotMaxWidth  : int;
 	var m_isHotSpotWidthOverriden   : bool;
-	var m_isGameDifficultyOverriden : bool;	
+	var m_isGameDifficultyOverriden : bool;
 	var m_overridenDifficulty       : EMWW_GameDifficulty;
 	default m_isHotSpotWidthOverriden = false;
 	default m_isGameDifficultyOverriden = false;
-	
+
 	var m_logic             : WristWrestlingLogic;
-	
+
 	var m_isUsingPad : bool;
-	
+
 	// Bar
 	//                pointer
 	//      -------------V------------
@@ -89,7 +89,7 @@ class W2MinigameWristWrestling extends CMinigame
 	//      --------------------------
 	//                hotspot
 	//                 barPos
-	
+
 	public function SetHotSpotWidth( minWidth : int, maxWidth : int )
 	{
 		m_overridenHotSpotMinWidth = minWidth;
@@ -100,7 +100,7 @@ class W2MinigameWristWrestling extends CMinigame
 	{
 		m_isHotSpotWidthOverriden = enable;
 	}
-	
+
 	public function SetGameDifficulty( gameDifficulty : EMWW_GameDifficulty )
 	{
 		m_overridenDifficulty = gameDifficulty;
@@ -110,33 +110,33 @@ class W2MinigameWristWrestling extends CMinigame
 	{
 		m_isGameDifficultyOverriden = enable;
 	}
-	
+
 	private function InitVariables()
 	{
 		m_guiBarMinValue  = -250;
 		m_guiBarMaxValue  = 250;
-		
+
 		m_humanPlayerIdx  = 0;
 		m_round           = 0;
-		
+
 		m_guiPointerPos = 0;
-		
+
 		AS_wristWrestling = -1;
-		
+
 		players = GetPlayers();
 	}
-	
+
 	event OnActivatePlayersMimic()
 	{
 		return true;
 	}
-	
+
 	event OnStarted()
 	{
 		var wp      : CComponent;
 		var i       : int;
 		var minigameDifficulty : EAIMinigameDifficulty;
-		
+
 		m_isUsingPad = theGame.IsUsingPad();
 
 		switch ( m_gameType )
@@ -157,16 +157,16 @@ class W2MinigameWristWrestling extends CMinigame
 				m_logic = new WristWrestlingLogicNewton in this;
 				break;
 		}
-		
+
 		InitVariables();
-		
+
 		// Check number of players
 		if ( players.Size() != 2 )
 		{
 			LogChannel( 'Minigame', "Not enough players for Wrist Wrestling" );
 			return false;
 		}
-		
+
 		// Set game params
 		for ( i = 0; i < m_gameParams.Size(); i += 1 )
 		{
@@ -179,7 +179,7 @@ class W2MinigameWristWrestling extends CMinigame
 				break;
 			}
 		}
-		
+
 		// Get game params from NPC
 		if ( players[0] != thePlayer )
 		{
@@ -199,17 +199,17 @@ class W2MinigameWristWrestling extends CMinigame
 				else if ( minigameDifficulty == AIMD_Hard ) m_difficulty = MWWGD_Nightmare;
 			}
 		}
-		
+
 		if ( m_isHotSpotWidthOverriden )
 		{
 			m_hotSpotMinWidth = m_overridenHotSpotMinWidth;
 			m_hotSpotMaxWidth = m_overridenHotSpotMaxWidth;
 		}
-		
+
 		// So designers will not have to change hot spot min/max values
 		m_hotSpotMinWidth *= 5;
 		m_hotSpotMaxWidth *= 5;
-		
+
 		if ( m_isGameDifficultyOverriden )
 		{
 			m_difficulty = m_overridenDifficulty;
@@ -224,58 +224,58 @@ class W2MinigameWristWrestling extends CMinigame
 			//players[i].EnterMinigameState( wp, 'wrist_wrestling' );
 			players[i].EnterMinigameState( NULL, 'wrist_wrestling' );
 			//players[i].SetErrorState( "Let's play!" );
-			
+
 			//players[i].GetMovingAgentComponent().SetEnabled( false );
 			//players[i].ActionCancelAll();
 		}
-		
+
 		//AttachCameraBehavior( 'wrist_wrestling' );
 
 		if ( IsHudNeeded() )
 		{
 			theHud.m_hud.ShowTutorial("tut49", "", false);
 			//theHud.ShowTutorialPanelOld( "tut49", "" );
-			
+
 			theHud.ShowWristWrestling();
 			//theHud.LoadNewElement( "gui_wrist", true, true, true );
-			
+
 			EnableDebugFragments( true, 0 );
 		}
-		
+
 		//theHud.EnableInput( true, true, false );
-				
+
 		LogChannel( 'Minigame', "******************" );
 		LogChannel( 'Minigame', "Wrist Wrestling started" );
-		
+
 		theHud.m_hud.ShowTutorial("tut49", "", false);
 		//theHud.ShowTutorialPanelOld( "tut49", "" );
-		
+
 		StateInit();
 
 		return true;
 	}
-	
+
 	event OnEnded( winnerIdx : int )
 	{
 		var players : array< CActor >;
 		var i       : int;
-		
+
 		// Release players
 		players = GetPlayers();
 		for ( i = players.Size() - 1; i >= 0; i -= 1 )
 		{
 			players[i].ExitMinigameState();
 		}
-		
+
 		if ( IsHudNeeded() )
 		{
 			AS_wristWrestling = -1;
-			
+
 			//theHud.LoadNewElement( "gui_hud", true, true, true );
 			theHud.HideWristWrestling();
 			theHud.EnableInput( true, true, false );
 		}
-		
+
 		EnableDebugFragments( false, 0 );
 
 		if ( winnerIdx < 0 )
@@ -288,7 +288,7 @@ class W2MinigameWristWrestling extends CMinigame
 			players[ winnerIdx ].SetErrorState( "I have won the whole game!" );
 		}
 	}
-	
+
 	event OnGameInputEvent( key : name, value : float )
 	{
 		var cursorX, cursorY, viewWidth, viewHeight : float;
@@ -303,7 +303,7 @@ class W2MinigameWristWrestling extends CMinigame
 		leftAxis = (key == 'GI_AxisLeftX');
 		mouseAxis = (key == 'GI_MouseX' );
 		//LogChannel( 'rychu1', "Key: " + key + " Value: " + value ) ;
-		
+
 		if ( m_isUsingPad )
 		{
 			if ( leftAxis )
@@ -326,29 +326,29 @@ class W2MinigameWristWrestling extends CMinigame
 				passInput = false;
 			}
 		}
-		
+
 		//if ( leftAxis || // currently: A,D
 			// rightAxis ) // currently: keyboard cursor, mouse
 		if ( passInput )
 		{
 			//theHud.GetFloat( "_xmouse", cursorX );
 			//theHud.GetFloat( "_ymouse", cursorY );
-			
+
 			m_logic.UpdateInput( value );
 
 			if ( leftAxis )
 			{
-				
+
 			}
 			else
 			{
 			}
-		
+
 			// MainFrame.SetPointer(x) zeby ustawic wskaznik w odpowiedniej pozycji. x podajesz od -50 do 50
 			// MainFrame.SetArea(x1,x2) - ustawiasz to pole na ktorym gracz musi trzymac wskaznik. x1 to pozycja pola tak jak przy SetPointer, x2 to jego szerokosc
 			return true;
 		}
-		
+
 		if ( key == 'GI_1' && value < 0.5f )
 		{
 			// ...
@@ -358,26 +358,26 @@ class W2MinigameWristWrestling extends CMinigame
 		{
 			theHud.GetFloat( "_xmouse", cursorX );
 			theHud.GetFloat( "_ymouse", cursorY );
-				
+
 			//StateFinishGame( 1 );
 
 			return true;
 		}
 		return false;
 	}
-	
+
 	final function IsHudNeeded() : bool
 	{
 		return m_humanPlayerIdx >= 0;
 	}
-	
+
 	final function UpdateHud()
 	{
 		// Update HUD status
 		//theHud.SetFloat( "m_player0money",  m_playerStatus[0].m_money,      AS_wristWrestling );
 		//theHud.InvokeMethod( "UpdateHud", AS_wristWrestling );
 	}
-	
+
 	latent final function WaitForHudResponse()
 	{
 		var isDone : bool;
@@ -389,7 +389,7 @@ class W2MinigameWristWrestling extends CMinigame
 
 		} while ( !isDone );
 	}
-	
+
 	function UpdateGUI()
 	{
 		var areaArgs : array<string>;
@@ -405,7 +405,7 @@ class W2MinigameWristWrestling extends CMinigame
 		//areaArgs.PushBack( m_guiHotSpotWidth );
 		//theHud.InvokeManyArgs("MainFrame.SetArea", areaArgs );
 		//theHud.InvokeOneArg("MainFrame.SetPointer", m_guiPointerPos );
-		
+
 		// New GUI
 		if ( IsPointerInHotSpot() )
 		{
@@ -425,7 +425,7 @@ class W2MinigameWristWrestling extends CMinigame
 		WristWrestlingSetPointer( m_logic.GetPointerPos() );
 		WristWrestlingSetParams( m_hotSpotMinWidth, m_hotSpotMaxWidth, IsPointerInHotSpot() );
 	}
-	
+
 	function UpdateLogic( timeDelta : float )
 	{
 		if ( m_logic.UpdateLogic( IsPointerInHotSpot(), timeDelta ) )
@@ -449,22 +449,22 @@ class W2MinigameWristWrestling extends CMinigame
 		{
 			scale = 1 + barPos;
 		}
-		
+
 		scale *= m_logic.GetBarWidthScale();
-		
+
 		return (int)((scale * (m_hotSpotMaxWidth - m_hotSpotMinWidth)) + m_hotSpotMinWidth);
 	}
-	
+
 	// GUI calculate method
 	function GuiGetHotSpotPosition() : int
 	{
 		var guiBarPos : int;
-		
+
 		guiBarPos = (int)(m_guiBarMinValue + ( (m_guiBarMaxValue - m_guiBarMinValue) * ((m_logic.GetBarPos() + 1.0) / 2.0) ));
-		
+
 		return (guiBarPos - (m_guiHotSpotWidth / 2));
 	}
-	
+
 	function IsPointerInHotSpot() : bool
 	{
 		if ( (m_guiPointerPos >= m_guiHotSpotPos) && (m_guiPointerPos < (m_guiHotSpotPos + m_guiHotSpotWidth)) )
@@ -476,7 +476,7 @@ class W2MinigameWristWrestling extends CMinigame
 			return false;
 		}
 	}
-	
+
 	latent function InitGraphics()
 	{
 		var i : int;
@@ -486,14 +486,14 @@ class W2MinigameWristWrestling extends CMinigame
 		var worldPos : Vector = GetWorldPosition();
 		var worldRot : EulerAngles = GetWorldRotation();
 		var startPlace : CWayPointComponent;
-		
+
 		startPlace = FindWaypoint( m_startPos );
 		if ( startPlace )
 		{
 			worldPos = startPlace.GetWorldPosition();
 			worldRot = startPlace.GetWorldRotation();
 		}
-		
+
 		//var playerOne, playerTwo : Vector;
 		//GetStartingTrajectories( 'ww_wrestle_idle1', playerOne, playerTwo );
 
@@ -501,8 +501,8 @@ class W2MinigameWristWrestling extends CMinigame
 		v1 = worldPos;
 		r0 = EulerAngles( worldRot.Pitch, worldRot.Yaw, worldRot.Roll );
 		r1 = EulerAngles( worldRot.Pitch, worldRot.Yaw + 180, worldRot.Roll );
-		
-		
+
+
 		TeleportCamera( worldPos, worldRot );
 
 		// obsolete, use 'players[1].GetMovingAgentComponent().SetEnabled( false );' instead
@@ -511,18 +511,18 @@ class W2MinigameWristWrestling extends CMinigame
 		*/
 		players[0].ActionCancelAll();
 		players[1].ActionCancelAll();
-		
+
 		players[0].GetMovingAgentComponent().SetEnabled( false );
 		players[1].GetMovingAgentComponent().SetEnabled( false );
-		
 
-		
+
+
 		if ( players[1].GetMovingAgentComponent().IsEnabled() ||
 			players[0].GetMovingAgentComponent().IsEnabled() )
 		{
 			LogChannel( 'WristWrestling', "Pathengine is not disabled when teleporting" );
 		}
-		
+
 		/*
 		players[0].ActionCancelAll();
 		players[1].ActionCancelAll();
@@ -536,12 +536,12 @@ class W2MinigameWristWrestling extends CMinigame
 			Sleep( 0.1 );
 		}
 		*/
-		
+
 		players[0].TeleportWithRotation( v0, r0 );
 		players[1].TeleportWithRotation( v1, r1 );
-		
+
 		theGame.FadeIn( 0.5 );
-		
+
 		Sleep( 1.0 );
 		SendEventToCamera( 'wrestle_ready' );
 		for ( i = 0; i < 2; i += 1 )
@@ -557,7 +557,7 @@ class W2MinigameWristWrestling extends CMinigame
 			players[i].SetBehaviorMimicVariable( "wrestle_weight", 1);
 		}
 	}
-	
+
 	function UpdateGraphics()
 	{
 		var i : int;
@@ -570,7 +570,7 @@ class W2MinigameWristWrestling extends CMinigame
 		players[1].SetBehaviorMimicVariable( "wrestle_progress", ( 1-m_logic.GetBarPos() ) );
 		SetCameraFloatVariable( "wrestle_progress", m_logic.GetBarPos() );
 	}
-	
+
 	latent function PlayPlayerWin()
 	{
 		SendEventToCamera( 'wrestle_win' );
@@ -580,17 +580,17 @@ class W2MinigameWristWrestling extends CMinigame
 		players[1].RaiseEvent( 'wrestle_win' );
 		players[1].SetBehaviorMimicVariable( "wrestle_anim_select", 2);
 
-		if ( thePlayer.GetLastBribe() > 0 ) 
+		if ( thePlayer.GetLastBribe() > 0 )
 		{
 			thePlayer.GetInventory().AddItem( 'Orens', thePlayer.GetLastBribe() );
 			thePlayer.SetLastBribe(0);
 		}
 
 		FactsAdd("Won_Wrestling", 1);
-		
+
 		Sleep( 1.0 );
 	}
-	
+
 	latent function PlayPlayerLose()
 	{
 		SendEventToCamera( 'wrestle_lose' );
@@ -600,14 +600,14 @@ class W2MinigameWristWrestling extends CMinigame
 		players[1].RaiseEvent( 'wrestle_lose' );
 		players[1].SetBehaviorMimicVariable( "wrestle_anim_select", 1);
 
-		if ( thePlayer.GetLastBribe() > 0 ) 
+		if ( thePlayer.GetLastBribe() > 0 )
 		{
 			thePlayer.GetInventory().RemoveItem( thePlayer.GetInventory().GetItemId('Orens'), thePlayer.GetLastBribe() );
 			thePlayer.SetLastBribe(0);
 		}
-		
+
 		Sleep( 1.0 );
-		
+
 		//theHud.LoadNewElement( "endgame", true, true, true );
 		//Sleep( 2.5 );
 	}
@@ -615,12 +615,12 @@ class W2MinigameWristWrestling extends CMinigame
 	timer function WristWrestlingTimer( timeDelta : float )
 	{
 		var i : int;
-		
+
 		UpdateLogic( timeDelta );
 		UpdateGUI();
 		UpdateGraphics();
 	}
-	
+
 	function OnInitializedStateInit()
 	{
 		AddTimer( 'WristWrestlingTimer', 0.1f, true );
@@ -634,19 +634,19 @@ state Game in W2MinigameWristWrestling
 	entry function StateInit()
 	{
 		var i : int;
-		
+
 		// Set initial blackscreen, because we are doing some thing with camera
 		theGame.FadeOut( 0.0f );
-		
+
 		while ( ! theHud.GetWristWrestlingPanel().IsLoaded() )
 		{
 			Sleep( 0.1 );
 		}
-		
+
 		theHud.EnableInput( true, true, false );
 
 		parent.m_round = 0;
-		
+
 		// Attach camera behavior
 		i = 0;
 		while ( i < 5 ) // the number of trials
@@ -661,14 +661,14 @@ state Game in W2MinigameWristWrestling
 		}
 
 		if ( parent.IsHudNeeded() )
-		{ 
+		{
 			parent.UpdateHud();
 		}
 
 		parent.InitGraphics();
-		
+
 		parent.OnInitializedStateInit();
-		
+
 		//parent.StateThrow( 0 );
 	}
 
@@ -677,16 +677,16 @@ state Game in W2MinigameWristWrestling
 		var players : array< CActor >;
 		var player  : CActor;
 		var isDone  : bool;
-		
+
 		//parent.SendEventToCamera( 'dialogset_2_vs_1' );
-		
+
 		players = parent.GetPlayers();
 		//player  = players[ playerIdx ];
-		
+
 		// Wait till pressing [THROW]
 		{
 			//LogChannel( 'Minigame', player.GetName() + " will throw dices" );
-			
+
 			// If it is thePlayer turn, wait till player will throw
 			//if ( player == thePlayer )
 			{
@@ -704,22 +704,22 @@ state Game in W2MinigameWristWrestling
 		//else
 			//parent.StateFinishRound();
 	}
-	
+
 	entry function StateFinishRound()
 	{
-		
+
 		//var players   : array< CActor >;
 		//var winnerIdx : int;
-		
+
 		//parent.m_round += 1;
-		
+
 		//winnerIdx = parent.GetWinner( 0, 1 );
 		//if ( winnerIdx >= 0 )
 		//{
 			//players = parent.GetPlayers();
 			//players[ winnerIdx ].SetErrorState( "I have won this round" );
 			//LogChannel( 'Minigame', players[ winnerIdx ].GetName() + " has won this round" );
-		
+
 			//parent.m_playerStatus[ winnerIdx ].m_wins += 1;
 			//if ( parent.m_playerStatus[ winnerIdx ].m_wins > 1 )
 			//{
@@ -727,17 +727,17 @@ state Game in W2MinigameWristWrestling
 //			}
 		//}
 		//LogChannel( 'Minigame', "------------------" );
-		
+
 		// Wait till player will go ahead
 		//if ( parent.IsHudNeeded() )
 		//{
 			//parent.UpdateHud();
 			//theHud.InvokeMethod( "ShowFinishRoundPanel", parent.AS_wristWrestling );
 			//parent.WaitForHudResponse();
-			
+
 			//theHud.InvokeMethod( "ShowBidPanel", parent.AS_wristWrestling );
 			//parent.WaitForHudResponse();
-			
+
 			//theHud.GetFloat( "m_stake", parent.m_stake, parent.AS_wristWrestling );
 			//theHud.GetFloat( "m_player0money", parent.m_playerStatus[0].m_money, parent.AS_wristWrestling );
 		//	theHud.GetFloat( "m_player1money", parent.m_playerStatus[1].m_money, parent.AS_wristWrestling );
@@ -746,10 +746,10 @@ state Game in W2MinigameWristWrestling
 		//{
 	//		Sleep( 1.f );
 		//}
-				
+
 		//parent.StateThrow( 0 );
 	}
-	
+
 	entry function StateFinishGame( winnerIdx : int )
 	{
 		LogChannel( 'rychu', "StateFinishGame" );
@@ -761,7 +761,7 @@ state Game in W2MinigameWristWrestling
 		{
 			parent.PlayPlayerLose();
 		}
-		
+
 		if ( parent.IsHudNeeded() )
 		{
 			parent.UpdateHud();
@@ -772,20 +772,20 @@ state Game in W2MinigameWristWrestling
 		{
 			Sleep( 1.f );
 		}
-		
+
 		//parent.DetachCameraBehavior( 'wrist_wrestling' );
-		
+
 		// obsolete, use 'players[1].GetMovingAgentComponent().SetEnabled( false );' instead
 		//parent.players[0].GetMovingAgentComponent().SetEnabledRestorePosition( true );
 		//parent.players[1].GetMovingAgentComponent().SetEnabledRestorePosition( true );
 		theGame.FadeOut( 1.0 );
-		
+
 		parent.players[0].SetBehaviorMimicVariable( "wrestle_weight", 0);
 		parent.players[1].SetBehaviorMimicVariable( "wrestle_weight", 0);
 
 		parent.players[0].GetMovingAgentComponent().SetEnabled( true );
 		parent.players[1].GetMovingAgentComponent().SetEnabled( true );
-		
+
 		parent.DetachCameraBehavior( 'wrist_wrestling' );
 		//parent.EndGame( winnerIdx == 0 );
 		parent.DoEnd( winnerIdx == 0 );
@@ -799,33 +799,33 @@ class WristWrestlingLogic
 	public function Init( difficulty : EMWW_GameDifficulty )
 	{
 	}
-	
+
 	// value [-1,1]
 	public function UpdateInput( value : float )
 	{
 	}
-	
+
 	public function GetBarPos() : float
 	{
 		return 0.0;
 	}
-	
+
 	public function GetPointerPos() : float
 	{
 		return 0.0;
 	}
-	
+
 	// returns true if game has finnished
 	public function UpdateLogic( isPointerInHotSpot : bool, timeDelta : float ) : bool
 	{
 		return true;
 	}
-	
+
 	public function GetWinner() : int
 	{
 		return -1;
 	}
-	
+
 	public function GetBarWidthScale() : float
 	{
 		return 1.0f;
@@ -848,7 +848,7 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 	{
 		InitVariables();
 	}
-	
+
 	public function UpdateInput( value : float )
 	{
 		if ( m_isUsingPad )
@@ -864,12 +864,12 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 			SetPointerPos( m_pointerPos + value * 0.02 );
 		}
 	}
-	
+
 	public function GetBarPos() : float
 	{
 		return m_barPos;
 	}
-	
+
 	public function GetPointerPos() : float
 	{
 		return m_pointerPos;
@@ -879,12 +879,12 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 	{
 		return ProcessLogic( isPointerInHotSpot, timeDelta );
 	}
-	
+
 	public function GetWinner() : int
 	{
 		return m_winner;
 	}
-	
+
 	public function GetBarWidthScale() : float
 	{
 		var scale : float;
@@ -895,7 +895,7 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 		}
 		return scale;
 	}
-	
+
 	// pos [-1,1]
 	private function SetPointerPos( pos : float )
 	{
@@ -904,7 +904,7 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 		if ( pos < -1 ) pos = -1;
 		m_pointerPos = pos;
 	}
-	
+
 	private function InitVariables()
 	{
 		m_winner = -1;
@@ -916,7 +916,7 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 		m_tiredFactor = 0.0;
 		m_barSpeed = 0.1;
 	}
-	
+
 	function ProcessLogic( isPointerInHotSpot : bool, timeDelta : float ) : bool
 	{
 		if ( isPointerInHotSpot )
@@ -942,26 +942,26 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 			m_barPos -= timeDelta * m_barSpeed;
 			m_lastInHotspot = false;
 		}
-		
+
 		// Calculate tired factor
 		if ( m_tiredFactor < 1 )
 		{
 			m_tiredFactor += timeDelta * 0.03;
 			//Log( "TIRED: " + m_tiredFactor );
 		}
-		
+
 		// Calculate bar speed
 		if ( m_tiredFactor > 0.5 )
 		{
 			m_barSpeed += 0.01 * timeDelta;
-			
+
 			// keep in bounds
 			if ( m_barSpeed > 0.5 )
 			{
 				m_barSpeed = 0.5;
 			}
 		}
-		
+
 		if ( m_barPos >= 0.9 )
 		{
 			m_winner = 0;
@@ -972,7 +972,7 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 			m_winner = 1;
 			return true;
 		}
-		
+
 		return false;
 	}
 }
@@ -980,7 +980,7 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 class WristWrestlingLogicSimpleCont extends WristWrestlingLogicSimple
 {
 	var m_barShift : float;
-	
+
 	default m_barShift = 0;
 
 	public function UpdateInput( value : float )
@@ -995,19 +995,19 @@ class WristWrestlingLogicSimpleCont extends WristWrestlingLogicSimple
 			// Keep in bounds (XBox cursorX/Y max is +1/-1, but not Windows mouse)
 			if ( value > 1.0 ) value = 1.0;
 			if ( value < -1.0 ) value = -1.0;
-		
+
 			m_barShift = value * 0.03;
 			SetPointerPos( m_pointerPos + value * 0.02 );
 		}
 	}
-	
+
 	public function UpdateLogic( isPointerInHotSpot : bool, timeDelta : float ) : bool
 	{
 		var result : bool;
-		
+
 		SetPointerPos( m_pointerPos + m_barShift );
 		result = ProcessLogic( isPointerInHotSpot, timeDelta );
-		
+
 		return result;
 	}
 }
@@ -1018,7 +1018,7 @@ class WristWrestlingLogicNewton extends WristWrestlingLogicSimple
 	var m_barAcceleration	    : float; // scalar
 	var m_barMass               : float;
 	var m_distractingForce      : float;
-	var m_distractingForceCurr  : float; 
+	var m_distractingForceCurr  : float;
 	var m_distractingForceTimer : float;
 
 	default m_barAcceleration       = 0;
@@ -1027,7 +1027,7 @@ class WristWrestlingLogicNewton extends WristWrestlingLogicSimple
 	default m_distractingForce      = 0.0;
 	default m_distractingForceCurr  = 0.0;
 	default m_distractingForceTimer = 0.0;
-	
+
 	public function Init( difficulty : EMWW_GameDifficulty )
 	{
 		super.Init( difficulty );
@@ -1052,14 +1052,14 @@ class WristWrestlingLogicNewton extends WristWrestlingLogicSimple
 			//LogChannel( 'wristwrestling', "Input value = " + value );
 		}
 	}
-	
+
 	public function UpdateLogic( isPointerInHotSpot : bool, timeDelta : float ) : bool
 	{
 		var result : bool;
-		
+
 		//LogChannel( 'Wristwrestling', "Acceleration : " + m_barAcceleration );
 		//LogChannel( 'Wristwrestling', "Velocity : " + m_barVelocity );
-		
+
 		// Distracting force
 		m_distractingForceTimer -= timeDelta;
 		if ( m_distractingForceTimer <= 0 )
@@ -1072,9 +1072,9 @@ class WristWrestlingLogicNewton extends WristWrestlingLogicSimple
 			//LogChannel( 'Wristwrestling', "m_distractingForceCurr : " + m_distractingForceCurr );
 		}
 		m_barVelocity += m_distractingForceCurr * timeDelta;
-		
+
 		m_barVelocity += m_barAcceleration * timeDelta;
-		
+
 		// keep max velocity
 		if ( m_barVelocity > 1.0 )
 		{
@@ -1084,13 +1084,13 @@ class WristWrestlingLogicNewton extends WristWrestlingLogicSimple
 		{
 			m_barVelocity = -1.0;
 		}
-		
+
 		SetPointerPos( m_pointerPos + (m_barVelocity * timeDelta) );
 		result = ProcessLogic( isPointerInHotSpot, timeDelta );
-		
+
 		return result;
 	}
-	
+
 	private function ApplyDifficultySettings( difficulty : EMWW_GameDifficulty )
 	{
 		if ( difficulty == MWWGD_Easy )
@@ -1136,11 +1136,11 @@ class WristWrestlingLogicMash extends WristWrestlingLogicSimple
 			}
 		}
 	}
-	
+
 	public function UpdateLogic( isPointerInHotSpot : bool, timeDelta : float ) : bool
 	{
 		var result : bool;
-		
+
 		if ( m_barVelocity > 0 )
 		{
 			m_barAcceleration -= timeDelta * 0.8;
@@ -1149,7 +1149,7 @@ class WristWrestlingLogicMash extends WristWrestlingLogicSimple
 		{
 			m_barAcceleration -= timeDelta * 0.5;
 		}
-		
+
 		// maximum acceleration
 		if ( m_barVelocity > 0 && m_barAcceleration < -3.0 )
 		{
@@ -1167,9 +1167,9 @@ class WristWrestlingLogicMash extends WristWrestlingLogicSimple
 		{
 			m_barAcceleration = 2.0;
 		}
-		
+
 		m_barVelocity += m_barAcceleration * timeDelta;
-		
+
 		// maximum velocity
 		if ( m_barVelocity > 0.2 )
 		{
@@ -1179,13 +1179,13 @@ class WristWrestlingLogicMash extends WristWrestlingLogicSimple
 		{
 			m_barVelocity = -0.3;
 		}
-		
+
 		SetPointerPos( m_pointerPos + (m_barVelocity * timeDelta) );
 		result = ProcessLogic( isPointerInHotSpot, timeDelta );
-		
+
 		//LogChannel ( 'WristWrestling', "Acceleration : " +  m_barAcceleration );
 		//LogChannel ( 'WristWrestling', "Velocity : "     +  m_barVelocity );
-		
+
 		return result;
 	}
 }
@@ -1195,35 +1195,35 @@ class WristWrestlingLogicMash extends WristWrestlingLogicSimple
 quest function QWristWrestlingSetWidth( gameTag : name, minWidth : int, maxWidth : int ) : bool
 {
 	var minigame : W2MinigameWristWrestling;
-	
+
 	minigame = (W2MinigameWristWrestling) theGame.GetEntityByTag( gameTag );
 	if ( minigame )
 	{
 		minigame.SetHotSpotWidth( minWidth, maxWidth );
 		return true;
 	}
-	
+
 	return false;
 }
 
 quest function QWristWrestlingSetDifficulty( gameTag : name, difficulty : EMWW_GameDifficulty ) : bool
 {
 	var minigame : W2MinigameWristWrestling;
-	
+
 	minigame = (W2MinigameWristWrestling) theGame.GetEntityByTag( gameTag );
 	if ( minigame )
 	{
 		minigame.SetGameDifficulty( difficulty );
 		return true;
 	}
-	
+
 	return false;
 }
 
 quest function QWristWrestlingGameParams( gameTag : name, minWidth : int, maxWidth : int, difficulty : EMWW_GameDifficulty ) : bool
 {
 	var minigame : W2MinigameWristWrestling;
-	
+
 	minigame = (W2MinigameWristWrestling) theGame.GetEntityByTag( gameTag );
 	if ( minigame )
 	{
@@ -1231,7 +1231,7 @@ quest function QWristWrestlingGameParams( gameTag : name, minWidth : int, maxWid
 		minigame.SetGameDifficulty( difficulty );
 		return true;
 	}
-	
+
 	return false;
 }
 
