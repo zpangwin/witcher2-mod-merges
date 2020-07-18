@@ -1168,11 +1168,27 @@ import class CGuiUtils extends CObject
 
 		if ( inv == thePlayer.GetInventory() )
 		{
-			return (1 + RoundFEx(item_price / 10));
+			// BEGIN BETTER PRICES EDIT
+			// See: https://forums.nexusmods.com/index.php?/topic/388386-market-price-mod/page-7#entry32440680
+			//
+			// vanilla/default is: return (1 + RoundFEx(item_price / 10));
+			//	-> this means that you get 1 oren + 10% of the item's value ( ~ 2:25 or 0.4/5 sell:buy ratio under vanilla settings)
+			//	item value of 10: buyable for ~25 orens (10*2.5 + 1) and sellable for ~2 orens (1 + 10/10)
+			//
+			// menyalin version is: return (1 + RoundFEx(item_price / 2.5));
+			//	-> this means that you get 1 oren + 40% of the item's value ( ~ 5:25 or 1:5 sell:buy ratio under vanilla settings)
+			//	item value of 10: buyable for ~25 orens (10*2.5 + 1) and sellable for ~5 orens (1 + 10/2.5)
+			//
+			// my version is: return (1 + RoundFEx(item_price / 2));
+			//	-> this means that you get 1 oren + 50% of the item's value ( ~ 6:25 or 1.2/5 sell:buy ratio under vanilla settings)
+			//	item value of 10: buyable for ~25 orens (10*2.5 + 1) and sellable for ~6 orens (1 + 10/2)
+
+			return (1 + RoundFEx(item_price / 2));
+			// END BETTER PRICES EDIT
 		}
 		else
 		{
-			return RoundFEx((item_price * 2.5) * multi + 1);
+			return RoundFEx((item_price * 2.3) * multi + 1);
 		}
 	}
 /*
