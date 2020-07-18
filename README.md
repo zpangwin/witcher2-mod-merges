@@ -251,7 +251,7 @@ Options:
 * Custom: Increased Health regen rate during combat (now 25% normal regen rate instead of 0.5%); made Health and Vigor regen active while toxic. Based on notes in descption of [61-Increase Combat Regen Rate by Kevinnium](https://www.nexusmods.com/witcher2/mods/61)
 * [918-Toggleable Cat Effect with a Hotkey by Wolverine1984](https://www.nexusmods.com/witcher2/mods/918) - Note: requires keybinding to be setup in User.ini; see mod description
 [745-Double Potion and Oil Durations by Dansgaming](https://www.nexusmods.com/witcher2/mods/745) - note original makes cat as 10min with other potions as 20 min; I make all potions including cat as 20min
-
+* [740-Quickslot Potions by Rustine](https://www.nexusmods.com/witcher2/mods/740) - mod replaces 'Elixir' tag with 'QuickSlot'; I see other definitions with more than 3 tags so I kept the Elixir tag and *added* the QuickSlot tag.
 
 
 
