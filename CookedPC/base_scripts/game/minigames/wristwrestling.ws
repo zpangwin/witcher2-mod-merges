@@ -48,8 +48,8 @@ class W2MinigameWristWrestling extends CMinigame
 	public editable var m_gameParams      : array< SMMW_GameParamsEntry >;
 	public editable var m_startPos        : string;
 
-	default m_hotSpotMinWidth = 6;
-	default m_hotSpotMaxWidth = 20;
+	default m_hotSpotMinWidth = 50;
+	default m_hotSpotMaxWidth = 50;
 	default m_gameType = MWWGT_Newton;
 	default m_difficulty = MWWGD_Normal;
 
@@ -969,7 +969,7 @@ class WristWrestlingLogicSimple extends WristWrestlingLogic
 		}
 		else if ( m_barPos < -0.9 )
 		{
-			m_winner = 1;
+			m_winner = 0;
 			return true;
 		}
 

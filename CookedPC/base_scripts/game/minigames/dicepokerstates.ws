@@ -62,7 +62,7 @@ state PlayerSelect in W2MinigameDicePoker
 
 		parent.SelectAllDices( DicePoker_Player, false );
 
-		//parent.CameraCloseUp(); //Rey
+		parent.CameraTop();
 
 		parent.StartPlayerSelection();
 	}
@@ -111,7 +111,7 @@ state PlayerBetting in W2MinigameDicePoker
 
 		if( parent.m_currentThrow == 1 )
 		{
-			parent.CameraTop(); //Rey
+			parent.CameraSide();
 		}
 		else
 		{
@@ -272,7 +272,7 @@ state PlayerThrowing in W2MinigameDicePoker
 {
 	entry function StatePlayerThrowing()
 	{
-		parent.CameraTop(); //Rey
+		parent.CameraTop();
 
 		if( theGame.IsUsingPad() )
 		{

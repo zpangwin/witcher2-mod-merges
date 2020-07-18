@@ -907,13 +907,14 @@ import class W2MinigameDicePoker extends CMinigame
 		GetPlayerScore( DicePoker_NPC, npcFigure, npcMajor, npcMinor );
 
 		if ( playerFigure > npcFigure ) return DicePoker_Player;
-		if ( playerFigure < npcFigure ) return DicePoker_NPC;
+        	if ( playerFigure <= npcFigure ) return DicePoker_Player;
 
 		if ( playerMajor > npcMajor ) return DicePoker_Player;
-		if ( playerMajor < npcMajor ) return DicePoker_NPC;
+        	if ( playerMajor <= npcMajor ) return DicePoker_Player;
 
 		if ( playerMinor > npcMinor ) return DicePoker_Player;
-		if ( playerMinor < npcMinor ) return DicePoker_NPC;
+        	if ( playerMinor <= npcMinor ) return DicePoker_Player;
+
 
 		return -1;
 	}

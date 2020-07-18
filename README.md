@@ -247,7 +247,7 @@ Options:
 * [876-Win Fistfight QTEs by Nastyemu](https://www.nexusmods.com/witcher2/mods/876)
 * Custom: short-circuited many QTE checks so that many QTEs will succeed regardless of if you press buttons correctly or not.
 * [915-Faster Exploration Run Speed by Heramepheus](https://www.nexusmods.com/witcher2/mods/915)
-
+* [868-Win Arm Wrestling And Poker Everytime Fix Dice Camera Too by djbauer](https://www.nexusmods.com/witcher2/mods/868)
 
 
 
