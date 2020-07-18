@@ -12,7 +12,7 @@
 	DA_FireSideAttack,
 	DA_WingAttack,
 	DA_GroundActionsEnd,
-	
+
 	//aerial actions
 	DA_AerialActionsStart,
 	DA_StopFlying,
@@ -21,25 +21,25 @@
 	DA_Fly180,
 	DA_FlyAttack,
 	DA_AerialActionsEnd,
-	
+
 	//up actions
 	DA_UpActionsStart,
 	DA_UpWalkRight,
 	DA_UpWalkLeft,
 	DA_UpToFly,
 	DA_UpActionsEnd,
-	
+
 	//wallwalk actions
 	DA_WallWalkActionsStart,
 	DA_WallWalkEnd,
 	DA_WallWalkActionsEnd,
-	
+
 	//fly side actions
 	DA_FlySideActionsStart,
 	DA_FlySideEnd,
 	DA_FlySideFireAttack,
 	DA_FlySideActionsEnd,
-	
+
 	//triggered attacks
 	DA_TriggeredAttacksStart,
 	DA_GroundAttackJawForward1,
@@ -60,7 +60,7 @@
 	DA_UpAttackRight,
 	DA_UpAttackFront,
 	DA_TriggeredAttacksEnd,
-		
+
 	DA_DragonActionListEnd,
 
 };
@@ -79,7 +79,7 @@ class CDragonA3a extends CDragonA3Base
 {
 	//Default actions' probability values (editable in dragon template). Used to store predefinied values while calculating actions probability
 	//all probabilities are weights and take values from 0 to +inf.
-	editable var 	
+	editable var
 					//Ground Actions
 					def_probability_WalkRight,
 					def_probability_WalkLeft,
@@ -88,15 +88,15 @@ class CDragonA3a extends CDragonA3Base
 					def_probability_StartFlying,
 					def_probability_StandUp,
 					def_probability_FireSideAttack,
-					def_probability_WingAttack,			
-										
+					def_probability_WingAttack,
+
 					//Aerial Actions
 					def_probability_StopFlying,
 					def_probability_FlyLeftShort,
 					def_probability_FlyRightShort,
 					def_probability_Fly180,
 					def_probability_FlyAttack,
-					
+
 					//Up Actions
 					def_probability_UpWalkRight,
 					def_probability_UpWalkLeft,
@@ -104,11 +104,11 @@ class CDragonA3a extends CDragonA3Base
 
 					//Wallwalk Actions
 					def_probability_WallWalkEnd,
-					
+
 					//FlySide Actions
 					def_probability_FlySideEnd,
 					def_probability_FlySideFireAttack,
- 
+
 					//Triggered Attacks Actions
 					def_probability_JawForward1,
 					def_probability_JawForward2,
@@ -117,19 +117,19 @@ class CDragonA3a extends CDragonA3Base
 					def_probability_LeftClawAttack,
 					def_probability_LeftJawAttack,
 					def_probability_RightClawAttack,
-					def_probability_RightJawAttack, 
+					def_probability_RightJawAttack,
 					def_probability_GroundFireAttack,
-					def_probability_GroundUpFireAttack,	
+					def_probability_GroundUpFireAttack,
 					def_probability_FlyFireAttack,
 					def_probability_WallWalkClawAttack,
 					def_probability_WallWalkTailAttack,
 					def_probability_WallWalkCloseAttack,
-					def_probability_UpAttackLeft,	
+					def_probability_UpAttackLeft,
 					def_probability_UpAttackRight,
-					def_probability_UpAttackFront	
+					def_probability_UpAttackFront
 
 														: int;
-	
+
 	//Ground Actions
 	default def_probability_WalkRight 			= 10;
 	default def_probability_WalkLeft 			= 10;
@@ -139,26 +139,26 @@ class CDragonA3a extends CDragonA3Base
 	default def_probability_StandUp 			= 10;
 	default	def_probability_FireSideAttack 		= 20;
 	default def_probability_WingAttack			= 15;
-	
+
 	//Aerial Actions
 	default def_probability_StopFlying 			= 20;
 	default def_probability_FlyLeftShort 		= 10;
 	default def_probability_FlyRightShort 		= 10;
 	default def_probability_Fly180 				= 10;
 	default def_probability_FlyAttack			= 10;
-	
+
 	//Up Actions
 	default def_probability_UpWalkRight 		= 10;
 	default def_probability_UpWalkLeft 			= 10;
 	default def_probability_UpToFly				= 10;
-	
+
 	//Wallwalk Actions
-	
+
 	default def_probability_WallWalkEnd			= 10;
 	//FlySide Actions
 	default def_probability_FlySideEnd			= 20;
 	default def_probability_FlySideFireAttack	= 10;
-	
+
 	//Triggered Attacks Actions
 	default def_probability_JawForward1			= 20;
 	default def_probability_JawForward2			= 20;
@@ -173,28 +173,28 @@ class CDragonA3a extends CDragonA3Base
 	default def_probability_FlyFireAttack		= 10;
 	default def_probability_WallWalkClawAttack	= 10;
 	default def_probability_WallWalkTailAttack	= 10;
-	default def_probability_WallWalkCloseAttack	= 10; 
+	default def_probability_WallWalkCloseAttack	= 10;
 	default def_probability_UpAttackLeft		= 10;
 	default def_probability_UpAttackRight		= 10;
-	default def_probability_UpAttackFront		= 10;	
-	
+	default def_probability_UpAttackFront		= 10;
+
 	var dragonDamageNormal, dragonDamageFirePerSecond : float;
 	var dragonFireUpdate : float;
-	
+
 	default dragonFireUpdate = 0.3;
-	
+
 	var dragonState : EDragonState;
 	var damageAnimsPlayed, minDamageAnimsToFly, maxDamageAnimsToFly : int;
 	default dragonState = DS_TowerTop;
-	
+
 	default damageAnimsPlayed = 0;
 	default minDamageAnimsToFly = 5;
 	default maxDamageAnimsToFly = 6;
-	
+
 	var playerGrab : bool;
 	var interaction : CDragonGrabEdge;
 	default playerGrab = false;
-	
+
 	event OnSpawned( spawnData : SEntitySpawnData )
 	{
 		var dragonHead : CDragonHead;
@@ -202,7 +202,7 @@ class CDragonA3a extends CDragonA3Base
 		theHud.m_hud.SetBossName( "DRAGON" );
 		theHud.HudTargetActorEx( dragonHead, true );
 		theHud.m_hud.SetBossHealthPercent( dragonHead.dragonShowHealth );
-		
+
 		this.AddTimer('DragonInitialize', 2.0, false);
 		//this.EnablePhysicalMovement(false);
 		DragonUpdate();
@@ -270,9 +270,9 @@ class CDragonA3a extends CDragonA3Base
 		finalDamage =  CalculateDamage(thePlayer, dragonHead, true, false, true, true);
 		dragonHead.dragonHealth -= finalDamage;
 		dragonHead.dragonShowHealth = dragonHead.ComputeDisplayedBossHealth();
-		
+
 		theHud.m_hud.SetBossHealthPercent( dragonHead.dragonShowHealth );
-		
+
 		if(dragonHead.dragonShowHealth <= 0)
 		{
 			dragonHead.dragonShowHealth = 0;
@@ -393,13 +393,13 @@ state DragonDefault in CDragonA3a
 {
 	var dragonActionRand : EDragonAction;
 	var actionDuration, maxActionDuration, minActionDuration, minFireAttackDuration, maxFireAttackDuration, minShortFireAttackDuration, maxShortFireAttackDuration, minWingAttackDuration, maxWingAttackDuration : float;
-	var currentHitEventName : name;		
+	var currentHitEventName : name;
 	var actionProbabilities : array<int>;
 	var dragonActions : array<EDragonAction>;
 	var dragonActionsToRandomize : array<EDragonAction>;
 	var performedActionsNum, performedActionsNumReset: int;
 	var probabilityDecreaseMult, probabilityIncreaseMult : float;
-	
+
 	default actionDuration = 0.0;
 	default minActionDuration = 0.0;
 	default maxActionDuration = 5.0;
@@ -408,18 +408,18 @@ state DragonDefault in CDragonA3a
 	default minShortFireAttackDuration = 0.0;
 	default maxShortFireAttackDuration = 2.0;
 	default minWingAttackDuration = 3.0;
-	default maxWingAttackDuration = 6.0;	
+	default maxWingAttackDuration = 6.0;
 	default performedActionsNum = 0;
 	default performedActionsNumReset = 5;
 	default probabilityDecreaseMult = 0.5;
 	default probabilityIncreaseMult = 1.5;
-	
+
 	event OnEnterState()
 	{
 		DragonActionsInitialize();
 		ResetActionProbability();
 	}
-	
+
 	event OnAnimEvent( animEventName : name, animEventTime : float, animEventType : EAnimationEventType )
 	{
 		Log("Processing anim events...");
@@ -433,7 +433,7 @@ state DragonDefault in CDragonA3a
 					fire_sectors_stop
 					wind_start
 					wind_stop
-				
+
 				Attacks:
 					attack
 					attack_strong
@@ -442,10 +442,10 @@ state DragonDefault in CDragonA3a
 					attack_fly_2
 					attack_fly_3
 					attack_wind
-					
+
 					Immortal
 				AI:
-					
+
 			--------------------------	*//*
 		if(animEventName == 'fire_start' && animEventType == AET_Tick)
 		{
@@ -524,7 +524,7 @@ state DragonDefault in CDragonA3a
 			{
 				parent.interaction.WindHit();
 			}*//*
-			
+
 		}
 		else if(animEventName == 'fire_sectors_stop' && animEventType == AET_Tick)
 		{
@@ -540,12 +540,12 @@ state DragonDefault in CDragonA3a
 		else if( animEventName == 'immortal' )
 		{
 			if ( animEventType == AET_DurationStart )
-			{								
+			{
 				parent.SetCanBeAttacked(false);
 			}
 			else if ( animEventType == AET_DurationEnd )
 			{
-				parent.SetCanBeAttacked(true);		
+				parent.SetCanBeAttacked(true);
 			}
 		}
 	}
@@ -696,7 +696,7 @@ state DragonDefault in CDragonA3a
 	entry function PlayHitAnim(hitEvent : name)
 	{
 		var randMaxDamageAnimPlayed : int;
-		
+
 		if(hitEvent == '')
 		{
 			Log("Dragon A3 ERROR: PlayHitAnim function has empty hit event name");
@@ -704,11 +704,11 @@ state DragonDefault in CDragonA3a
 		else
 		{
 			randMaxDamageAnimPlayed = 1 + Rand(parent.maxDamageAnimsToFly) + parent.minDamageAnimsToFly;
-			
+
 			//Stop all attack's effects
 			parent.StopAllDragonEffects();
 			parent.RemoveAllDragonTimers();
-		
+
 			parent.SetIsPlayingDamageAnim(true);
 			if(!parent.CheckCanPlayDamageAnim())
 			{
@@ -760,7 +760,7 @@ state DragonDefault in CDragonA3a
 		dragonActions[(int)DA_FireSideAttack] = DA_FireSideAttack;
 		dragonActions[(int)DA_WingAttack] = DA_WingAttack;
 		dragonActions[(int)DA_GroundActionsEnd] = DA_GroundActionsEnd;
-		
+
 		//aerial actions
 		dragonActions[(int)DA_AerialActionsStart] = DA_AerialActionsStart;
 		dragonActions[(int)DA_StopFlying] = DA_StopFlying;
@@ -769,25 +769,25 @@ state DragonDefault in CDragonA3a
 		dragonActions[(int)DA_Fly180] = DA_Fly180;
 		dragonActions[(int)DA_FlyAttack] = DA_FlyAttack;
 		dragonActions[(int)DA_AerialActionsEnd] = DA_AerialActionsEnd;
-		
+
 		//up actions
 		dragonActions[(int)DA_UpActionsStart] = DA_UpActionsStart;
 		dragonActions[(int)DA_UpWalkRight] = DA_UpWalkRight;
 		dragonActions[(int)DA_UpWalkLeft] = DA_UpWalkLeft;
 		dragonActions[(int)DA_UpToFly] = DA_UpToFly;
 		dragonActions[(int)DA_UpActionsEnd] = DA_UpActionsEnd;
-		
+
 		//wallwalk actions
 		dragonActions[(int)DA_WallWalkActionsStart] = DA_WallWalkActionsStart;
 		dragonActions[(int)DA_WallWalkEnd] = DA_WallWalkEnd;
 		dragonActions[(int)DA_WallWalkActionsEnd] = DA_WallWalkActionsEnd;
-		
+
 		//fly side actions
 		dragonActions[(int)DA_FlySideActionsStart] = DA_FlySideActionsStart;
 		dragonActions[(int)DA_FlySideEnd] = DA_FlySideEnd;
 		dragonActions[(int)DA_FlySideFireAttack] = DA_FlySideFireAttack;
 		dragonActions[(int)DA_FlySideActionsEnd] = DA_FlySideActionsEnd;
-		
+
 		//triggered attacks Actions
 		dragonActions[(int)DA_TriggeredAttacksStart] = DA_TriggeredAttacksStart;
 		dragonActions[(int)DA_GroundAttackJawForward1] = DA_GroundAttackJawForward1;
@@ -823,7 +823,7 @@ state DragonDefault in CDragonA3a
 		actionProbabilities[(int)DA_FireSideAttack] = parent.def_probability_FireSideAttack;
 		actionProbabilities[(int)DA_WingAttack] = parent.def_probability_WingAttack;
 		actionProbabilities[(int)DA_GroundActionsEnd] = 0;
-				
+
 		//aerial actions probabilities
 		actionProbabilities[(int)DA_AerialActionsStart] = 0;
 		actionProbabilities[(int)DA_StopFlying] = parent.def_probability_StopFlying;
@@ -832,25 +832,25 @@ state DragonDefault in CDragonA3a
 		actionProbabilities[(int)DA_Fly180] = parent.def_probability_Fly180;
 		actionProbabilities[(int)DA_FlyAttack] = parent.def_probability_FlyAttack;
 		actionProbabilities[(int)DA_AerialActionsEnd] = 0;
-		
+
 		//up actions probabilities
 		actionProbabilities[(int)DA_UpActionsStart] = 0;
 		actionProbabilities[(int)DA_UpWalkRight] = parent.def_probability_UpWalkRight;
 		actionProbabilities[(int)DA_UpWalkLeft] = parent.def_probability_UpWalkLeft;
 		actionProbabilities[(int)DA_UpToFly] = parent.def_probability_UpToFly;
 		actionProbabilities[(int)DA_UpActionsEnd] = 0;
-		
+
 		//wallwalk actions probabilities
 		actionProbabilities[(int)DA_WallWalkActionsStart] = 0;
 		actionProbabilities[(int)DA_WallWalkEnd] = parent.def_probability_WallWalkEnd;
 		actionProbabilities[(int)DA_WallWalkActionsEnd] = 0;
-		
+
 		//fly side actions probabilities
 		actionProbabilities[(int)DA_FlySideActionsStart] = 0;
 		actionProbabilities[(int)DA_FlySideEnd] = parent.def_probability_FlySideEnd;
 		actionProbabilities[(int)DA_FlySideFireAttack] = parent.def_probability_FlySideFireAttack;
 		actionProbabilities[(int)DA_FlySideActionsEnd] = 0;
-		
+
 		//triggered attacks Actions
 		actionProbabilities[(int)DA_TriggeredAttacksStart] = 0;
 		actionProbabilities[(int)DA_GroundAttackJawForward1] = parent.def_probability_JawForward1;
@@ -967,7 +967,7 @@ state DragonDefault in CDragonA3a
 			parent.RaiseEvent('fly_end');
 			parent.ChangeDragonState(DS_TowerTop);
 			parent.WaitForBehaviorNodeDeactivation('towertop_state', 6.0);
-			
+
 		}
 		else if(dragonAction == DA_FlyLeftShort)
 		{
@@ -978,7 +978,7 @@ state DragonDefault in CDragonA3a
 			if(actionDuration > 0.0)
 			{
 				Sleep(actionDuration);
-			}		
+			}
 		}
 		else if(dragonAction == DA_FlyRightShort)
 		{
@@ -989,7 +989,7 @@ state DragonDefault in CDragonA3a
 			if(actionDuration > 0.0)
 			{
 				Sleep(actionDuration);
-			}	
+			}
 		}
 		else if(dragonAction == DA_Fly180)
 		{
@@ -1024,7 +1024,7 @@ state DragonDefault in CDragonA3a
 		}
 		//Wallwalk Actions Performance
 		else if(dragonAction == DA_WallWalkEnd)
-		{	
+		{
 			parent.RaiseEvent('wall_walk_end');
 			parent.WaitForBehaviorNodeDeactivation('towertop_state', 6.0);
 			parent.ChangeDragonState(DS_TowerTop);
@@ -1198,7 +1198,7 @@ state DragonDefault in CDragonA3a
 			if(actionDuration > 0.0)
 			{
 				Sleep(actionDuration);
-			}	
+			}
 			parent.RaiseEvent('fire_attack_stop');
 			parent.WaitForBehaviorNodeDeactivation('fire_end', 6.0);
 			parent.DragonLookatOn();
@@ -1269,7 +1269,7 @@ state DragonDefault in CDragonA3a
 	{
 		var dragonProbabilities : array<int>;
 		var diceThrowResult, probabilitySum, currentActionProbability, i, arraySize : int;
-		
+
 		arraySize = dragonActionsToRandomize.Size();
 		for (i = 0; i < arraySize; i+=1)
 		{
@@ -1298,12 +1298,12 @@ state DragonDefault in CDragonA3a
 			}
 		}
 	}
-	
+
 	//RandomDragonAction - chooses random action from action "startAction" to action "endAction"
 	function RandomDragonAction(startAction : EDragonAction, endAction : EDragonAction) : EDragonAction
 	{
 		var diceThrowResult, probabilitySum, currentActionProbability, i, startActionInt, endActionInt : int;
-		
+
 		startActionInt = (int)startAction + 1; //+1, because we always start from the action after start action marker in EDragonActions enum
 		endActionInt = (int)endAction;
 		for (i = startActionInt; i < endActionInt; i+=1)
@@ -1324,14 +1324,14 @@ state DragonDefault in CDragonA3a
 				diceThrowResult -= currentActionProbability;
 			}
 		}
-		
-		
+
+
 	}
-	//ChooseDragonAction - chooses EDragonAction to perform 
+	//ChooseDragonAction - chooses EDragonAction to perform
 	function ChooseDragonAction() : EDragonAction
 	{
 		var dragonAction : EDragonAction;
-		
+
 		//actions in dragon DS_TowerTop state
 		if(parent.dragonState == DS_TowerTop)
 		{
@@ -1396,7 +1396,7 @@ state DragonDefault in CDragonA3a
 			else
 			{
 				dragonAction = RandomDragonAction(DA_GroundActionsStart, DA_GroundActionsEnd);
-				return dragonAction;	
+				return dragonAction;
 			}
 		}
 		//actions in dragon DS_Flying state
@@ -1596,7 +1596,7 @@ class CDragonGrabEdge extends CEntity
 				PullUp();
 			}
 		}
-		
+
 	}
 	event OnSpawned( spawnData : SEntitySpawnData )
 	{
@@ -1652,7 +1652,7 @@ state Sliding in CDragonGrabEdge
 		gameCamera.Reset();
 		gameCamera.SetActive(true);
 		parent.grabCamera.SetActive(false);
-		
+
 	}
 	entry function EdgeGrab()
 	{
@@ -1719,7 +1719,7 @@ state Sliding in CDragonGrabEdge
 		{
 			thePlayer.RaiseEvent('slide_back');
 		}
-		thePlayer.StartSinglePressQTEAsync( 'QTE2', 2.f ); 
+		thePlayer.StartSinglePressQTEAsync( 'QTE2', 2.f );
 		thePlayer.WaitForBehaviorNodeDeactivation('slide_end', 6.0);
 		//Sleep(0.1);
 		thePlayer.TeleportWithRotation(parent.teleportPosition, parent.teleportRotation);
