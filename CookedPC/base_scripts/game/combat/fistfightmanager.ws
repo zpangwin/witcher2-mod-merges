@@ -708,7 +708,7 @@ state Combat in W2FistfightManager
 				case SFT_Defeat:
 				{
 					// the player lost too much health - he lost
-					parent.FinishLost();
+					parent.FinishWon();
 					break;
 				}
 
@@ -835,7 +835,7 @@ state Combat in W2FistfightManager
 		if ( actor == thePlayer )
 		{
 			// the player lost too much health - he lost
-			parent.FinishLost();
+			parent.FinishWon();
 		}
 		else
 		{

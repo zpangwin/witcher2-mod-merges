@@ -244,10 +244,7 @@ Options:
 * [838-Tweaked Minigame Bets by relicshadow](https://www.nexusmods.com/witcher2/mods/838) - alters max bets of all 3 minigames (fist fight, arm wrestle and dice poker); new maxes are 10 times the original amount (so e.g. 2 orens max is now 20 orens)
 * [906-Better Poker by Rey](https://www.nexusmods.com/witcher2/mods/906) - partial - I did not merge the stuff that prevents throwing dice out of the box (as it would nulify EmptyHand changes) but i did merge the camera fixes and the max bets scaling with difficulty
 * Customized max bets as follows: use difficult scaling system from Better Poker but also augment with percentage like from Tweaked Minigame Bets EXCEPT use the Max() function rather than the Min() function when determining BP vs TMB value.
-
-
-
-
+* [876-Win Fistfight QTEs by Nastyemu](https://www.nexusmods.com/witcher2/mods/876)
 
 
 
