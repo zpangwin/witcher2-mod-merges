@@ -155,34 +155,34 @@ state PlayerBetting in W2MinigameDicePoker
 
 			/*
 			Red's max bets suck in general - better and more logical way below
-			0 - DicePoker_Master, - 200
-			1 - DicePoker_Hard, - 100
-			2 - DicePoker_Normal, - 50
-			3 - DicePoker_Easy, - 25
-			else - 25
+				0 - DicePoker_Master  - 200 or 10x Vanilla, whichever is larger
+				1 - DicePoker_Hard    - 100 or 10x Vanilla, whichever is larger
+				2 - DicePoker_Normal  -  50 or 10x Vanilla, whichever is larger
+				3 - DicePoker_Easy    -  25 or 10x Vanilla, whichever is larger
+				else                  -  25 or 10x Vanilla, whichever is larger
 			*/
 			// just in case set this to 25 if for some reason the character doesn't have the diff level set
-			maximalBet = Min( 25, parent.m_playerStatuses[ DicePoker_Player ].m_money );
-			// master
-			if (parent.m_npc.GetDicePokerLevel() == 0){
-				maximalBet = Min( 200, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			maximalBet = Max( 25, 10*parent.m_npc.GetDicePokerMaxBet() );
+
+			if (maximalBet < 200 && parent.m_npc.GetDicePokerLevel() == 0){
+				// master
+				maximalBet = 200;
 			}
-			// hard
-			if (parent.m_npc.GetDicePokerLevel() == 1){
-				maximalBet = Min( 100, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			else if (maximalBet < 100 && parent.m_npc.GetDicePokerLevel() == 1){
+				// hard
+				maximalBet = 100;
 			}
-			// normal
-			if (parent.m_npc.GetDicePokerLevel() == 2){
-				maximalBet = Min( 50, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+			else if (maximalBet < 50 && parent.m_npc.GetDicePokerLevel() == 2){
+				// normal
+				maximalBet = 50;
 			}
-			// easy
-			if (parent.m_npc.GetDicePokerLevel() == 3){
-				maximalBet = Min( 25, parent.m_playerStatuses[ DicePoker_Player ].m_money );
-			}
+
+			//Don't allow betting more money than the player has
+			maximalBet = Min( maximalBet, parent.m_playerStatuses[ DicePoker_Player ].m_money );
 			//=========================================
 			// MOD - END
 			//=========================================
-			
+
 			parent.m_guiPanel.Betting( maximalBet, minimalBet,
 				"[[locale.dice.PlaceYourBet]]", "[[locale.dice.Bet]]", "[[locale.dice.Pass]]" );
 		}
