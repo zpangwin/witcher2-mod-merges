@@ -115,7 +115,7 @@ class CTrainingDummy extends CActor
 					if( attacker == thePlayer && !isDestroyed )
 					{
 						numKilledDummies = FactsQuerySum("training_dummies_killed");
-						if(numKilledDummies >= 9.0 )
+						if(numKilledDummies >= 2.0 )
 						{
 							if(!thePlayer.GetCharacterStats().HasAbility('story_s14_1'))
 							{

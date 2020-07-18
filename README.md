@@ -240,7 +240,7 @@ Options:
 * [832-Meliteles Heart - Combat Stats Fixes by AWP3RATOR](https://www.nexusmods.com/witcher2/mods/832) - clean version of mod 799-Melitele's Heart As It Was MEANT to BE by thebunnyrules; does not break tutorial or add extra undocumented shit like thebunnyrules version
 * [Increased level cap using method mentioned by Asrakorn](https://forums.nexusmods.com/index.php?showtopic=1339343/#entry27017249) - also note that the mod 674 that the thread is about only works on the DVD version of the game, not the Steam version while the Asrakorn method works on all versions.
 * Adding 1 additional Talent per level since TW1 gives 3 per level while vanilla TW2 gives 1 per level. Based on notes from XXZOCKERXXJOE [here](https://forums.nexusmods.com/index.php?showtopic=6993371/#entry72704613)
-
+* [816-Easier Experienced Attribute by Debatra](https://www.nexusmods.com/witcher2/mods/816) - changes Experienced attribute requirement from killing 9 dummies to killing 2 dummies (so you don't have to put as much effort into tracking them down and can get the benefits early enough that it is actually useful)
 
 
 
