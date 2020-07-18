@@ -38,7 +38,7 @@ enum ETutorialInputBlocker
 	TIB_Equip_Quen,
 	TIB_Equip_Axii,
 	TIB_Use_FastMenu,
-	TIB_Use_Medallion,	
+	TIB_Use_Medallion,
 	TIB_Combat_LockTarget,
 	TIB_Combat_AttackFast,
 	TIB_Combat_AttackStrong,
@@ -52,7 +52,7 @@ enum ETutorialInputBlocker
 	TIB_Panel_Map,
 	TIB_Panel_Journal,
 	TIB_Panel_DeleteInventoryItem,
-	TIB_Special_QuestInteraction,	
+	TIB_Special_QuestInteraction,
 	TIB_Special_QuickSave,
 	TIB_Special_HideGUI
 };
@@ -75,7 +75,7 @@ enum ETutorialBlockInventoryInput
 	TBII_Filter_Diagrams,
 	TBII_Filter_Lures,
 	TBII_Filter_QuestItems,
-	TBII_Filter_Junk,	
+	TBII_Filter_Junk,
 	TBII_Filter_AllItems,
 	TBII_Slot_SteelSword,
 	TBII_Slot_Armor,
@@ -92,7 +92,7 @@ latent quest function Q105_TeleportPlayerToBossFight(nodeTag : name)
 {
 	var node : CNode;
 	node = theGame.GetNodeByTag(nodeTag);
-	
+
 	if(node)
 	{
 		thePlayer.TeleportWithRotation(node.GetWorldPosition(), node.GetWorldRotation());
@@ -119,12 +119,12 @@ quest function QEnableTrigger ( shouldBeEnabled : bool, objectTag : name) : bool
 	var count, i, j, count2 : int;
 	var single_entity : CEntity;
 	var single_component : CTriggerAreaComponent;
-	
-	
+
+
 
 	theGame.GetNodesByTag( objectTag, entity);
 	count = entity.Size();
-	
+
 	for ( i = 0; i < count; i += 1 )
 	{
 		single_entity = (CEntity) entity[i];
@@ -139,9 +139,9 @@ quest function QEnableTrigger ( shouldBeEnabled : bool, objectTag : name) : bool
 				continue;
 			single_component.SetEnabled( shouldBeEnabled );
 		}
-		
+
 	}
-	
+
 	return true;
 }
 
@@ -150,7 +150,7 @@ quest function QStartsFightWithTaunt(npcsTag : name)
 	var npc : CNewNPC;
 	var nodes : array<CNode>;
 	var i, size : int;
-	
+
 	theGame.GetNodesByTag(npcsTag, nodes);
 	size = nodes.Size();
 	for(i = 0; i < size; i += 1)
@@ -176,8 +176,8 @@ quest function QNoticeActor(NPCsTag : name, targetsTAG : name)
 	var i, j, size, size2 : int;
 	theGame.GetActorsByTag(targetsTAG, actors);
 	theGame.GetNPCsByTag(NPCsTag, npcs);
-	
-	
+
+
 	size = npcs.Size();
 	size2 = actors.Size();
 	for (i = 0; i < size; i += 1)
@@ -187,7 +187,7 @@ quest function QNoticeActor(NPCsTag : name, targetsTAG : name)
 			npcs[i].NoticeActor(actors[j]);
 		}
 	}
-	
+
 }
 //Metoda dajaca graczowi ABL o podanej nazwie
 quest function QAddAbilityToPlayer(abilityName : name)
@@ -221,7 +221,7 @@ quest function QSetOneAbilityForNPC(npcTag : name, abilityName : name)
 			actor.GetCharacterStats().RemoveAbility(abilities[i]);
 		}
 		actor.GetCharacterStats().AddAbility(abilityName);
-				
+
 		vitality = actor.GetCharacterStats().GetFinalAttribute('vitality');
 		if(actor.GetCharacterStats().HasAbility('OppE_Wounded'))
 		{
@@ -238,11 +238,11 @@ quest function QSetOneAbilityForNPC(npcTag : name, abilityName : name)
 	}
 }
 
-//Metoda sluzy do wymuszania danemu NPC ataku na dany cel (obsluguje 1 npc i 1 cel). 
+//Metoda sluzy do wymuszania danemu NPC ataku na dany cel (obsluguje 1 npc i 1 cel).
 //Moga wystapic problemy, jesli wywolamy ja kilka razy na wielu obiektach, poniewaz zapisuje ona nastawienia npc wzgledem innych npc
 //npcTag - tag NPC ktory bedzie hostile do celu, ktoremu wymuszamy atakowanie
 //targetPlayer - jest jest "true" to pomijamy szukanie celu, wiedzac, ze to gracz
-//targetTag - jesli targetPlayer jest "false" szukamy celu po tagu (jednego celu) 
+//targetTag - jesli targetPlayer jest "false" szukamy celu po tagu (jednego celu)
 //optionalBattleRange - opcjonalnie mozemy podac zasieg bitwy (zasieg z jakiego npc zbierze wszystkich actorow by zapisac ich nastawienie)
 //optionalForceHostileTime - opcjonalnie mozemy podac czas przez jaki npc bedzie atakowal tylko dany cel
 
@@ -280,7 +280,7 @@ quest function QShootDraugRock(template : CEntityTemplate, startPointTag : name,
 		draugRock.StartRock(targetPos, false);
 }
 //skrypt odpalajacy dla aktora chodzenie po sciezce z followerem i czekanie na gracza zaleznie od dystansu
-latent quest function WalkAlongThePathWaitForPlayerInQuest( targetPathTag : name, targetEndofPathTag : name, targetActorTag : name, optional actorFollowerTag : array<name>, 
+latent quest function WalkAlongThePathWaitForPlayerInQuest( targetPathTag : name, targetEndofPathTag : name, targetActorTag : name, optional actorFollowerTag : array<name>,
 distanceToStop : float, distanceToGo : float, distanceToChangeSpeed : float, upThePath : bool, optional moveTypename : EMoveType, optional absSpeed : float, optional interceptSectionName : string ) : bool
 {
 	var target 					: CEntity;
@@ -291,23 +291,23 @@ distanceToStop : float, distanceToGo : float, distanceToChangeSpeed : float, upT
 	var distanceToEnd 			: float;
 	var i 						: int;
 
-	
+
 	endofpath = (CEntity)theGame.GetNodeByTag( targetEndofPathTag );
 	target = (CEntity)theGame.GetNodeByTag( targetPathTag );
 	actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );
 	while ( !actor )
 	{
-		actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );	
+		actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );
 		Sleep (0.5f);
 	}
-	
+
 	path = target.GetPathComponent();
 	if ( !path )
 	{
 		Log("WalkAlongThePathWaitForPlayerInQuest: No path found");
 		return false;
 	}
-	
+
 	actor.GetArbitrator().ClearGoal();
 	actor.GetArbitrator().AddGoalWalkAlongPathWaitForPlayer( path, upThePath, false, distanceToStop, distanceToGo, distanceToChangeSpeed, moveTypename, absSpeed );
 
@@ -319,18 +319,18 @@ distanceToStop : float, distanceToGo : float, distanceToChangeSpeed : float, upT
 			follower.GetArbitrator().ClearGoal();
 			follower.GetArbitrator().AddGoalPointOfInterest( POIT_Follow, actor, 1.f, 0.f, true );
 		}
-	} 
-	
+	}
+
 	while ( true )
 	{
 		distanceToEnd = VecDistance2D( actor.GetWorldPosition(), endofpath.GetWorldPosition() );
 		//Log("dystans do end of path " +distanceToEnd);
 		if ( distanceToEnd < 1.0f )
 			return true;
-		
+
 		Sleep( 1.f );
 	}
-	
+
 	// JP: ponizsze sie nigdy nie wykona
 	for ( i = 0; i < actorFollowerTag.Size(); i += 1 )
 	{
@@ -340,8 +340,8 @@ distanceToStop : float, distanceToGo : float, distanceToChangeSpeed : float, upT
 			//follower.StateIdle();
 		}
 	}
-	
-	return true;	
+
+	return true;
 }
 
 latent quest function Q_FPP_Combat() : bool
@@ -360,7 +360,7 @@ latent quest function Q_FPP_Combat() : bool
 	}
 }
 //skrypt odpalajacy dla aktora chodzenie po sciezce z followerem i czekanie na gracza zaleznie od dystansu
-latent quest function WalkToTargetWaitForPlayerInQuest( targetTag : name, targetActorTag : name, 
+latent quest function WalkToTargetWaitForPlayerInQuest( targetTag : name, targetActorTag : name,
 	distanceToStop : float, distanceToGo : float, moveTypename : EMoveType, absSpeed : float ) : bool
 {
 	var target : CEntity;
@@ -373,17 +373,17 @@ latent quest function WalkToTargetWaitForPlayerInQuest( targetTag : name, target
 	var distTraveled, distanceToEnd : float;
 	var intersectionPoint0 : Vector;
 	var intersectionPoint1 : Vector;
-	
-	
+
+
 	// look up the actual entities corresponding to the actor and target
 	target = (CEntity)theGame.GetNodeByTag( targetTag );
 	actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );
 	while ( !actor )
 	{
-		actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );	
+		actor  = (CNewNPC)theGame.GetActorByTag( targetActorTag );
 		Sleep (0.5f);
 	}
-	
+
 	if ( target )
 	{
 		actor.GetArbitrator().ClearGoal();
@@ -394,22 +394,22 @@ latent quest function WalkToTargetWaitForPlayerInQuest( targetTag : name, target
 		Log("WalkAlongThePathWaitForPlayerInScene: No target found");
 		return false;
 	}
-	
+
 	// calculate the area around the target point
 	targetArea.CenterRadius2 = target.GetWorldPosition(); // target area position
 	targetPos = target.GetWorldPosition();
 	targetArea.CenterRadius2.W = distanceToStop + 1.0; // target area radius
-	
+
 	// aquire the actor's position
 	currActorPos = actor.GetWorldPosition();
 	prevActorPos = currActorPos;
-	
+
 	// wait until the actor walks into the area
-	while ( true ) 
+	while ( true )
 	{
 		prevActorPos = currActorPos;
 		currActorPos = actor.GetWorldPosition();
-	
+
 		distTraveled = VecDistance( currActorPos, prevActorPos );
 		if ( distTraveled > 0.001 )
 		{
@@ -438,21 +438,21 @@ latent quest function WalkToTargetWaitForPlayerInQuest( targetTag : name, target
 			Sleep( 1.f );
 		}
 	}
-	
-	return true;	
+
+	return true;
 }
 
 quest function SetMaxMoveSpeedTypeQuest( moveType : EMoveType, formationFollowerTags : array<name> ) : bool
 {
 	var followers : array<CNewNPC>;
 	var i : int;
-	
+
 	if ( moveType == MT_AbsSpeed )
 	{
 		Log( "Wrong move type" );
 		return false;
 	}
-		
+
 	for ( i = 0; i < formationFollowerTags.Size(); i += 1 )
 	{
 		theGame.GetNPCsByTag( formationFollowerTags[i], followers );
@@ -480,7 +480,7 @@ latent quest function QuestCheckDeadCount( tag : name, deadCount : int ) : bool
 		{
 			return true;
 		}
-		Log( "---------> KILL LIST COUNT = " + FactsQuerySum( "actor_" + tag + "_was_killed" ) ); 
+		Log( "---------> KILL LIST COUNT = " + FactsQuerySum( "actor_" + tag + "_was_killed" ) );
 		Sleep( 0.2f );
 	}
 }
@@ -495,14 +495,14 @@ latent quest function QuestCheckUnconciousCount( tag : name, unconciousCount : i
 		{
 			return true;
 		}
-		Log( "---------> UNCONCIOUS LIST COUNT = " + FactsQuerySum( "actor_" + tag + "_was_stunned" ) ); 
+		Log( "---------> UNCONCIOUS LIST COUNT = " + FactsQuerySum( "actor_" + tag + "_was_stunned" ) );
 		Sleep( 0.2f );
 	}
 }
 
 //funkcja sprawdzaj¹ca czy dana postaæ ¿yje, funkcja sptrawdza to tylko raz i wypuszcza sygna³
 
-quest function QuestCheckIfIsAlive( tag: name ) : bool 
+quest function QuestCheckIfIsAlive( tag: name ) : bool
 {
 	var targetActor : CActor;
 
@@ -512,24 +512,24 @@ quest function QuestCheckIfIsAlive( tag: name ) : bool
 
 //funkcja sprawdzaj¹ca godzinê
 
-quest function QuestCheckTime( from_hour: int, to_hour: int ) : bool 
+quest function QuestCheckTime( from_hour: int, to_hour: int ) : bool
 {
 	var hour : int;
 
 	hour = GameTimeHours( theGame.GetGameTime() );
-	
+
 	if ( hour >= from_hour && hour <= to_hour)
 	{
 		return true;
 	}
-	
+
 	return false;
 }
 
-//Funkcja zak³adaj¹ca graczowi tryb chodzenia, oraz zdejmuj¹ca go jak chcemy 
+//Funkcja zak³adaj¹ca graczowi tryb chodzenia, oraz zdejmuj¹ca go jak chcemy
 
 quest function QSetPlayerWalkMode ( IsWalking: bool ) : bool
-{	
+{
 	thePlayer.ChangePlayerState( PS_Exploration );
 	thePlayer.SetWalkMode( IsWalking );
 	thePlayer.SetAllPlayerStatesBlocked( IsWalking );
@@ -538,7 +538,7 @@ quest function QSetPlayerWalkMode ( IsWalking: bool ) : bool
 
 //Funkcja blokujaca mozliwosc wyciagania miecza
 quest function QBlockPlayerSword ( BlockSword: bool ) : bool
-{	
+{
 	thePlayer.ChangePlayerState( PS_Exploration );
 	thePlayer.SetAllPlayerStatesBlocked( BlockSword );
 	return true;
@@ -546,16 +546,16 @@ quest function QBlockPlayerSword ( BlockSword: bool ) : bool
 
 //SL: Funkcja blokujaca rozne rzeczy na czas chujowego lasu
 quest function Q213BlockAllInDickForrest( BlockAll : bool )
-{	
+{
 	// block meditation
 	thePlayer.EnableMeditation( !BlockAll );
-	
+
 	LogChannel( 'GUI', "Q213BlockAllInDickForrest: " + BlockAll );
 }
 
 //SL: Funkcja blokujaca mozliwosc uzywania FastMenu
 quest function QBlockFastMenu ( BlockFastMenu: bool )
-{	
+{
 	thePlayer.SetCanUseHud(!BlockFastMenu);
 	thePlayer.SetCombatHotKeysBlocked( !BlockFastMenu );
 	LogChannel( 'GUI', "QBlockFastMenu: " + BlockFastMenu );
@@ -569,8 +569,8 @@ quest function QCheckCombatMode () : bool
 	{
 		return true;
 	}
-	
-	return false;	
+
+	return false;
 }
 
 
@@ -583,24 +583,24 @@ quest function QSetComponentVisible ( shouldBeVisible : bool, objectTag : name, 
 	var count, i : int;
 	var single_entity : CEntity;
 	var single_component : CDrawableComponent;
-	
+
 
 	theGame.GetNodesByTag( objectTag, entity);
 	count = entity.Size();
-	
+
 	for ( i = 0; i < count; i += 1 )
 	{
 		single_entity = (CEntity) entity[i];
 		if ( ! single_entity )
 			continue;
-		
+
 		single_component = (CDrawableComponent) single_entity.GetComponent( componentName );
 		if ( ! single_component )
 			continue;
-		
+
 		single_component.SetVisible( shouldBeVisible );
 	}
-	
+
 	return true;
 }
 
@@ -614,51 +614,51 @@ latent quest function QWaitUntilPlayerLeavesCombatMode () : bool
 	{
 		Sleep( 2.0f );
 	}
-	
+
 	return true;
 }
 
 //SL: Funkcja zabija wszystkie postacie o zadanym TAGu
 quest function QKillAllNPCWithTag( targetTag : name ) : bool
 {
-	
+
 	var actors : array <CActor>;
 	var i      : int;
 	var actor : CActor;
-	
+
 	theGame.GetActorsByTag(targetTag, actors);
-	
+
 	for (i = 0; i < actors.Size(); i += 1 )
-	{	
+	{
 		actor = actors[i];
-		
+
 		actor.ClearImmortality();
-		actor.Kill();		
+		actor.Kill();
 	}
-	
-	
+
+
 	return true;
 }
 
 //KR: Funkcja wykonuje destruct na npcach o danym tagu // funkcja uzywana TYLKO do niszczenia zafreezowanych NPCow na behaviourze.
 quest function QDestroyAllNPCWithTag( targetTag : name ) : bool
 {
-	
+
 	var actors : array <CActor>;
 	var i      : int;
 	var actor : CActor;
-	
+
 	theGame.GetActorsByTag(targetTag, actors);
-	
+
 	for (i = 0; i < actors.Size(); i += 1 )
-	{	
+	{
 		actor = actors[i];
-		
+
 		actor.ClearImmortality();
 		actor.Destroy();
 	}
-	
-	
+
+
 	return true;
 }
 
@@ -674,24 +674,24 @@ quest function QEnableComponent ( shouldBeEnabled : bool, objectTag : name, comp
 	var count, i : int;
 	var single_entity : CEntity;
 	var single_component : CComponent;
-	
+
 
 	theGame.GetNodesByTag( objectTag, entity);
 	count = entity.Size();
-	
+
 	for ( i = 0; i < count; i += 1 )
 	{
 		single_entity = (CEntity) entity[i];
 		if ( ! single_entity )
 			continue;
-		
+
 		single_component = single_entity.GetComponent( componentName );
 		if ( ! single_component )
 			continue;
-		
+
 		single_component.SetEnabled( shouldBeEnabled );
 	}
-	
+
 	return true;
 }
 
@@ -714,8 +714,8 @@ latent function InteractionNpcMaster( masterTag, slavesTag, masterBehaviorName, 
 	var master			: CNewNPC;
 	var slave			: CActor;
 	var slaves			: array<CActor>;
-	var nodeOfInterest	: CNode;	
-	
+	var nodeOfInterest	: CNode;
+
 	//theGame.GetActorsByTag( slavesTag, slaves );
 	slave = theGame.GetActorByTagWithTimeout( slavesTag, 1000.0f );
 	if( !slave )
@@ -723,26 +723,26 @@ latent function InteractionNpcMaster( masterTag, slavesTag, masterBehaviorName, 
 		Logf( "InteractionNpcMaster no slave with tag %1", slavesTag );
 		return false;
 	}
-	
+
 	slaves.PushBack( slave );
-	
+
 	if( nodeOfInterestTag )
 	{
 		nodeOfInterest = theGame.GetNodeByTagWithTimeout( nodeOfInterestTag, 10.f );
-		if ( ! nodeOfInterest ) 
+		if ( ! nodeOfInterest )
 			return false;
 	}
-	
+
 	master = theGame.GetNPCByTagWithTimeout( masterTag, 1000.f );
 	if ( ! master )
 		return false;
-		
+
 	if( nodeOfInterest && !nodeOfInterest.IsA( 'CEntity' ) )
 	{
 		master.SetErrorStatef( "InteractionNpcMaster nodeOfInterest '%1', is not CEntity", nodeOfInterestTag );
 	}
-	
-	master.GetArbitrator().ClearAllGoals();	
+
+	master.GetArbitrator().ClearAllGoals();
 	master.GetArbitrator().AddGoalInteractionMaster( slaves, masterBehaviorName, slaveBehaviorName, latentAction, (CEntity)nodeOfInterest );
 	return true;
 }
@@ -762,27 +762,27 @@ latent quest function QMoveToObjectUntilReached( DestinationTag : name, ActorTag
 		Log ("Actor not found! Breaking MoveTo!");
 		return false;
 	}
-	
+
 	Destination = theGame.GetNodeByTag( DestinationTag );
 	if ( !Destination )
 	{
 		Log ("Destination point not found! Breaking MoveTo!");
-		return false;		
+		return false;
 	}
-	
+
 	Actor.ClearRotationTarget();
 	Actor.GetArbitrator().ClearGoal();
 	Actor.GetArbitrator().AddGoalMoveToTarget( Destination, moveType, speed, 0.5f, EWM_Exit );
 	targetPos = Destination.GetWorldPosition();
-	
+
 	while ( true )
 	{
 		actorPos = Actor.GetWorldPosition();
 		distToTarget = VecDistance2D( actorPos, targetPos );
-		
+
 		if(distToTarget <= 1.0f)
 		{
-			return true; 
+			return true;
 		}
 		Sleep( 1.0f );
 	}
@@ -810,18 +810,18 @@ latent quest function QMoveToObject( DestinationTag : name, ActorTag: name, move
 		Log ("Actor not found! Breaking AsyncMoveToObject!");
 		return false;
 	}
-	
+
 	Destination = theGame.GetNodeByTagWithTimeout( DestinationTag, 3.0 );
 	if ( !Destination )
 	{
 		Log ("Destination point not found! Breaking AsyncMoveToObject!");
 		return false;
 	}
-	
+
 	Actor.GetArbitrator().ClearGoal();
 	Actor.GetArbitrator().AddGoalMoveToTarget( Destination, moveType, speed, 0.5f, exitWorkMode );
-		
-	return true; 
+
+	return true;
 }
 
 //Funkcja wy³aczaj¹ca wandering
@@ -830,13 +830,13 @@ latent quest function QTurnOffWandering ( ActorTag: name, Wandering: bool) : boo
 {
 	var Actor: CNewNPC;
 	Actor = theGame.GetNPCByTag(ActorTag);
-	
+
 	while ( !Actor )
 	{
 		Actor = theGame.GetNPCByTag(ActorTag);
 		Sleep ( 0.5f );
 	}
-	
+
 	//Actor.SetMayRandWander( Wandering );
 	return true;
 }
@@ -847,7 +847,7 @@ quest function QSetAttitude ( actorTag: name, attitude : EAIAttitude, dontNotice
 	var actors: array <CNewNPC>;
 	var player_in_scene : CActor;
 	var count, i : int;
-	
+
 	player_in_scene = thePlayer;
 	theGame.GetNPCsByTag( actorTag, actors );
 
@@ -857,7 +857,7 @@ quest function QSetAttitude ( actorTag: name, attitude : EAIAttitude, dontNotice
 	{
 		actors[i].SetAttitude(player_in_scene, attitude);
 	}
-	
+
 	if( !dontNotice )
 	{
 		for ( i = 0; i < count; i += 1 )
@@ -865,7 +865,7 @@ quest function QSetAttitude ( actorTag: name, attitude : EAIAttitude, dontNotice
 			actors[i].NoticeActor( player_in_scene );
 		}
 	}
-	
+
 	return true;
 }
 
@@ -873,10 +873,10 @@ quest function QCalmDown ( actorTag: name, dontNotice : bool ) : bool
 {
 	var actors: array <CNewNPC>;
 	var npc : CNewNPC;
-	
+
 	theGame.GetNPCsByTag( actorTag, actors );
 	npc.CalmDown();
-	
+
 	return true;
 }
 
@@ -893,8 +893,8 @@ quest function QSetNPCAttitudeToTarget( npcTag : name, targetTag: name, attitude
 	var targets: array <CNewNPC>;
 	var count, npcCount, i, j : int;
 	var npc : CNewNPC;
-	
-	theGame.GetNPCsByTag( npcTag, npcs );	
+
+	theGame.GetNPCsByTag( npcTag, npcs );
 	theGame.GetNPCsByTag( targetTag, targets );
 
 	npcCount = npcs.Size();
@@ -906,13 +906,13 @@ quest function QSetNPCAttitudeToTarget( npcTag : name, targetTag: name, attitude
 		for ( i = 0; i < count; i += 1 )
 		{
 			npc.SetAttitude(targets[i], attitude);
-			
+
 			//SL update, powoduje, ze postac nie jest od razu infromowana
 			if( !dontNotice )
 			{
 				npc.NoticeActor( targets[i] );
 			}
-			
+
 		}
 	}
 	return true;
@@ -920,7 +920,7 @@ quest function QSetNPCAttitudeToTarget( npcTag : name, targetTag: name, attitude
 
 // umozliwia wylaczenie przeliczania statsow geralta w czasie - np. wylaczyc auto regen zywotnosci
 quest function QSetDontRecalcStats( WylaczRegeneracje : bool ) : bool
-	
+
 	{
 		thePlayer.SetDontRecalcStats(WylaczRegeneracje);
 		return true;
@@ -959,7 +959,7 @@ latent quest function QAddItemOnNPC ( npc: name, item_name : name) : bool
 		npc_newnpc.GetInventory().AddItem( item_name );
 	}
 		return true;
-	
+
 }
 
 //usuwanie przedmiotu z NPCa lub playera
@@ -967,18 +967,18 @@ quest function QRemoveItemFromNPC( npc : name, item_name : name) : bool
 {
 	var npc_newnpc : CNewNPC;
 	var item_id : SItemUniqueId;
-	
+
 	if( npc == 'PLAYER' ) {
 		item_id = thePlayer.GetInventory().GetItemId(item_name);
 		thePlayer.GetInventory().RemoveItem(item_id);
 	}
-	else	
-	{	
+	else
+	{
 		npc_newnpc = theGame.GetNPCByTag(npc);
 		item_id = npc_newnpc.GetInventory().GetItemId(item_name);
 		npc_newnpc.GetInventory().RemoveItem(item_id);
 	}
-	return true;	
+	return true;
 }
 
 //usuwanie przedmiotu ze skrzyni lub innego Entity
@@ -991,7 +991,7 @@ quest function QRemoveItemFromEntity( entityTag : name, item_name : name) : bool
 	item_id = entity_new.GetInventory().GetItemId(item_name);
 	entity_new.GetInventory().RemoveItem(item_id);
 
-	return true;	
+	return true;
 }
 
 // dodawanie przedmipotu do skrzyni lub innego entity
@@ -1001,13 +1001,13 @@ quest function QGiveItemToEntity( entityTag : name, item_name : name) : bool
 	var entity_new : CContainer;
 	var item_id : SItemUniqueId;
 	var inv 	   : CInventoryComponent;
-	
+
 	inv = entity_new.GetInventory();
 	entity_new = (CContainer)theGame.GetEntityByTag(entityTag);
 	item_id = entity_new.GetInventory().GetItemId(item_name);
 	entity_new.GetInventory().GiveItem(inv, item_id);
 
-	return true;	
+	return true;
 }
 
 
@@ -1015,12 +1015,12 @@ quest function QGiveItemToEntity( entityTag : name, item_name : name) : bool
 latent quest function QCheckIfAardHit ( ObjectTag : name ) : bool
 {
 	var fact : string = "object_" + ObjectTag + "_was_hit_by_ard" ;
-	
+
 	while( FactsQuerySum( fact ) == 0 )
 	{
 		Sleep (0.05f);
 	}
-	
+
 	return true;
 }
 
@@ -1033,7 +1033,7 @@ latent quest function QCheckIfIgniHit ( ObjectTag : name ) : bool
 	{
 		Sleep (0.05f);
 	}
-	
+
 	return true;
 }
 
@@ -1042,7 +1042,7 @@ latent quest function QSetNPCIdleState ( actorTag : array<name> ) : bool
 {
 	var npcs : array<CNewNPC>;
 	var i 	 : int;
-	
+
 	for (i = 0; i < actorTag.Size(); i += 1 )
 	{
 		theGame.GetNPCsByTag( actorTag[i], npcs );
@@ -1052,7 +1052,7 @@ latent quest function QSetNPCIdleState ( actorTag : array<name> ) : bool
 		npcs[i].GetArbitrator().ClearAllGoals();
 		npcs[i].GetArbitrator().AddGoalIdle( true );
 	}
-	
+
 	return true;
 }
 quest function QPlayEffect ( entityTag : name, effectName : name, activate : bool, sfx : bool, persistentEffect : bool ) : bool
@@ -1060,9 +1060,9 @@ quest function QPlayEffect ( entityTag : name, effectName : name, activate : boo
 	var entities : array <CNode>;
 	var i      : int;
 	var entity : CEntity;
-	
+
 	theGame.GetNodesByTag(entityTag, entities);
-	
+
 	for (i = 0; i < entities.Size(); i += 1 )
 	{
 		entity = (CEntity) entities[i];
@@ -1099,7 +1099,7 @@ quest function QPlayEffect ( entityTag : name, effectName : name, activate : boo
 			}
 		}
 	}
-	
+
 	return true;
 }
 
@@ -1108,9 +1108,9 @@ quest function QPlayEffectWithTarget ( entityTag : name, effectName : name, acti
 	var entities : array <CNode>;
 	var i      : int;
 	var entity : CEntity;
-	
+
 	theGame.GetNodesByTag(entityTag, entities);
-	
+
 	for (i = 0; i < entities.Size(); i += 1 )
 	{
 		entity = (CEntity) entities[i];
@@ -1123,7 +1123,7 @@ quest function QPlayEffectWithTarget ( entityTag : name, effectName : name, acti
 				entity.StopEffect(effectName);
 		}
 	}
-	
+
 	return true;
 }
 
@@ -1134,9 +1134,9 @@ quest function QPlayEffectWithTargetComponent ( entityTag : name, effectName : n
 	var entities : array <CNode>;
 	var i      : int;
 	var entity : CEntity;
-	
+
 	theGame.GetNodesByTag(entityTag, entities);
-	
+
 	for (i = 0; i < entities.Size(); i += 1 )
 	{
 		entity = (CEntity) entities[i];
@@ -1149,7 +1149,7 @@ quest function QPlayEffectWithTargetComponent ( entityTag : name, effectName : n
 				entity.StopEffect(effectName);
 		}
 	}
-	
+
 	return true;
 }
 
@@ -1160,29 +1160,29 @@ quest function QTeleportActorWithRotation ( actorTag : name, targetDestinationTa
 	var targetDestination : Vector;
 	var targetRot : EulerAngles;
 	var node : CNode;
-	
+
 	node = theGame.GetNodeByTag( targetDestinationTag );
-	
+
 	if ( !node )
 	{
 		Log (" Teleport failed! node of given target is NULL" );
 		return false;
 	}
-	
+
 	actor = theGame.GetActorByTag( actorTag );
-	
+
 	if ( !actor )
 	{
 		Log (" Teleport failed! actor is NULL" );
 		return false;
 	}
-	
+
 
 	if( !actor.TeleportToNode( node, true ) )
 	{
 		Log (" Teleport failed! TeleportToNode returned false" );
 	}
-	
+
 	return true;
 }
 
@@ -1194,9 +1194,9 @@ latent quest function Qq105_StartBossFight ( Tentadrake : CEntityTemplate ): boo
 	var magicBarrier			 : CForceField;
 	var sheala					 : CEntity;
 	var zgnWP 					 : CNode;
-	
+
 	theGame.GetWorld().ShowLayerGroup( "boss_arena\scripts\zgn_fight" );
-	
+
 	zgnWP = theGame.GetNodeByTag('zgn_spawnpoint');
 	if ( !zgnWP )
 	{
@@ -1209,19 +1209,19 @@ latent quest function Qq105_StartBossFight ( Tentadrake : CEntityTemplate ): boo
 		Sleep(0.001);
 		Log("Qq105_StartBossFight waiting for zagnica to spawn");
 	}
-	
+
 	magicBarrier = (CForceField) theGame.GetNodeByTag( 'electric_obstacle' );
 	//theCamera.RaiseEvent( 'Camera_Zagnica' );
-	
-	sheala = theGame.GetEntityByTag( 'sheala' );	
+
+	sheala = theGame.GetEntityByTag( 'sheala' );
 
 	zgn.StartPhase1();
 	thePlayer.EnablePhysicalMovement( true );
 	magicBarrier.PlayEffect( 'electric' );
 	magicBarrier.SetActive( true );
-	
+
 	Log( "Fight with Zagnica started" );
-	
+
 	return true;
 }
 
@@ -1246,15 +1246,15 @@ quest function QCheck_if_Fact_exist ( Fact_ID : name, Fact_Value : int) : bool
 {
 	var factExist : bool;
 	var factValue : int;
-	
+
 	factExist = FactsDoesExist ( Fact_ID );
-	factValue = FactsQueryLatestValue ( Fact_ID ); 
-	
+	factValue = FactsQueryLatestValue ( Fact_ID );
+
 		if ( factExist == true && factValue == Fact_Value )
 		{
 			return true;
 		}
-		
+
 		else
 		{
 			return false;
@@ -1274,9 +1274,9 @@ quest function QGetWeaponFromPlayer ( containerTag : name, remove : bool) : bool
 	var skip       		: bool;
 	var itemCategory 	: name;
 	var itemQuantity	: int;
-	
+
 	container = (CGameplayEntity) theGame.GetNodeByTag(containerTag);
-	
+
 	if ( remove )
 	{
 		dest_inv = container.GetInventory();
@@ -1287,7 +1287,7 @@ quest function QGetWeaponFromPlayer ( containerTag : name, remove : bool) : bool
 		source_inv = container.GetInventory();
 		dest_inv = thePlayer.GetInventory();
 	}
-	
+
 	if ( !source_inv )
 	{
 		Log( "QGetWeaponFromPlayer: Failed to find source inventory ( tag: " + containerTag + " )" );
@@ -1298,9 +1298,9 @@ quest function QGetWeaponFromPlayer ( containerTag : name, remove : bool) : bool
 		Log( "QGetWeaponFromPlayer: Failed to find destination inventory ( tag " + containerTag + " )" );
 		return false;
 	}
-	
+
 	source_inv.GetAllItems( allItems );
-	
+
 	// Create a list of categories that should be moved to container
 	categoriesToMove.PushBack( 'steelsword' );
 	categoriesToMove.PushBack( 'silversword' );
@@ -1308,14 +1308,14 @@ quest function QGetWeaponFromPlayer ( containerTag : name, remove : bool) : bool
 	categoriesToMove.PushBack( 'petard' );
 	categoriesToMove.PushBack( 'rangedweapon' );
 	// -- Luke TODO
-	
+
 	for ( i = 0; i<allItems.Size(); i+=1 )
 	{
 		itemCategory = source_inv.GetItemCategory( allItems[i] );
 		if ( categoriesToMove.Contains( itemCategory ) )
 		{
 			itemQuantity = source_inv.GetItemQuantity( allItems[i] );
-			source_inv.GiveItem( dest_inv, allItems[i], itemQuantity );	
+			source_inv.GiveItem( dest_inv, allItems[i], itemQuantity );
 		}
 	}
 
@@ -1327,7 +1327,7 @@ quest function QGetWeaponFromPlayer ( containerTag : name, remove : bool) : bool
 quest function QSetDoorState (doorTag: name, door_state : EDoorState, immediate : bool ) : bool
 {
 	var request : CDoorStateRequest;
-	
+
 	request = new CDoorStateRequest in theGame;
 	request.doorState = door_state;
 	request.immediate = immediate;
@@ -1362,14 +1362,14 @@ quest function QSetSceneChaseSequence ( ChasersTag : array<name>, VictimTag : na
 	var Chasers : array<CNewNPC>;
 	var Victim : CNode;
 	var i : int;
-	
+
 	Victim = theGame.GetNodeByTag( VictimTag );
 	if ( ! Victim )
 	{
 		Log ("Victim not found! Breaking SetSceneChaseSequence!");
 		return false;
 	}
-	
+
 	for (i = 0; i < ChasersTag.Size(); i += 1 )
 	{
 		theGame.GetNPCsByTag( ChasersTag[i], Chasers );
@@ -1379,11 +1379,11 @@ quest function QSetSceneChaseSequence ( ChasersTag : array<name>, VictimTag : na
 		Chasers[i].GetArbitrator().ClearGoal();
 		Chasers[i].GetArbitrator().AddGoalPointOfInterest( POIT_Chase, Victim, 2.0f, timeout, true );
 	}
-	
+
 	return true;
 }
 
-//funkcja w³¹czajaca i wy³¹czaj¹ca medytacjê 
+//funkcja w³¹czajaca i wy³¹czaj¹ca medytacjê
 
 quest function QBlockMeditaction ( isBlocked : bool ) : bool
 {
@@ -1394,10 +1394,10 @@ quest function QBlockMeditaction ( isBlocked : bool ) : bool
 quest function QSetPhysicalMovementOnPlayer ( enabled : bool ) : bool
 {
 	var Player : CPlayer;
-	
+
 	Player = thePlayer;
 	Player.EnablePhysicalMovement( enabled );
-	
+
 	return true;
 }
 
@@ -1417,13 +1417,13 @@ latent quest function QMoveToObjectMultipleActors ( DestinationTag : name, Actor
 	var Destination: CNode;
 	var i : int;
 	var size : int;
-	
+
 	Destination = theGame.GetNodeByTag( DestinationTag );
 	if ( ! Destination )
 	{
 		return false;
 	}
-	
+
 	size = ActorsTag.Size();
 	for ( i = 0; i < size; i += 1 )
 	{
@@ -1434,28 +1434,28 @@ latent quest function QMoveToObjectMultipleActors ( DestinationTag : name, Actor
 	{
 		return false;
 	}
-	
+
 	size = Actors.Size();
 	for ( i = 0; i < size; i += 1 )
 	{
 		Actors[i].GetArbitrator().ClearGoal();
 		Actors[i].GetArbitrator().AddGoalMoveToTarget( Destination, moveType, speed, radius, exitWorkMode );
 	}
-	
-	return true; 
+
+	return true;
 }
 
 // Funkcja wy³¹czaj¹ca/wlaczajaca Sneak Mode
 quest function QSneakModeOff ( sneakMode : bool ) : bool
 {
 	var geralt : CPlayer;
-	
-	
+
+
 	geralt = thePlayer;
-	
+
 	geralt.SetSneakMode( sneakMode );
 	geralt.ChangePlayerState( PS_Exploration );
-	
+
 	return true;
 }
 
@@ -1465,19 +1465,19 @@ quest function QSneakModeOff ( sneakMode : bool ) : bool
 quest function QSceneRaiseAnimationEvent ( actorTag : name, behaviorGraphName : name, eventName : name, force : bool) : bool
 {
 	var actor : CActor;
-	
+
 	Log( "ERROR - SceneRaiseAnimationEvent - Nie uzywac tego!!!" );
-	
-	// PTom: To jest bardzo niebezpieczny kod! Do przerobienia. 
+
+	// PTom: To jest bardzo niebezpieczny kod! Do przerobienia.
 	actor = theGame.GetActorByTag ( actorTag );
 	actor.ActivateBehavior( behaviorGraphName );
-	
+
 	if ( force == true)
 		actor.RaiseForceEvent( eventName );
-	
+
 	else
 		actor.RaiseEvent( eventName );
-	
+
 	return true;
 }
 // Funkcja wlaczajaca interaction Talk
@@ -1485,7 +1485,7 @@ quest function QEnableTalkComponent ( shouldBeEnabled : bool, actorTag : name ) 
 {
 	var object	: CActor;
 	var component : CComponent;
-	
+
 	object = theGame.GetActorByTag( actorTag );
 	component = object.GetComponent ( "talk" );
 	component.SetEnabled( shouldBeEnabled );
@@ -1502,7 +1502,7 @@ quest function QSetMappin( ObjectTag: name, MappinName : name, mapDescription : 
 
 	if ( ! destination )
 		return false;
-	
+
 	if( ! remove )
 	{
 		if ( minimapDisplay )	displayMode = MapPinDisplay_Both;
@@ -1522,7 +1522,7 @@ quest function QShowHideLayer ( layerTag: name, show : bool ) : bool
 {
 	// DEPRECATED, use ShowLayerGroup() instead
 	//theGame.GetWorld().ShowLayers( layerTag, show );
-	
+
 	return true;
 }
 
@@ -1534,19 +1534,19 @@ latent quest function QGatherActorsSetPOIT ( DestinationTag : name, ActorsTag: a
 	var i, j : int;
 	var size : int;
 	var npc : CNewNPC;
-	
+
 	destination = theGame.GetNodeByTag( DestinationTag );
 	if ( ! destination )
 	{
 		return false;
 	}
-	
+
 	size = ActorsTag.Size();
 	for ( i = 0; i < size; i += 1 )
 	{
 		GetActorsInRange( actors, actorSearchRange, ActorsTag[i], destination, NULL );
 	}
-		
+
 	size = actors.Size();
 	for ( j = 0; j < size; j += 1 )
 		{
@@ -1557,8 +1557,8 @@ latent quest function QGatherActorsSetPOIT ( DestinationTag : name, ActorsTag: a
 				npc.GetArbitrator().AddGoalPointOfInterest( poit, destination, radius, timeout, observePOIT );
 			}
 		}
-	
-	return true; 
+
+	return true;
 }
 
 // Blackscreen z fade out i fade in
@@ -1597,8 +1597,8 @@ latent quest function QCSplayText ( txt1 : string, txt2 : string, duration : flo
 	if ( txt1 != "" ) str1 = GetLocStringByKeyExt( txt1 );
 	if ( txt2 != "" ) str2 = GetLocStringByKeyExt( txt2 );
 	theHud.m_hud.setCSText( str1 , str2 );
-	thePlayer.AddTimer( 'clearHudTextField', duration, false );	
-	
+	thePlayer.AddTimer( 'clearHudTextField', duration, false );
+
 	return true;
 }
 
@@ -1606,7 +1606,7 @@ latent quest function QCSplayText ( txt1 : string, txt2 : string, duration : flo
 latent quest function QCSclearText () : bool
 {
 	//theHud.m_messages.HideCutsceneText();
-	thePlayer.AddTimer( 'clearHudTextField', 0.1f, false );	
+	thePlayer.AddTimer( 'clearHudTextField', 0.1f, false );
 	return true;
 }
 
@@ -1619,28 +1619,28 @@ latent quest function QGatherActorsMoveWithLead ( destinationTag : name, actorsT
 	var size : int;
 	var npc,leader : CNewNPC;
 	var retries : int;
-	
+
 	destination = theGame.GetNodeByTag( destinationTag );
 	if ( ! destination )
 	{
 		return false;
 	}
-	
+
 	leader = theGame.GetNPCByTag( leaderTag );
 	if ( ! leader )
 	{
 		return false;
 	}
-		
+
 	leader.GetArbitrator().ClearGoal();
 	leader.GetArbitrator().AddGoalPointOfInterest( poit, destination, radius, leadTimeout, observePOIT );
-	
+
 	size = actorsTag.Size();
 	for ( i = 0; i < size; i += 1 )
 	{
 		GetActorsInRange( actors, actorSearchRange, actorsTag[i], leader, NULL );
 	}
-	
+
 	while ( true )
 	{
 		size = actors.Size();
@@ -1654,8 +1654,8 @@ latent quest function QGatherActorsMoveWithLead ( destinationTag : name, actorsT
 			}
 		}
 	}
-	
-	return true; 
+
+	return true;
 }
 
 // Funkcja odpalajaca odpowiedni stan wisielcow na rynku
@@ -1667,55 +1667,55 @@ latent quest function QQ102_GALLOW ( allStand : bool, firstHang : bool, secondHa
 	var woman_hanger : CEntity;
 	var man_hanger : CEntity;
 	var gallow : CEntity;
-	var executioner : CEntity;	
-	
+	var executioner : CEntity;
+
 	var elfHanger : CAnimatedComponent;
 	var womanElfHanger : CAnimatedComponent;
 	var jaskier_component: CAnimatedComponent;
 	var zoltan_component: CAnimatedComponent;
-	
+
 	var ropeJaskier : CAnimatedComponent;
 	var ropeZoltan : CAnimatedComponent;
-	var ropeElfHanger : CAnimatedComponent;            
+	var ropeElfHanger : CAnimatedComponent;
 	var ropeWomanElfHanger : CAnimatedComponent;
-	
-	var leverElfHanger : CAnimatedComponent;           
+
+	var leverElfHanger : CAnimatedComponent;
 	var leverWomanElfHanger : CAnimatedComponent;
-	
-	
+
+
 	var vectorJaskier : Vector;
-	var vectorZoltan : Vector;	
+	var vectorZoltan : Vector;
 	var vectorElfHanger : Vector;
 	var vectorWomanElfHanger : Vector;
 	var vectorGallow : Vector;
 	var vectorWPhanger1 : Vector;
-	var vectorWPhanger2 : Vector;	
-	var vectorExecutioner : Vector;		
-	
-	var rotationJaskier : EulerAngles;	
-	var rotationZoltan : EulerAngles;	
+	var vectorWPhanger2 : Vector;
+	var vectorExecutioner : Vector;
+
+	var rotationJaskier : EulerAngles;
+	var rotationZoltan : EulerAngles;
 	var rotationElfHanger : EulerAngles;
 	var rotationWomanElfHanger : EulerAngles;
-	var rotationGallow : EulerAngles;	
+	var rotationGallow : EulerAngles;
 	var rotationWPhanger1 : EulerAngles;
-	var rotationWPhanger2 : EulerAngles;	
-	var rotationExecutioner : EulerAngles;	
+	var rotationWPhanger2 : EulerAngles;
+	var rotationExecutioner : EulerAngles;
 
 	var component : CDrawableComponent;
-	
+
 	var isOk : bool;
-	
+
 	isOk = true;
 
 	vectorJaskier = theGame.GetNodeByTag('q102_dandelion').GetWorldPosition();
 	vectorZoltan = theGame.GetNodeByTag('q102_zoltan').GetWorldPosition();
 	vectorElfHanger = theGame.GetNodeByTag('q102_hanger01_wp').GetWorldPosition();
 	vectorWomanElfHanger = theGame.GetNodeByTag('q102_hanger02_wp').GetWorldPosition();
-	vectorGallow = theGame.GetNodeByTag('q102_gallow_wp').GetWorldPosition();	
+	vectorGallow = theGame.GetNodeByTag('q102_gallow_wp').GetWorldPosition();
 	vectorWPhanger1 = theGame.GetNodeByTag('q102_hanger1_hang').GetWorldPosition();
 	vectorWPhanger2 = theGame.GetNodeByTag('q102_hanger2_hang').GetWorldPosition();
-	vectorExecutioner = theGame.GetNodeByTag('q102_executioner_wp').GetWorldPosition();	
-	
+	vectorExecutioner = theGame.GetNodeByTag('q102_executioner_wp').GetWorldPosition();
+
 	rotationJaskier = theGame.GetNodeByTag('q102_dandelion').GetWorldRotation();
 	rotationZoltan = theGame.GetNodeByTag('q102_zoltan').GetWorldRotation();
 	rotationElfHanger = theGame.GetNodeByTag('q102_hanger01_wp').GetWorldRotation();
@@ -1729,21 +1729,21 @@ latent quest function QQ102_GALLOW ( allStand : bool, firstHang : bool, secondHa
 	jaskier = theGame.GetEntityByTag( 'Dandelion' );
 	zoltan = theGame.GetEntityByTag( 'Zoltan' );
 	woman_hanger = theGame.GetEntityByTag( 'q102_hanger02' );
-	man_hanger = theGame.GetEntityByTag( 'q102_hanger01' );  
+	man_hanger = theGame.GetEntityByTag( 'q102_hanger01' );
 	elfHanger = (CAnimatedComponent) man_hanger.GetRootAnimatedComponent();
 	womanElfHanger = (CAnimatedComponent) woman_hanger.GetRootAnimatedComponent();
 	jaskier_component = (CAnimatedComponent)jaskier.GetRootAnimatedComponent();
 	zoltan_component = (CAnimatedComponent)zoltan.GetRootAnimatedComponent();
-	
+
 	executioner = theGame.GetEntityByTag('q102_executioner');
 
 	ropeJaskier = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('rope1');
 	ropeZoltan = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('rope2');
 	ropeElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('rope3');
 	ropeWomanElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('rope4');
-	
+
 	leverElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('lever3');
-	leverWomanElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('lever4');  
+	leverWomanElfHanger = (CAnimatedComponent) theGame.GetEntityByTag('q102_gallow').GetComponent('lever4');
 
 	if( allStand )
 	{
@@ -1753,28 +1753,28 @@ latent quest function QQ102_GALLOW ( allStand : bool, firstHang : bool, secondHa
 			zoltan = theGame.GetEntityByTag( 'Zoltan' );
 			woman_hanger = theGame.GetEntityByTag( 'q102_hanger02' );
 			man_hanger = theGame.GetEntityByTag( 'q102_hanger01' );
-  
+
 			elfHanger = (CAnimatedComponent) man_hanger.GetRootAnimatedComponent();
 			womanElfHanger = (CAnimatedComponent) woman_hanger.GetRootAnimatedComponent();
 			jaskier_component = (CAnimatedComponent)jaskier.GetRootAnimatedComponent();
-			zoltan_component = (CAnimatedComponent)zoltan.GetRootAnimatedComponent();		
+			zoltan_component = (CAnimatedComponent)zoltan.GetRootAnimatedComponent();
 			Sleep ( 0.01f );
 		}
-		
-	
+
+
 		jaskier.TeleportWithRotation( vectorJaskier, rotationJaskier);
 		zoltan.TeleportWithRotation( vectorZoltan, rotationZoltan);
 		gallow.TeleportWithRotation( vectorGallow, rotationGallow);
 		theGame.GetEntityByTag('q102_hanger01').TeleportWithRotation( vectorElfHanger, rotationElfHanger);
 		theGame.GetEntityByTag('q102_hanger02').TeleportWithRotation( vectorWomanElfHanger, rotationWomanElfHanger);
-		
+
 		theGame.GetActorByTag('q102_hanger02').EnablePathEngineAgent( false );
 		theGame.GetActorByTag('q102_hanger01').EnablePathEngineAgent( false );
 		((CNewNPC)zoltan).EnablePathEngineAgent( false );
 		((CNewNPC)jaskier).EnablePathEngineAgent( false );
-		
+
 		Sleep(0.01f);
-		
+
 		ropeJaskier.RaiseBehaviorForceEvent('hanging_off');
 		ropeZoltan.RaiseBehaviorForceEvent('hanging_off');
 		ropeElfHanger.RaiseBehaviorForceEvent('hanging_off');
@@ -1784,105 +1784,105 @@ latent quest function QQ102_GALLOW ( allStand : bool, firstHang : bool, secondHa
 		zoltan.RaiseForceEvent('hanging_off');
 		woman_hanger.RaiseForceEvent('woman_hanger');
 		man_hanger.RaiseForceEvent('man_elf_hanger');
-		
+
 		leverElfHanger.RaiseBehaviorForceEvent('hanging_off');
 		leverWomanElfHanger.RaiseBehaviorForceEvent('hanging_off');
-		
+
 		((CActor) executioner).EnablePathEngineAgent( false );
 		executioner.TeleportWithRotation( vectorExecutioner, rotationExecutioner);
 		Sleep (0.1);
 		((CActor) executioner).EnablePathEngineAgent( true );
-		
 
-		
+
+
 		return true;
 	}
 	else if ( firstHang )
 	{
-	
+
 		component = (CDrawableComponent) gallow.GetComponent( "rope4_mesh" );
 		component.SetVisible( false );
 
 		theGame.GetActorByTag('q102_hanger01').EnablePathEngineAgent( false );
-		
+
 		gallow.TeleportWithRotation( vectorGallow, rotationGallow);
 		jaskier.TeleportWithRotation( vectorJaskier, rotationJaskier);
 		zoltan.TeleportWithRotation( vectorZoltan, rotationZoltan);
-		
+
 		theGame.GetEntityByTag('q102_hanger01').TeleportWithRotation( vectorElfHanger, rotationElfHanger);
-				
+
 		jaskier.RaiseForceEvent('hanging_jaskier_off');
 		zoltan.RaiseForceEvent('hanging_off');
 		man_hanger.RaiseForceEvent('man_elf_hanger');
-		
+
 		ropeJaskier.RaiseBehaviorForceEvent('hanging_off');
 		ropeZoltan.RaiseBehaviorForceEvent('hanging_off');
 		ropeElfHanger.RaiseBehaviorForceEvent('hanging_off');
-		
+
 		leverElfHanger.RaiseBehaviorForceEvent('hanging_off');
 		leverWomanElfHanger.RaiseBehaviorForceEvent('hanging_on');
-		
+
 		((CActor) executioner).EnablePathEngineAgent( false );
 		executioner.TeleportWithRotation( vectorExecutioner, rotationExecutioner);
 		Sleep (0.1);
 		((CActor) executioner).EnablePathEngineAgent( true );
-		
+
 		return true;
 	}
 	else if ( secondHang )
-	{		
+	{
 		component = (CDrawableComponent) gallow.GetComponent( "rope3_mesh" );
 		component.SetVisible( false );
-		
+
 		jaskier.TeleportWithRotation( vectorJaskier, rotationJaskier);
 		zoltan.TeleportWithRotation( vectorZoltan, rotationZoltan);
-		
+
 		jaskier.RaiseForceEvent('hanging_jaskier_off');
 		zoltan.RaiseForceEvent('hanging_off');
-		
+
 		ropeJaskier.RaiseBehaviorForceEvent('hanging_off');
 		ropeZoltan.RaiseBehaviorForceEvent('hanging_off');
-		
+
 		leverElfHanger.RaiseBehaviorForceEvent('hanging_on');
 		leverWomanElfHanger.RaiseBehaviorForceEvent('hanging_on');
-		
+
 		return true;
 	}
-	
+
 	else if ( afterHanging )
 	{
 		theGame.GetActorByTag('q102_hanger02').EnablePathEngineAgent( false );
 		theGame.GetActorByTag('q102_hanger01').EnablePathEngineAgent( false );
 		((CNewNPC)zoltan).EnablePathEngineAgent( true );
 		((CNewNPC)jaskier).EnablePathEngineAgent( true );
-		
+
 		theGame.GetEntityByTag('q102_hanger01').TeleportWithRotation( vectorWPhanger1, rotationWPhanger1);
 		theGame.GetEntityByTag('q102_hanger02').TeleportWithRotation( vectorWPhanger2, rotationWPhanger2);
-		
+
 		elfHanger.RaiseBehaviorForceEvent('hanging_on');
 		womanElfHanger.RaiseBehaviorForceEvent('hanging_on');
 
 		ropeElfHanger.RaiseBehaviorForceEvent('hanging_on');
 		ropeWomanElfHanger.RaiseBehaviorForceEvent('hanging_on');
-		
+
 		leverElfHanger.RaiseBehaviorForceEvent('hanging_on');
 		leverWomanElfHanger.RaiseBehaviorForceEvent('hanging_on');
-		
-		
+
+
 		zoltan.RaiseForceEvent('Idle');
 		jaskier.RaiseForceEvent('Idle');
 		ropeJaskier.RaiseBehaviorForceEvent('hanging_on');
 		ropeZoltan.RaiseBehaviorForceEvent('hanging_on');
 		return true;
 	}
-	
+
 	else if ( showRope )
 	{
 		component = (CDrawableComponent) gallow.GetComponent( "rope4_mesh" );
 		component.SetVisible( true );
 		return true;
 	}
-	
+
 	return true;
 }
 
@@ -1892,20 +1892,20 @@ quest function QGiveItemInScene( giverTag: name, receiverTag : name, itemName : 
 	var npc, receiver : CActor;
 	var itemId 	  	  : SItemUniqueId;
 	var npcInventory  : CInventoryComponent;
-	
+
 	npc 		 = theGame.GetActorByTag( giverTag );
 	receiver 	 = theGame.GetActorByTag( receiverTag );
 	npcInventory = npc.GetInventory();
 	itemId 	 = npcInventory.GetItemId( itemName );
-	
+
 	if ( quantity > npc.GetInventory().GetItemQuantity( itemId ) )
 	{
 		Log ("NPC " + giverTag + " doesn't have " + IntToString( quantity ) + " X " + itemName + "!");
 		quantity = npc.GetInventory().GetItemQuantity( itemId );
 	}
-	
+
 	npcInventory.GiveItem( receiver.GetInventory(), itemId, quantity );
-	
+
 	return true;
 }
 //Funkcja która pozwala na zabranie lub oddanie itemu NPC-owi
@@ -1922,9 +1922,9 @@ quest function QGetWeaponFromNPC ( actorTag : name, containerTag : name, remove 
 	var skip       		: bool;
 	var itemCategory 	: name;
 	var itemQuantity	: int;
-	
+
 	container = (CGameplayEntity) theGame.GetNodeByTag(containerTag);
-	
+
 	if ( remove )
 	{
 		dest_inv = container.GetInventory();
@@ -1935,7 +1935,7 @@ quest function QGetWeaponFromNPC ( actorTag : name, containerTag : name, remove 
 		source_inv = container.GetInventory();
 		dest_inv = theGame.GetActorByTag(actorTag).GetInventory();
 	}
-	
+
 	if ( !source_inv )
 	{
 		Log( "QGetWeaponFromPlayer: Failed to find source inventory ( tag: " + containerTag + " )" );
@@ -1946,9 +1946,9 @@ quest function QGetWeaponFromNPC ( actorTag : name, containerTag : name, remove 
 		Log( "QGetWeaponFromPlayer: Failed to find destination inventory ( tag " + containerTag + " )" );
 		return false;
 	}
-	
+
 	source_inv.GetAllItems( allItems );
-	
+
 	// Create a list of categories that should be moved to container
 	categoriesToMove.PushBack( 'opponent_weapon' );
 	categoriesToMove.PushBack( 'opponent_weapon_secondary' );
@@ -1957,14 +1957,14 @@ quest function QGetWeaponFromNPC ( actorTag : name, containerTag : name, remove 
 	categoriesToMove.PushBack( 'opponent_weapon_polearm' );
 	categoriesToMove.PushBack( 'roche_items' );
 	// -- Luke TODO
-	
+
 	for ( i = 0; i<allItems.Size(); i+=1 )
 	{
 		itemCategory = source_inv.GetItemCategory( allItems[i] );
 		if ( categoriesToMove.Contains( itemCategory ) )
 		{
 			itemQuantity = source_inv.GetItemQuantity( allItems[i] );
-			source_inv.GiveItem( dest_inv, allItems[i], itemQuantity );	
+			source_inv.GiveItem( dest_inv, allItems[i], itemQuantity );
 		}
 	}
 
@@ -1975,9 +1975,9 @@ quest function QGetWeaponFromNPC ( actorTag : name, containerTag : name, remove 
 quest function QSetBodyPartState ( targetTag : name, bodyPartName : name, bodyPartState : name, optional applyNow : bool) : bool
 {
 	var entity : CEntity;
-	
+
 	entity = theGame.GetEntityByTag(targetTag);
-	
+
 	entity.SetBodyPartState( bodyPartName, bodyPartState, applyNow );
 
 	return true;
@@ -2013,12 +2013,12 @@ quest function QAddItemToContainer ( itemName : name, containerTag : name, quant
 {
 	var inv 	   :  CInventoryComponent;
 	var container  : CEntity;
-	
+
 	container = (CEntity)theGame.GetNodeByTag(containerTag);
 	inv = (CInventoryComponent)container.GetComponentByClassName( 'CInventoryComponent' );
-	
+
 	inv.AddItem(itemName, quantity);
-	
+
 	return true;
 }
 
@@ -2029,7 +2029,7 @@ quest function QDespawnNPCS( npcTag : name): bool
 	var i : int;
 
 	theGame.GetNPCsByTag( npcTag, npcs );
-	
+
 	Log( "DespawnNPCS(): Found " + npcs.Size() + " NPCs with tag " + npcTag );
 
 	for ( i = 0; i < npcs.Size(); i += 1 )
@@ -2092,37 +2092,37 @@ quest function QSetGeraltNaked() : bool
 	var allItems : array< SItemUniqueId >;
 	var hairId : SItemUniqueId;
 	var i : int;
-	
+
 	cplayer = thePlayer;
 
 	cplayer.GetInventory().GetAllItems( allItems );
-	
+
 	for ( i = 0; i < allItems.Size(); i += 1 )
-	{	
+	{
 		if ( thePlayer.GetInventory().IsItemMounted( allItems[i] )  )
 		{
 			thePlayer.GetInventory().UnmountItem( allItems[i], true );
 		}
 	}
-	
+
 	hairId = thePlayer.GetInventory().GetItemId('default_geralt_hair');
 	thePlayer.GetInventory().MountItem(hairId, false);
-	
+
 	return true;
 }
 //Funkcja pozwalaj¹ca na rzucenie entity w zdefiniowany cel
-quest function QThrowObject ( objectTag : name, targetTag : name, angleInDegrees : float, multiplier : float ) : bool 
+quest function QThrowObject ( objectTag : name, targetTag : name, angleInDegrees : float, multiplier : float ) : bool
 {
 	var target : CNode;
 	var object : CEntity;
 	var targetPos : Vector;
- 
+
 	target = theGame.GetNodeByTag(targetTag);
 	object = theGame.GetEntityByTag(objectTag);
 	targetPos = target.GetWorldPosition();
- 
+
 	ThrowEntity(object, angleInDegrees, targetPos, multiplier);
- 
+
 	return true;
 }
 
@@ -2130,8 +2130,8 @@ quest function QThrowObject ( objectTag : name, targetTag : name, angleInDegrees
 
 quest function QTempStun ( actorTag: name ) : bool
 {
-	var actorNPC : CNewNPC;	
-	actorNPC = theGame.GetNPCByTag(actorTag);	
+	var actorNPC : CNewNPC;
+	actorNPC = theGame.GetNPCByTag(actorTag);
 	actorNPC.Stun(false, NULL);
 	return true;
 }
@@ -2140,19 +2140,19 @@ quest function QTempStun ( actorTag: name ) : bool
 quest function QPushOrPopBehaviorGraph ( actorTag : name, behaviorGraphName : name, push : bool) : bool
 {
 	var actor : CActor;
-	
+
 	Log( "ERROR - PushOrPopBehaviorGraph - Nie uzywac tego!!!" );
-	
+
 	// PTom czy na pewno jest cos takiego potrzebne???
-	
+
 	actor = theGame.GetActorByTag ( actorTag );
-		
+
 	if (push == true)
 		actor.AttachBehavior( behaviorGraphName );
-		
+
 	else
 		actor.DetachBehavior( behaviorGraphName );
-		
+
 	return true;
 }
 
@@ -2163,19 +2163,19 @@ quest function QCreateEntityInScene ( entityTemplate : CEntityTemplate, position
 	var wpPosition : Vector;
 	var wpRotation : EulerAngles;
 	var wpEntity   : CNode;
-		
+
 	if( position == Vector(0,0,0,0) )
 	{
 		wpEntity   = theGame.GetNodeByTag( orPositionFromWpTag );
 		wpPosition = wpEntity.GetWorldPosition();
 		wpRotation = wpEntity.GetWorldRotation();
-	
+
 		theGame.CreateEntity( entityTemplate, wpPosition, wpRotation, optionalUseAppearancesFromIncludes, optionalForceBehaviorPose );
 	}
-	
+
 	else
 		theGame.CreateEntity( entityTemplate, position, rotation, optionalUseAppearancesFromIncludes, optionalForceBehaviorPose );
-		
+
 	return true;
 }
 
@@ -2186,19 +2186,19 @@ quest function QSetIdleInRange ( centerPointTag : name, actorSearchRange : float
 	var i			: int;
 	var centerPoint : CNode;
 	var convNPC		: CNewNPC;
-	
+
 	if (!centerPoint)
 	{
 		Log( "SetIdleInRange: NO CENTER POINT FOUND!" );
 		return false;
 	}
 	centerPoint = theGame.GetNodeByTag( centerPointTag );
-	
+
 	for ( i = 0; i < actorsTag.Size(); i += 1 )
 	{
 		GetActorsInRange( npcs, actorSearchRange, actorsTag[i], centerPoint );
 	}
-		
+
 	for (i = 0; i < npcs.Size(); i += 1 )
 	{
 		convNPC = (CNewNPC) npcs[i];
@@ -2206,11 +2206,11 @@ quest function QSetIdleInRange ( centerPointTag : name, actorSearchRange : float
 		{
 			Log( "SetIdleInRange: NO NPCS FOUND!" );
 			return false;
-		}		
+		}
 		convNPC.GetArbitrator().ClearAllGoals();
 		convNPC.GetArbitrator().AddGoalIdle( true );
 	}
-	
+
 	return true;
 }
 
@@ -2222,8 +2222,8 @@ quest function QDestroyObject ( nodeTag : name, debugLayerGroupName : string ) :
 	var entity 	 : CEntity;
 	var count, i : int;
 	var defLayer : bool;
-	
-	
+
+
 	if ( debugLayerGroupName != "" )
 	{
 		//defLayer = theGame.GetWorld().IsLayerLoaded( debugLayerGroupName ); // DEPRECATED
@@ -2233,12 +2233,12 @@ quest function QDestroyObject ( nodeTag : name, debugLayerGroupName : string ) :
 			return false;
 		}
 	}
-	
+
 	theGame.GetNodesByTag( nodeTag, node );
 	count = node.Size();
-	
+
 	for ( i = 0; i < count; i += 1 )
-	{	
+	{
 		entity = (CEntity) node[i];
 		if ( !entity )
 		{
@@ -2247,7 +2247,7 @@ quest function QDestroyObject ( nodeTag : name, debugLayerGroupName : string ) :
 		}
 		entity.Destroy();
 	}
-	
+
 	return true;
 }
 
@@ -2256,7 +2256,7 @@ quest function QActivateBurningObstacle ( targetTag : name, enable : bool ) : bo
 {
 	var targets : array<CNode>;
 	var i, arraySize : int;
-	
+
 	theGame.GetNodesByTag( targetTag, targets );
 
 	arraySize = targets.Size();
@@ -2267,16 +2267,16 @@ quest function QActivateBurningObstacle ( targetTag : name, enable : bool ) : bo
 		{
 			((CFieryObstacle)targets[i]).startBurning();
 		}
-		
+
 		return true;
-	} 
+	}
 	else
 	{
 		for( i = 0; i < arraySize; i += 1 )
 		{
 			((CFieryObstacle)targets[i]).stopBurning();
 		}
-		
+
 		return true;
 	}
 }
@@ -2285,7 +2285,7 @@ quest function QActivateBurningObstacle ( targetTag : name, enable : bool ) : bo
 latent quest function QScenePlayerStartsCarryingNPC( carriedTag, masterBehaviorName, slaveBehaviorName : name, drawWeapon : bool ) : bool
 {
 	var result : bool;
-	
+
 	result = InteractionPlayerMaster( carriedTag, masterBehaviorName, slaveBehaviorName, drawWeapon );
 	return result;
 }
@@ -2302,7 +2302,7 @@ latent function InteractionPlayerMaster( slavesTag, masterBehaviorName, slaveBeh
 	var slaves : array<CActor>;
 	var i : int;
 	var result : bool;
-	
+
 	theGame.GetActorsByTag( slavesTag, slaves );
 	for( i=0; i<slaves.Size(); i+=1 )
 	{
@@ -2312,15 +2312,15 @@ latent function InteractionPlayerMaster( slavesTag, masterBehaviorName, slaveBeh
 			return false;
 		}
 	}
-	
+
 	result = thePlayer.StateInteractionMaster( slaves, masterBehaviorName, slaveBehaviorName, drawWeapon );
 	while( result == false )
 	{
 		Sleep( 0.5 );
 		result = thePlayer.StateInteractionMaster( slaves, masterBehaviorName, slaveBehaviorName, drawWeapon );
 	}
-	
-	
+
+
 	return true;
 }
 
@@ -2328,12 +2328,12 @@ latent function InteractionPlayerMaster( slavesTag, masterBehaviorName, slaveBeh
 quest latent function QInteractionPlayerMasterStop( carryTransitionMode : W2CarryTransitionMode ) : bool
 {
 	thePlayer.OnStopInteractionState( carryTransitionMode );
-	
+
 	while( thePlayer.GetCurrentPlayerState() == PS_PlayerCarry )
 	{
 		Sleep(0.1);
 	}
-	
+
 	return true;
 }
 
@@ -2389,7 +2389,7 @@ quest function QPlaySavableSoundOnActor( actorTag : name, boneName : name, event
 
 	request = new CPlaySoundOnActorRequest in theGame;
 	request.Initialize( boneName, eventName, fadeTime );
-	
+
 	theGame.AddStateChangeRequest( actorTag, request );
 }
 
@@ -2397,7 +2397,7 @@ quest function QPlaySavableSoundOnActor( actorTag : name, boneName : name, event
 quest function QPlaySoundOnActor( actorTag : name, boneName : name, eventName : string )
 {
 	var actor : CNode;
-	
+
 	actor = theGame.GetNodeByTag( actorTag );
 	theSound.PlaySoundOnActor( actor, boneName, eventName );
 }
@@ -2406,7 +2406,7 @@ quest function QPlaySoundOnActor( actorTag : name, boneName : name, eventName : 
 quest function QPlaySoundOnActorWithFade( actorTag : name, boneName : name, eventName : string )
 {
 	var actor : CNode;
-	
+
 	actor = theGame.GetNodeByTag( actorTag );
 	theSound.PlaySoundOnActorWithFade( actor, boneName, eventName );
 }
@@ -2446,7 +2446,7 @@ quest function QBlockCombatMusic( block : bool )
 quest function QActivateEnvironment ( AreaEnvironment: string, stabilize : bool ) : bool
 {
 	AreaEnvironmentActivate(AreaEnvironment);
-	
+
 	if( stabilize )
 	{
 		AreaEnvironmentStabilize();
@@ -2468,19 +2468,19 @@ quest function QDectivateEnvironment ( AreaEnvironment: string ) : bool
 quest function QSetManualControlInScene( movement : bool , camera : bool ) : bool
 	{
 		thePlayer.SetManualControl(movement, camera);
-		
+
 		return true;
 	}
-	
+
 // Reset camery gracza
 quest function QResetPlayerCamera() : bool
 	{
 		//thePlayer.ResetPlayerCamera();
 		theCamera.Reset();
-		
+
 		return true;
 	}
-	
+
 //Funkcja pozwalaj¹ca na za³adowanie lub od³adowanie grupu warstw
 
 quest function QManageLayerGroup ( path : string, load : bool ): bool
@@ -2504,9 +2504,9 @@ quest function Qq000Trebuchet ( trebuchet: name, fire : bool, stop : bool, load 
 
 	var trebuchets : array<CNode>;
 	var i : int;
-	
+
 	theGame.GetNodesByTag(trebuchet, trebuchets);
-	
+
 	for ( i = 0; i < trebuchets.Size(); i += 1 )
 	{
 		if (fire)
@@ -2532,26 +2532,26 @@ latent quest function QMoveAlongPathInScene( npcTag : name, pathTag : name, upTh
 	var npc 					: CNewNPC;
 	var path   					: CPathComponent;
 	var targetPath 				: CEntity;
-	
-	
+
+
 	targetPath = theGame.GetEntityByTag(pathTag );
 	npc  = theGame.GetNPCByTag( npcTag );
-	
+
 	while ( !npc )
 	{
 		npc  = theGame.GetNPCByTag( npcTag );
 		Sleep (0.5f);
 	}
-	
+
 	path = targetPath.GetPathComponent();
 	if ( !path )
 	{
 		return false;
 	}
-	
+
 	npc.GetArbitrator().ClearGoal();
 	npc.GetArbitrator().AddGoalWalkAlongPath( path, upThePath, fromBegining, margin, moveType, speed);
-	
+
 	return true;
 }
 
@@ -2565,37 +2565,37 @@ latent quest function QMoveAlongPathUntilReached( npcTag : name, pathTag : name,
 	var dist 							: float;
 	var destinationNode					: CNode;
 	var destination, actorPosition 		: Vector;
-	
+
 	targetPath = theGame.GetEntityByTag(pathTag );
 	npc  = theGame.GetNPCByTag( npcTag );
 	destinationNode = theGame.GetNodeByTag( destinationTag );
 	destination = destinationNode.GetWorldPosition();
-	
+
 	while ( !npc )
 	{
 		npc  = theGame.GetNPCByTag( npcTag );
 		Sleep (0.5f);
 	}
-	
+
 	path = targetPath.GetPathComponent();
 	if ( !path )
 	{
 		return false;
 	}
-	
+
 	npc.ActionExitWork( exitWorkFast );
 	npc.GetArbitrator().ClearGoal();
 	npc.GetArbitrator().AddGoalWalkAlongPath( path, upThePath, fromBegining, margin, moveType, speed );
-	
+
 	dist = 1;
 	while( dist > 0.3f )
 	{
 		actorPosition = npc.GetWorldPosition();
 		dist = VecDistance2D( destination, actorPosition );
-		
+
 		Sleep( 0.1f );
 	}
-	
+
 	return true;
 }
 
@@ -2618,35 +2618,35 @@ latent quest function QCheckIfTorchOn ( ObjectTag : name, LightAreaIsOn : bool, 
 	var door	: CDoor;
 	var i		: int;
 	var door_state : EDoorState;
-	
+
 	Object = (CEntity) theGame.GetNodeByTag( ObjectTag );
-	
-	
+
+
 	while( true )
 	{
 		Status = ((CSneakLightsArea)Object).LightAreaIsOn;
 
-		
+
 		if(Status == true)
 		{
 				door = (CDoor)theGame.GetNodeByTag( doorTag );
 				door.CloseDoor(immediate);
 				door.LockDoor(true);
-			
+
 			return true;
 		}
-		
+
 		if(Status == false)
 		{
 				door = (CDoor)theGame.GetNodeByTag( doorTag );
 				door.CloseDoor(immediate);
 				door.LockDoor(false);
-			
+
 			return false;
 		}
-	
-		
-		
+
+
+
 		Sleep (0.4f);
 	}
 }
@@ -2690,7 +2690,7 @@ quest function ShowDarkEnd()
 {
 	if(theGame.GetDifficultyLevel() == 4)
 	{
-	
+
 		theHud.ShowDarkEnd();
 		if(!theGame.IsActivelyPaused())
 		{
@@ -2702,7 +2702,7 @@ quest function ShowDarkEnd()
 latent quest function ShowCredits(ltitle: string, l1 : string, l2 : string, l3 : string, l4 : string, l5 : string, rtitle: string, r1 : string, r2: string, r3 : string, r4 : string, r5 : string, time : float, clearCredits : bool)
 {
 	var args : array < string >;
-	
+
 	if ( ! clearCredits )
 	{
 		args.PushBack(ltitle); // title left
@@ -2717,11 +2717,11 @@ latent quest function ShowCredits(ltitle: string, l1 : string, l2 : string, l3 :
 		args.PushBack(r3); // 3
 		args.PushBack(r4); // 4
 		args.PushBack(r5); // 5
-	
+
 		theHud.m_messages.ShowCredits( args );
 		Sleep( time );
 	}
-	
+
 	theHud.m_messages.HideCredits();
 }
 
@@ -2745,13 +2745,13 @@ quest function QEnableEncounters( encounterTag : name, enable : bool ) : bool
 	var request : CEncounterStateRequest;
 	request = new CEncounterStateRequest in theGame;
 	request.enable = enable;
-	
+
 	if( !theGame.GetEntityByTag( encounterTag ) )
 	{
 		Log( "Could'nt find encounter with tag '" + encounterTag + "'" );
 		return false;
 	}
-	
+
 	theGame.AddStateChangeRequest( encounterTag, request );
 	return true;
 }
@@ -2763,23 +2763,23 @@ latent quest function QLoadDynamicActorTemplate (actorTag: name, dynamicTemplate
 	var request : CDynamicActorTemplateRequest;
 	var allItems : array< SItemUniqueId >;
 	var i : int;
-	
+
 	request = new CDynamicActorTemplateRequest in theGame;
 	request.Initialize( dynamicTemplatePath, appearance, load, isNotGeralt );
-	
+
 	Log("======================= REPLACER ===================");
 	Log("Actor Tag: " + NameToString( actorTag ));
 	Log("Appearance :" + NameToString( appearance ));
 	Log("isNotGeralt: " + isNotGeralt );
 	Log("====================================================");
-	
+
 	thePlayer.StopEffect( 'Quen_level0' );
-	
+
 	theGame.AddStateChangeRequest( actorTag, request );
-	
-	
+
+
 	return true;
-	
+
 }
 latent quest function QWaitForSeconds(waitTime: float) : bool
 {
@@ -2788,7 +2788,7 @@ latent quest function QWaitForSeconds(waitTime: float) : bool
 }
 
 //MSZ: Function for shooting arrows at target position.
-//Warnings: projectileTemplate - must be a CRegularProjectile class object. 
+//Warnings: projectileTemplate - must be a CRegularProjectile class object.
 latent quest function QShootProjectilesAtPosition(projectileTemplate: CEntityTemplate, projectilesNumber: int, startPositionTag: name, randomStartPosRadius: float, startPositionOffset : Vector, targetPositionTag: name, randomTargetPosRadius: float, targetPositionOffset: Vector, angle : float, shootersDelay : float, playSound : EArrowSoundType, playGroupArrowsShootSound : bool) : bool
 {
 	var i, j, k, sizeStartA, sizeTargetA, projectilesPerStartPos, projectilesPerTargetPos : int;
@@ -2796,7 +2796,7 @@ latent quest function QShootProjectilesAtPosition(projectileTemplate: CEntityTem
 	var normal : EulerAngles;
 	var startArray, targetArray : array<CNode>;
 	var projectile : CRegularProjectile;
-	var arrowDelay : float;	
+	var arrowDelay : float;
 	theGame.GetNodesByTag(startPositionTag, startArray);
 	theGame.GetNodesByTag(targetPositionTag, targetArray);
 	sizeStartA = startArray.Size();
@@ -2812,7 +2812,7 @@ latent quest function QShootProjectilesAtPosition(projectileTemplate: CEntityTem
 	if(sizeStartA == 0)
 	{
 		Log("QShootProjectileAtPosition ERROR: no start position");
-		
+
 	}
 	else if(sizeTargetA == 0)
 	{
@@ -2862,7 +2862,7 @@ latent quest function QShootProjectilesAtPosition(projectileTemplate: CEntityTem
 						Sleep(arrowDelay);
 					}
 				}
-				
+
 				k +=1;
 				if(k>=sizeTargetA)
 				{
@@ -2917,7 +2917,7 @@ latent quest function QShootProjectilesAtTargets(projectileTemplate: CEntityTemp
 		if(sizeStartA == 0)
 		{
 			Log("QShootProjectileAtTarget ERROR: no start position");
-			
+
 		}
 		else if(sizeTargetA == 0)
 		{
@@ -2967,7 +2967,7 @@ latent quest function QShootProjectilesAtTargets(projectileTemplate: CEntityTemp
 							Sleep(arrowDelay);
 						}
 					}
-					
+
 					k +=1;
 					if(k>=sizeTargetA)
 					{
@@ -2982,7 +2982,7 @@ latent quest function QShootProjectilesAtTargets(projectileTemplate: CEntityTemp
 	{
 		Log("QShootProjectileAtTarget ERROR: no target tags specified");
 	}
-	
+
 	return true;
 }
 
@@ -2992,11 +2992,11 @@ quest function SetPlayerExplorationState() : bool
 	var player : CPlayer;
 	var oldState : EPlayerState;
 	var behStateName : string;
-	
+
 	player = thePlayer;
 	oldState = player.GetCurrentPlayerState();
 	behStateName = player.GetCurrentStateName();
-	
+
 	if( player.EntryExploration(oldState, behStateName) )
 	{
 		return true;
@@ -3032,7 +3032,7 @@ latent quest function QPlayLineForCharacterArray ( data : array<SCharTagAndPlayL
 		}
 	}
 
-	// dla kazej linijki piosenki	
+	// dla kazej linijki piosenki
 	for ( currLineIndex = 0; currLineIndex < maxLinesSize; currLineIndex += 1 )
 	{
 		// dla kazdego npca
@@ -3040,9 +3040,9 @@ latent quest function QPlayLineForCharacterArray ( data : array<SCharTagAndPlayL
 		{
 			if ( currLineIndex < data[currCharIndex].linesIDs.Size() )
 			{
-		
+
 				// data[currCharIndex].linesIDs[ currLineIndex ] - id linijki do odegrania
-		
+
 				// data[currCharIndex].characterTag - tag aktora
 				theGame.GetActorByTag( data[currCharIndex].characterTag ).PlayLine( data[currCharIndex].linesIDs[ currLineIndex ], false );
 			}
@@ -3052,10 +3052,10 @@ latent quest function QPlayLineForCharacterArray ( data : array<SCharTagAndPlayL
 
 
 // funkcja pozwalajaca na zmiane appereanca po tagu
-quest function QApplyAppearance( appearanceName : string, npcTag : name  ) : bool 
+quest function QApplyAppearance( appearanceName : string, npcTag : name  ) : bool
 {
 	var actorNPC : CNewNPC;
-	
+
 	actorNPC  = theGame.GetNPCByTag( npcTag );
 
 	actorNPC.ApplyAppearance( appearanceName );
@@ -3064,10 +3064,10 @@ quest function QApplyAppearance( appearanceName : string, npcTag : name  ) : boo
 }
 
 // funkcja pozwalajaca na zmiane appereanca po tagu
-quest function QApplyAppearanceForEntity( appearanceName : string, entityTag : name  ) : bool 
+quest function QApplyAppearanceForEntity( appearanceName : string, entityTag : name  ) : bool
 {
 	var entity : CEntity;
-	
+
 	entity  = theGame.GetEntityByTag( entityTag );
 
 	entity.ApplyAppearance( appearanceName );
@@ -3080,9 +3080,9 @@ quest function QDrawWeapon( targetsTag : name ) : bool
 	var targets : array<CNewNPC>;
 	var i : int;
 	var weaponId : SItemUniqueId;
-	
+
 	theGame.GetNPCsByTag( targetsTag, targets );
-	
+
 	for( i = 0; i < targets.Size(); i +=1 )
 	{
 		if( targets[i].HasCombatType( CT_ShieldSword ) )
@@ -3093,7 +3093,7 @@ quest function QDrawWeapon( targetsTag : name ) : bool
 				weaponId = targets[i].GetInventory().GetItemByCategory('steelsword');
 			}
 			targets[i].DrawWeaponInstant(weaponId);
-			
+
 			weaponId = targets[i].GetInventory().GetItemByCategory('opponent_shield');
 			if ( weaponId == GetInvalidUniqueId() )
 			{
@@ -3101,7 +3101,7 @@ quest function QDrawWeapon( targetsTag : name ) : bool
 			}
 			targets[i].DrawWeaponInstant(weaponId);
 		}
-		
+
 		else if( targets[i].HasCombatType( CT_Bow ) )
 		{
 			weaponId = targets[i].GetInventory().GetItemByCategory('opponent_bow');
@@ -3111,15 +3111,15 @@ quest function QDrawWeapon( targetsTag : name ) : bool
 			}
 			targets[i].DrawWeaponInstant(weaponId);
 		}
-		
+
 		else
 		{
 			targets[i].DrawWeaponInstant( targets[i].GetInventory().GetFirstLethalWeaponId() );
 		}
 	}
-	
+
 	return true;
-}	
+}
 
 
 quest function QDrawCrossbow( targetsTag : name ) : bool
@@ -3127,9 +3127,9 @@ quest function QDrawCrossbow( targetsTag : name ) : bool
 	var targets : array<CNewNPC>;
 	var i : int;
 	var weaponId : SItemUniqueId;
-	
+
 	theGame.GetNPCsByTag( targetsTag, targets );
-	
+
 	for( i = 0; i < targets.Size(); i +=1 )
 	{
 			weaponId = targets[i].GetInventory().GetItemByCategory('opponent_bow');
@@ -3138,10 +3138,10 @@ quest function QDrawCrossbow( targetsTag : name ) : bool
 				weaponId = targets[i].GetInventory().GetItemByCategory('rangedweapon');
 			}
 			targets[i].DrawWeaponInstant(weaponId);
-	}		
-	
+	}
+
 	return true;
-}	
+}
 
 //pause/unpause czasu w GUI
 quest function QPauseGUITime ( pause : bool) : bool
@@ -3154,15 +3154,15 @@ quest function QChangeNPCExplorationState( npcsTag : name, newState : EExplorati
 {
 	var npcs : array<CNewNPC>;
 	var i : int;
-	
+
 	theGame.GetNPCsByTag( npcsTag, npcs );
-	
+
 	for( i = 0; i < npcs.Size(); i +=1 )
 	{
 		npcs[i].ActivateBehavior( 'npc_exploration' );
 		npcs[i].SetMovementType( newState );
 	}
-	
+
 	return true;
 }
 
@@ -3172,9 +3172,9 @@ quest latent function QGeraltFallsDown_in_q209i() : bool
 {
 	thePlayer.AttachBehavior('quest_custom');
 	thePlayer.RaiseForceEvent('start_geralt_falls_down');
-	
+
 	thePlayer.WaitForBehaviorNodeDeactivation ('geralt_felt_down', 20.f);
-	
+
 return true;
 }
 
@@ -3183,9 +3183,9 @@ quest function QBlockPlayer(blockPlayer : bool, freeCamera : bool) : bool
 {
 	thePlayer.SetManualControl(!blockPlayer, freeCamera);
 	thePlayer.ResetPlayerMovement();
-	
+
 	return true;
-	
+
 }
 quest function QArenaConnectToCrowd()
 {
@@ -3198,10 +3198,10 @@ latent quest function QArenaReset()
 
 	arenaManager = (CArenaManager)theGame.GetEntityByTag('arena_manager');
 	arenaContainer = (CArenaContainter)theGame.GetEntityByTag('arena_container');
-	
+
 	//arenaContainer.GetInventory().RemoveAllItems();
 	//arenaManager.InitArena();
-	
+
 	arenaManager.ResetSpawnedOpponents();
 	arenaManager.ResetRounds();
 	arenaManager.RemoveTimer('TimerWaveBonusTime');
@@ -3260,14 +3260,14 @@ quest function QRestoreHealth( targetTag : name ) : bool
 {
 	var target : CNewNPC;
 	var maxHealth, currentHealth, healAmount : float;
-     
+
     if( targetTag != 'PLAYER' )
     {
 		target = theGame.GetNPCByTag( targetTag );
-		
+
 		maxHealth = target.GetInitialHealth();
 		currentHealth = target.health;
-		
+
 	    healAmount = maxHealth - currentHealth;
 		target.IncreaseHealth( healAmount );
     }
@@ -3275,11 +3275,11 @@ quest function QRestoreHealth( targetTag : name ) : bool
     {
 		maxHealth = thePlayer.GetInitialHealth();
 		currentHealth = thePlayer.health;
-		
+
 		healAmount = maxHealth - currentHealth;
 		thePlayer.IncreaseHealth( healAmount );
     }
-	
+
 	return true;
 }
 
@@ -3288,14 +3288,14 @@ quest function QSetImmortal( targetsTag : name, immortalityMode : EActorImmortal
 {
 	var targets : array<CActor>;
 	var i : int;
-	
+
 	theGame.GetActorsByTag( targetsTag, targets );
-	
+
 	for( i = 0; i < targets.Size(); i += 1 )
 	{
 		targets[i].SetImmortalityModePersistent( immortalityMode );
-	} 
-	
+	}
+
 	return true;
 }
 //clear immortal on actors
@@ -3303,26 +3303,26 @@ quest function QClearImmortal( targetsTag : name ) : bool
 {
 	var targets : array<CActor>;
 	var i : int;
-	
+
 	theGame.GetActorsByTag( targetsTag, targets );
-	
+
 	for( i = 0; i < targets.Size(); i += 1 )
 	{
 		targets[i].ClearImmortality();
-	} 
-	
+	}
+
 	return true;
 }
 
 quest function QForceCancelWork( NpcTag : name) : bool
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag( NpcTag );
-	
+
 	npc.ActionCancelAll();
 	//npc.ActionExitWorkAsync( false );
-	
+
 	return true;
 }
 
@@ -3336,16 +3336,16 @@ quest function QPlayEventOnPlayer(EventName : name, BehaviourName : name) : bool
 
 quest function QStaticCombat( npcTag : name, targetTag : name, symetric : bool, affectAll : bool ) : bool
 {
-	var npc, target : CNewNPC;		
+	var npc, target : CNewNPC;
 	var npcs : array <CNewNPC>;
 	var i      : int;
 
 	target = theGame.GetNPCByTag( targetTag );
-	
+
 	if( !affectAll )
-	{		
+	{
 		npc = theGame.GetNPCByTag( npcTag );
-		
+
 		if( npc && target )
 		{
 			npc.GetArbitrator().AddGoalStaticCombat( target, npc.GetWorldPosition() );
@@ -3356,16 +3356,16 @@ quest function QStaticCombat( npcTag : name, targetTag : name, symetric : bool, 
 			return true;
 		}
 	}
-	
+
 	else // SL / Wariant affectAll nie jest symetryczny!!
 	{
 		theGame.GetNPCsByTag(npcTag, npcs);
-		
+
 		for (i = 0; i < npcs.Size(); i += 1 )
-		{	
+		{
 			npc = npcs[i];
 			npc = theGame.GetNPCByTag( npcTag );
-			
+
 			if( npc && target )
 			{
 				npc.GetArbitrator().AddGoalStaticCombat( target, npc.GetWorldPosition() );
@@ -3385,14 +3385,14 @@ latent quest function QStartQte ( qteDurationTime: float, qteInitialValue: float
 	var witcher : CPlayer;
 	var qteStartInfo : SMashQTEStartInfo = SMashQTEStartInfo();
 
-	
+
 	witcher = thePlayer;
 	//LogChannel( 'QStartQte', "Start" );
 
 	listener = new AxiiQTEListener in witcher;
 	witcher.SetQTEListener( listener );
-	
-	
+
+
 	qteStartInfo.action = 'Use';
 	qteStartInfo.initialValue = qteInitialValue;
 	qteStartInfo.timeOut = qteDurationTime;
@@ -3400,18 +3400,18 @@ latent quest function QStartQte ( qteDurationTime: float, qteInitialValue: float
 	qteStartInfo.increasePerMash = valueIncreasePerMash;
 	qteStartInfo.ignoreWrongInput = ignoreWrongInput;
 	witcher.StartMashFullQTEAsync( qteStartInfo );
-	
+
 
 	result = witcher.GetLastQTEResult();
-	
-		
+
+
 	while ( result == QTER_InProgress )
 	{
 		result = witcher.GetLastQTEResult();
-		
+
 		Sleep( 0.1 );
-	} 
-	
+	}
+
 	if ( result == QTER_Succeeded )
 	{
 		theHud.m_messages.ShowInformationText( GetLocStringByKeyExt( "Action successful!" ) );
@@ -3420,7 +3420,7 @@ latent quest function QStartQte ( qteDurationTime: float, qteInitialValue: float
 	{
 		theHud.m_messages.ShowInformationText( GetLocStringByKeyExt( "Action failed!" ) );
 	}
-	
+
 	return result == QTER_Succeeded;
 }
 //funkcja do questu q302 przenoszaca cale inventory wiedzmina do skrzynki w wiezieniu
@@ -3473,14 +3473,14 @@ latent quest function SQ102TransferFromGeraltToChest () : bool
 latent quest function QPutDownBox( targetTag : name ) : bool
 {
 	var target : CNewNPC;
-	
+
 	target = theGame.GetNPCByTag( targetTag );
-	
+
 	target.RaiseEvent('stop_carry_box');
 	target.WaitForBehaviorNodeDeactivation( 'CarryEnd', 20.f );
-	
+
 	target.SetMovementType( EX_Normal );
-	
+
 	return true;
 }
 
@@ -3488,7 +3488,7 @@ latent quest function QPutDownBox( targetTag : name ) : bool
 latent quest function QSetGroupAttitude( srcGroup : name, dstGroup : name, attitude : EAIAttitude ) : bool
 {
 	theGame.SetGlobalAttitude( srcGroup, dstGroup, attitude );
-	
+
 	return true;
 }
 
@@ -3498,22 +3498,22 @@ latent quest function QEnablePhysics( objectTag : name, Enable : bool ) : bool
 	var entity    : array <CNode>;
 	var single_entity : CEntity;
 	var count, i : int;
-	var single_component : CRigidMeshComponent;	
-	
+	var single_component : CRigidMeshComponent;
+
 	theGame.GetNodesByTag( objectTag, entity);
 	count = entity.Size();
-	
+
 	for ( i = 0; i < count; i += 1 )
 	{
 		single_entity = (CEntity) entity[i];
 		if ( ! single_entity )
 			continue;
-		
+
 		single_component = (CRigidMeshComponent) single_entity.GetComponentByClassName( 'CRigidMeshComponent' );
-		
+
 		if ( ! single_component )
 			continue;
-			
+
 		if(Enable)
 		{
 			single_component.EnablePhysics();
@@ -3523,7 +3523,7 @@ latent quest function QEnablePhysics( objectTag : name, Enable : bool ) : bool
 			single_component.DisablePhysics();
 		}
 	}
-	
+
 	return true;
 }
 
@@ -3531,32 +3531,32 @@ latent quest function QEnablePhysics( objectTag : name, Enable : bool ) : bool
 // MT // Odpycha playera // SL zaleznie od ustawienia wzgledem tarczownika
 quest function QKnockBackPlayer( atackerPositionTag : name) : bool
 {
-	
+
 		var isFrontToSource : bool;
 		var atackerPosition : CEntity;
 		var hitPosition : Vector;
 		var s : int;
 		var hitEnums_t3 				: array<EPlayerCombatHit>;
-		
+
 		atackerPosition = (CEntity)theGame.GetNodeByTag(atackerPositionTag);
-		
+
 		hitPosition = atackerPosition.GetWorldPosition();
-		
+
 		isFrontToSource = thePlayer.IsRotatedTowardsPoint( hitPosition, 90 );
-		
+
 		theCamera.SetBehaviorVariable('cameraShakeStrength', 0.5);
 		theCamera.RaiseEvent('Camera_ShakeHit');
 		if( isFrontToSource )
-		{	
+		{
 			s = hitEnums_t3.Size();
 			if( s == 0 )
 			{
 				thePlayer.PlayerCombatHit(PCH_Hit_3a);
 			}
 				else
-			{	
+			{
 				thePlayer.PlayerCombatHit(hitEnums_t3[Rand(s)]);
-			}		
+			}
 		}
 		else
 		{
@@ -3570,32 +3570,32 @@ quest function QKnockBackPlayer( atackerPositionTag : name) : bool
 
 quest function QKnockBackPlayerQ303( atackerPositionTag : name) : bool
 {
-	
+
 		var isFrontToSource : bool;
 		var atackerPosition : CEntity;
 		var hitPosition : Vector;
 		var s : int;
 		var hitEnums_t3 				: array<EPlayerCombatHit>;
-		
+
 		atackerPosition = (CEntity)theGame.GetNodeByTag(atackerPositionTag);
-		
+
 		hitPosition = atackerPosition.GetWorldPosition();
-		
+
 		isFrontToSource = thePlayer.IsRotatedTowardsPoint( hitPosition, 90 );
-		
+
 		theCamera.SetBehaviorVariable('cameraShakeStrength', 0.5);
 		theCamera.RaiseEvent('Camera_ShakeHit');
 		if( isFrontToSource )
-		{	
+		{
 			s = hitEnums_t3.Size();
 			if( s == 0 )
 			{
 				thePlayer.PlayerCombatHit(PCH_Hit_3a);
 			}
 				else
-			{	
+			{
 				thePlayer.PlayerCombatHit(hitEnums_t3[Rand(s)]);
-			}		
+			}
 		}
 		else
 		{
@@ -3610,13 +3610,13 @@ quest function QDealDmgToObject( objectTag : name, damage : float ) : bool
 {
 	var target : CEntity;
 	var destructionComponent : CDestructionSystemComponent;
-	
+
 	target = theGame.GetEntityByTag( objectTag );
-	
+
 	destructionComponent = (CDestructionSystemComponent) target.GetComponentByClassName( 'CDestructionSystemComponent' );
-	
+
 	destructionComponent.ApplyScriptedDamage( -1, damage );
-	
+
 	return true;
 }
 
@@ -3624,7 +3624,7 @@ quest function QDealDmgToObject( objectTag : name, damage : float ) : bool
 quest latent function QSetRagdollOnPlayer( enable : bool ) : bool
 {
 	thePlayer.SetRagdoll( enable );
-	
+
 	return true;
 }
 
@@ -3640,15 +3640,15 @@ var candleHeading : float;
 	candle = theGame.GetNodeByTag(candleTag);
 	candlePosition = candle.GetWorldPosition();
 	//candleHeading = candle.GetHeading();
-	
+
 	thePlayer.SetManualControl(false, true);
 	thePlayer.RotateTo(candlePosition, 0.2);
 	thePlayer.AttachBehavior('exploration');
 	thePlayer.RaiseForceEvent('fire_candle');
-	
+
 	thePlayer.WaitForBehaviorNodeDeactivation ('candle_fired', 20.f);
 	thePlayer.SetManualControl(true, true);
-	
+
 return true;
 }
 
@@ -3664,7 +3664,7 @@ quest function QSetSepiaFullscreenEffect (Enable : bool, fadeIn : float, fadeOut
 	{
 		theGame.StopSepiaEffect( fadeOut );
 	}
-	
+
 return true;
 }
 
@@ -3674,15 +3674,15 @@ quest function QAssociateGuardAreaToNPC( npcTag : name, areaTag : name ) : bool
 	var npcs : array <CNewNPC>;
 	var i      : int;
 	var npc : CNewNPC;
-	
+
 	theGame.GetNPCsByTag(npcTag, npcs);
-	
+
 	for (i = 0; i < npcs.Size(); i += 1 )
-	{	
+	{
 		npc = npcs[i];
 		npc.SetGuardArea( areaTag );
 		Log(areaTag + " has been associated with " + npcTag);
-		
+
 	}
 	return true;
 }
@@ -3692,11 +3692,11 @@ quest latent function Q307_SetDragonCombatPhase(phaseId : EDragonA3CombatPhase, 
 	var dragon : CDragonA3Base;
 	var dragonFlying : CEntity;
 	var spawnNode : CNode;
-	var dragonHead : CDragonHead; 
+	var dragonHead : CDragonHead;
 	var dragonHeadHolder : CNode;
-	
+
 	dragon = (CDragonA3Base)theGame.GetEntityByTag('dragon_a3');
-	
+
 	dragonHead = (CDragonHead)theGame.GetEntityByTag('dragon_head');
 	if( !dragonHead && phaseId != DCP_NoDragon )
 	{
@@ -3712,38 +3712,38 @@ quest latent function Q307_SetDragonCombatPhase(phaseId : EDragonA3CombatPhase, 
 		return;
 	}
 	dragonHeadHolder = theGame.GetNodeByTag('dragon_head_hold');
-	
+
 	if(phaseId == DCP_NoDragon)
 	{
 		if( dragon )
 		{
 			dragon.Destroy();
 		}
-			
+
 		dragonHead.Teleport(dragonHeadHolder.GetWorldPosition());
 	}
 	else if(phaseId == DCP_DragonFlying)
 	{
 		thePlayer.EnablePhysicalMovement(false);
-		
+
 		spawnNode = theGame.GetNodeByTag('q307_dragon_flying_sp');
 		dragonFlying = theGame.CreateEntity(dragonToSpawn, spawnNode.GetWorldPosition(), spawnNode.GetWorldRotation());
 	}
 	else if(phaseId == DCP_Windows)
 	{
 		thePlayer.EnablePhysicalMovement(true);
-		
+
 		dragonFlying = theGame.GetEntityByTag('dragon_a3_flying');
 		if( dragonFlying )
 		{
 			dragonFlying.Destroy();
 		}
-		
+
 		if(dragon)
 		{
 			dragon.Destroy();
 		}
-		
+
 		spawnNode = theGame.GetNodeByTag('d_window1_3');
 		dragon = (CDragonA3Windows)theGame.CreateEntity( dragonToSpawn, spawnNode.GetWorldPosition(), spawnNode.GetWorldRotation() );
 		if( !dragon )
@@ -3759,18 +3759,18 @@ quest latent function Q307_SetDragonCombatPhase(phaseId : EDragonA3CombatPhase, 
 			Log( "ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR" );
 			return;
 		}
-		
+
 		dragonHead.AttachToDragon( dragon );
 	}
 	else if(phaseId == DCP_FirstFloor)
 	{
 		thePlayer.EnablePhysicalMovement(true);
-		
+
 		if(dragon)
 		{
 			dragon.Destroy();
 		}
-		
+
 		spawnNode = theGame.GetNodeByTag('dragon_a3_floor_sp');
 		dragon = (CDragonA3Floor)theGame.CreateEntity(dragonToSpawn, spawnNode.GetWorldPosition(), spawnNode.GetWorldRotation());
 		if( !dragon )
@@ -3786,18 +3786,18 @@ quest latent function Q307_SetDragonCombatPhase(phaseId : EDragonA3CombatPhase, 
 			Log( "ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR" );
 			return;
 		}
-		
+
 		dragonHead.AttachToDragon( dragon );
 	}
 	else if(phaseId == DCP_TowerTop)
 	{
 		thePlayer.EnablePhysicalMovement(true);
-		
+
 		if( dragon )
 		{
 			dragon.Destroy();
 		}
-		
+
 		spawnNode = theGame.GetNodeByTag('dragon_a3_top_sp');
 		dragon = (CDragonA3Base)theGame.CreateEntity(dragonToSpawn, spawnNode.GetWorldPosition(), spawnNode.GetWorldRotation());
 		if( !dragon )
@@ -3813,7 +3813,7 @@ quest latent function Q307_SetDragonCombatPhase(phaseId : EDragonA3CombatPhase, 
 			Log( "ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR-ERROR" );
 			return;
 		}
-		
+
 		dragonHead.AttachToDragon( dragon );
 		((CDragonA3)dragon).Apear();
 	}
@@ -3831,10 +3831,10 @@ quest function Q308_StartFight()
 
 	node = theGame.GetNodeByTag( 'Riszon' );
 	riszon = (CRiszon)node;
-	
+
 	if( !riszon )
 		Log( "Can't find instance of CRiszon with tag 'Riszon'" );
-		
+
 	riszon.StartBossFight();
 }
 
@@ -3845,28 +3845,28 @@ quest function QTeleportObjectToZeroZero( objectTag : name ) : bool
 	var nodes    : array <CNode>;
 	var count, i : int;
 	var entities : array <CEntity>;
-	
+
 	theGame.GetNodesByTag( objectTag, nodes);
 	count = nodes.Size();
-	
+
 	for ( i = 0; i < count; i += 1 )
 	{
 		object = (CEntity) nodes[i];
 		if ( ! object )
 			continue;
-			
+
 		entities.PushBack( object );
-		
+
 		continue;
 	}
-	
+
 	for ( i = 0; i < entities.Size(); i+=1 )
 	{
 		entities[i].Teleport( Vector(0,0,0) );
-		
+
 		continue;
 	}
-	
+
 	return true;
 }
 
@@ -3876,15 +3876,15 @@ quest function QRemoveGuardTrigger( npcTag : name ) : bool
 	var npcs : array <CNewNPC>;
 	var i      : int;
 	var npc : CNewNPC;
-	
+
 	theGame.GetNPCsByTag(npcTag, npcs);
-	
+
 	for (i = 0; i < npcs.Size(); i += 1 )
-	{	
+	{
 		npc = npcs[i];
 		npc.ClearGuardArea();
 		Log(npcTag + " no longer has guard trigger assigned");
-		
+
 	}
 	return true;
 }
@@ -3899,24 +3899,24 @@ quest function FakeLevelUp( levelUpCount : int ) : bool
 // SL // Zmiana combat type (wpisany current jest podmieniany na new)
 quest function QSwapCombatType(npcTag : name, currentCombatType : ECombatType, newCombatType : ECombatType, affectAll : bool, reenterCombat : bool ) : bool
 {
-	var npc, target : CNewNPC;		
+	var npc, target : CNewNPC;
 	var npcs : array <CNewNPC>;
 	var i      : int;
-	
+
 	if( !affectAll )
-	{		
+	{
 		npc = theGame.GetNPCByTag( npcTag );
 		npc.SwapCombatType( currentCombatType, newCombatType, reenterCombat );
 	}
-	
+
 	else
 	{
 		theGame.GetNPCsByTag(npcTag, npcs);
-		
+
 		for (i = 0; i < npcs.Size(); i += 1 )
-		{	
+		{
 			npc = npcs[i];
-			
+
 			npc.SwapCombatType( currentCombatType, newCombatType, reenterCombat );
 		}
 	}
@@ -3924,13 +3924,13 @@ quest function QSwapCombatType(npcTag : name, currentCombatType : ECombatType, n
 }
 
 quest function QSetCombatType(npcsTag : name, primary, secondary : ECombatType, reenterCombat : bool )
-{		
+{
 	var npcs : array <CNewNPC>;
 	var i : int;
 	theGame.GetNPCsByTag(npcsTag, npcs);
-	
+
 	for (i = 0; i < npcs.Size(); i += 1 )
-	{	
+	{
 		npcs[i].SetCombatType( primary, secondary, reenterCombat );
 	}
 }
@@ -3947,13 +3947,13 @@ latent quest function QMoveToObjectUntilReachedWithRadius( DestinationTag : name
 	{
 		return false;
 	}
-	
+
 	//SL commented out player.RegisterScriptedActor( Actor );
 
 	Destination = theGame.GetNodeByTag( DestinationTag );
 	if ( !Destination )
 	{
-		return false;		
+		return false;
 	}
 
 	targetPos = Destination.GetWorldPosition();
@@ -3961,20 +3961,20 @@ latent quest function QMoveToObjectUntilReachedWithRadius( DestinationTag : name
 	{
 		radius = 3.5;
 	}
-	
+
 	Actor.ClearRotationTarget();
 	Actor.GetArbitrator().ClearGoal();
 	Actor.GetArbitrator().AddGoalMoveToTarget( Destination, moveType, speed, radius, EWM_Exit );
-	
+
 	while ( true )
 	{
 		actorPos = Actor.GetWorldPosition();
 		targetPos = Destination.GetWorldPosition();
 		distToTarget = VecDistance2D( actorPos, targetPos );
-		
+
 		if(distToTarget <= radius)
 		{
-			return true; 
+			return true;
 		}
 		Sleep( 0.5f );
 	}
@@ -3985,21 +3985,21 @@ quest function QPlayVoiceset( npcsTag, voicesetInputName : name ) : bool
 {
 	var npcs : array<CNewNPC>;
 	var i : int;
-	
+
 	theGame.GetNPCsByTag( npcsTag, npcs );
-	
+
 	for( i=0; i<npcs.Size(); i+=1 )
 	{
 		if( !npcs[i] )
 		{
 			continue;
 		}
-	
+
 		npcs[i].PlayVoiceset( 100, NameToString( voicesetInputName ) );
-		
+
 		continue;
 	}
-	
+
 	return true;
 }
 
@@ -4012,7 +4012,7 @@ quest function q107_shealas_guard_broken_neck( player: CStoryScenePlayer ) : boo
 
 	npc.ActionCancelAll();
 	npc.RaiseForceEvent( 'NeckBroken' );
-	
+
 	return true;
 }
 
@@ -4021,14 +4021,14 @@ quest function QChangeIteractiveObjectState ( objectTag : name, stateVal : bool 
 {
 	var object : CEntity;
 	var interactiveEnt : CInteractiveEntity;
-	
+
 	object = theGame.GetEntityByTag( objectTag );
 	interactiveEnt = (CInteractiveEntity)object;
 	if ( interactiveEnt )
 	{
 		interactiveEnt.SetState( stateVal );
 	}
-	
+
 	return true;
 }
 
@@ -4036,36 +4036,36 @@ quest function QChangeIteractiveObjectState ( objectTag : name, stateVal : bool 
 quest function Q107_GallowSwitch( ropesOn : bool, leversOn : bool ) : bool
 {
 		var gallow : CEntity;
-		
+
 		var rope3 : CDrawableComponent;
 		var rope4 : CDrawableComponent;
-		
+
 		var lever3 : CAnimatedComponent;
 		var lever4 : CAnimatedComponent;
-		
-		
-		gallow = theGame.GetEntityByTag('q102_gallow');		
+
+
+		gallow = theGame.GetEntityByTag('q102_gallow');
 
 		rope3 = (CDrawableComponent) gallow.GetComponent( "rope3_mesh" );
 		lever3 = (CAnimatedComponent) gallow.GetComponent('lever3');
-		
+
 		rope4 = (CDrawableComponent) gallow.GetComponent( "rope4_mesh" );
 		lever4 = (CAnimatedComponent) gallow.GetComponent('lever4');
-		
-		if( leversOn ) 
+
+		if( leversOn )
 			{
 				lever3.RaiseBehaviorForceEvent('hanging_on');
 				lever4.RaiseBehaviorForceEvent('hanging_on');
 			}
 		else
-			{			
+			{
 				lever3.RaiseBehaviorForceEvent('hanging_off');
 				lever4.RaiseBehaviorForceEvent('hanging_off');
 			}
-					
-		rope3.SetVisible( ropesOn );	
+
+		rope3.SetVisible( ropesOn );
 		rope4.SetVisible( ropesOn );
-					
+
 		return true;
 }
 
@@ -4075,19 +4075,19 @@ quest function breakUncousius ( actorsTag : name ) : bool
 {
 	var actors : array<CNewNPC>;
 	var i : int;
-				
+
 	theGame.GetNPCsByTag( actorsTag, actors);
-	
+
 	for(i = 0; i < actors.Size(); i += 1)
 	{
 		if( actors.Size() == 0 )
 		{
 			continue;
 		}
-	
+
 		actors[i].BreakUnconscious();
 		continue;
-		
+
 	}
 	return true;
 }
@@ -4112,16 +4112,16 @@ latent quest function questPlayBikVideoInGame( video_name : string ) : bool
 	}
 
 	return true;
-	
+
 }
 
 latent quest function QTempshitSetCrossbowWalk(targetsTag : name, enable : bool) : bool
 {
 	var targets : array<CNewNPC>;
 	var i : int;
-	
+
 	theGame.GetNPCsByTag( targetsTag, targets );
-	
+
 	if( enable)
 	{
 		for( i = 0; i < targets.Size(); i += 1 )
@@ -4130,7 +4130,7 @@ latent quest function QTempshitSetCrossbowWalk(targetsTag : name, enable : bool)
 			{
 				continue;
 			}
-			
+
 			targets[i].SetBehaviorVariable( "ActorItemAnimState", 1.5f );
 			targets[i].EquipItem( targets[i].GetInventory().GetItemId('Crossbow_01'), true );
 		}
@@ -4143,12 +4143,12 @@ latent quest function QTempshitSetCrossbowWalk(targetsTag : name, enable : bool)
 			{
 				continue;
 			}
-		
+
 			targets[i].SetBehaviorVariable( "ActorItemAnimState", 0.f );
 			targets[i].UnEquipItem( targets[i].GetInventory().GetItemId('Crossbow_01'), true );
 		}
 	}
-	
+
 	return true;
 }
 
@@ -4172,7 +4172,7 @@ quest latent function QPlaySlotAnimation( targetTag : name, slotName : name, ani
 {
 	var npc : CNewNPC;
 	var res : bool;
-	
+
 	npc = theGame.GetNPCByTag( targetTag );
 	res = npc.ActionPlaySlotAnimation( slotName, animation );
 	if ( res == false )
@@ -4186,7 +4186,7 @@ quest latent function QPlaySlotAnimation( targetTag : name, slotName : name, ani
 quest function QPlayMimicAnimation( targetTag : name, animation : name ) : bool
 {
 	var NPC : CNewNPC;
-	
+
 	NPC = theGame.GetNPCByTag( targetTag );
 	if (NPC.PlayMimicAnimationAsync( animation ) == false)
 		{
@@ -4226,7 +4226,7 @@ quest function GCCameraDraug(activateCamera : bool)
 		startPos = thePlayer.GetWorldPosition() + theCamera.GetCameraDirection() * 70.0;
 		startPos.Z = 20.0;
 		proj = (CDraugEndProjectile)theGame.CreateEntity(ballTemplate, startPos, EulerAngles());
-		proj.Start(thePlayer, Vector(0,0,0), true);		
+		proj.Start(thePlayer, Vector(0,0,0), true);
 		Sleep(5.0);
 	}
 }*/
@@ -4247,7 +4247,7 @@ latent quest function GCSpawnWraith(ghostTemplate : CEntityTemplate, spawnpointT
 	position = theGame.GetEntityByTag(spawnpointTag).GetWorldPosition();
 	rotation = theGame.GetEntityByTag(spawnpointTag).GetWorldRotation();
 	theGame.CreateEntity(ghostTemplate, position, rotation);
-	
+
 	/*Sleep(10.0);
 	position = theGame.GetEntityByTag(spawnpointTag2).GetWorldPosition();
 	rotation = theGame.GetEntityByTag(spawnpointTag2).GetWorldRotation();
@@ -4256,80 +4256,80 @@ latent quest function GCSpawnWraith(ghostTemplate : CEntityTemplate, spawnpointT
 }
 
 latent quest function Q002TorturerWeaponsReady(ActorTag: name) : bool
-{	
+{
 	var Actor	: CNewNPC;
 	var goals : array<int>;
 	var isGoalPresent : bool = true;
-	
-	Actor = theGame.GetNPCByTag(ActorTag);		
-		
+
+	Actor = theGame.GetNPCByTag(ActorTag);
+
 	if ( !Actor )
 	{
 		Log ("Actor not found! Breaking MoveTo!");
 		return false;
 	}
-				
+
 	Actor.GetArbitrator().AddGoalQ002Torturer();
-	
+
 	while( isGoalPresent )
 	{
 		Sleep(0.5);
 		goals.Clear();
 		isGoalPresent = Actor.GetArbitrator().GetGoalIdsByClassName('CAIGoalScriptedState', goals );
 	}
-	
+
 	return true;
 }
 
 latent quest function Q002ArjanBurnAll(ActorTag: name) : bool
-{	
+{
 	var Actor	: CNewNPC;
 	var goals : array<int>;
-		
-	Actor = theGame.GetNPCByTag(ActorTag);		
-		
+
+	Actor = theGame.GetNPCByTag(ActorTag);
+
 	if ( !Actor )
 	{
 		Log ("Actor not found! Breaking MoveTo!");
 		return false;
 	}
-				
+
 	Actor.GetArbitrator().AddGoalQ002Arjan();
-	
+
 	do
 	{
 		Sleep(0.5);
 		Actor.GetArbitrator().GetGoalIdsByClassName('CAIGoalScriptedState', goals );
 	}
 	while( goals.Size() <= 0 );
-	
+
 	return true;
 }
 
 // funkcja przeznaczona dla q002_prison_break
 
 latent quest function Q109ArnoltMoveTo(ActorTag: name) : bool
-{	
+{
 	var Actor	: CNewNPC;
 	var goals : array<int>;
-		
-	Actor = theGame.GetNPCByTag(ActorTag);		
-		
+
+	Actor = theGame.GetNPCByTag(ActorTag);
+
 	if ( !Actor )
 	{
 		Log ("Actor not found! Breaking MoveTo!");
 		return false;
 	}
-				
+
 	Actor.GetArbitrator().AddGoalQ109Arnolt();
-	
+
 	do
 	{
 		Sleep(0.5);
 		Actor.GetArbitrator().GetGoalIdsByClassName('CAIGoalScriptedState', goals );
 	}
 	while( goals.Size() <= 0 );
-	
+
 	return true;
 }
 
@@ -4340,29 +4340,29 @@ class CActorLatentActionPlayArnoltTorchAnimation extends IActorLatentAction
 	saved var animationName : name;
 	saved var effectName : name;
 	saved var itemName : name;
-	
+
 	public function Cancel( actor : CActor )
 	{
 		actor.ActionCancelAll();
 	}
-	
+
 	latent public function Perform( actor : CActor )
 	{
 		var result : bool;
 		var torchID : SItemUniqueId;
 		var inventory : CInventoryComponent = actor.GetInventory();
-		
+
 		torchID = inventory.GetItemId( itemName );
 		result = inventory.MountItem(torchID, true);
 		inventory.PlayItemEffect(torchID, effectName );
-		
+
 		result = actor.ActionPlaySlotAnimation( 'NPC_ANIM_SLOT', animationName, 0.2f, 0.3f, false );
 
-	}	
+	}
 }
 
 latent quest function Q109ArnoltTorch( ActorTag: name ) : bool
-{	
+{
 	var actions : array< IActorLatentAction >;
 	var moveTo : CActorLatentActionMoveTo;
 	var playAnimation : CActorLatentActionPlayArnoltTorchAnimation;
@@ -4370,46 +4370,46 @@ latent quest function Q109ArnoltTorch( ActorTag: name ) : bool
 
 		var Actor : CNewNPC;
 		var torchID : SItemUniqueId;
-		var Destination : CNode;	
+		var Destination : CNode;
 
 		Actor = theGame.GetNPCByTag(ActorTag);
 		Destination = theGame.GetNodeByTag( 'q109_arnolt_torch_litup' );
-		
+
 	moveTo = new CActorLatentActionMoveTo in Actor;
 	moveTo.moveType = MT_Walk;
 	moveTo.radius = 0.5;
-	
+
 	playAnimation = new CActorLatentActionPlayArnoltTorchAnimation in Actor;
 	playAnimation.animationName = 'ex_torch_litup';
 	playAnimation.effectName = 'torch_fire';
 	playAnimation.itemName = 'Torch';
 	actions.PushBack( moveTo );
 	actions.PushBack( playAnimation );
-	
+
 	Actor.ClearRotationTarget();
 	Actor.ActionExitWork();
 	arbitrator = Actor.GetArbitrator();
 	arbitrator.ClearGoal();
-	
+
 	if( !Destination.IsA( 'CEntity' ) )
 	{
 		Actor.SetErrorState( "Q109ArnoltTorch destination is not entity" );
 	}
-	
+
 	arbitrator.AddGoalActing( actions, (CEntity)Destination );
-	
+
 	while( arbitrator.HasGoalsOfClass( 'CAIGoalActing' ) )
 	{
 		Sleep(0.1);
 	}
-	
-/*	
+
+/*
 		Actor.ActionRotateToAsync( Destination.GetWorldPosition() );
 		torchID = Actor.GetInventory().GetItemId('Torch');
 		Actor.GetInventory().MountItem(torchID, true);
 		Actor.ActionPlaySlotAnimation("NPC_ANIM_SLOT", 'ex_torch_litup');
 		Actor.GetInventory().PlayItemEffect(torchID, 'torch_fire' );*/
-		
+
 		return true;
 }
 
@@ -4427,7 +4427,7 @@ latent quest function QDisplayScrollText( tag : name, textId : string )
 	turnOnComponent.SetEnabled( true );
 }
 
-// ogolna funkcja pozwalajaca wyswietlic text na ekranie 
+// ogolna funkcja pozwalajaca wyswietlic text na ekranie
 
 latent quest function DisplayText( player: CStoryScenePlayer, text : string ) : bool
 {
@@ -4443,7 +4443,7 @@ latent quest function qActivateCamera( cameraTag : name, show_GUI_hole : bool, a
 	var camera : CCamera;
 	var static_camera : CStaticCamera;
 
-	
+
 	if ( activate )
 	{
 		if( new_camera )
@@ -4456,10 +4456,10 @@ latent quest function qActivateCamera( cameraTag : name, show_GUI_hole : bool, a
 			camera = (CCamera)theGame.GetNodeByTag(cameraTag);
 			camera.SetActive(true);
 		}
-		
-		thePlayer.SetManualControl( !blockPlayer, !blockPlayer );	
-		
-		if (show_GUI_hole) 
+
+		thePlayer.SetManualControl( !blockPlayer, !blockPlayer );
+
+		if (show_GUI_hole)
 		{
 			theHud.m_fx.HoleStart();
 		}
@@ -4467,30 +4467,30 @@ latent quest function qActivateCamera( cameraTag : name, show_GUI_hole : bool, a
 		if ( delay > 0.0f)
 		{
 			Sleep ( delay );
-			if (show_GUI_hole) 
+			if (show_GUI_hole)
 			{
 				theHud.m_fx.HoleStop();
 			}
 			if(blockPlayer)
 			{
-				thePlayer.SetManualControl(true, true);	
+				thePlayer.SetManualControl(true, true);
 			}
-			
+
 			//camera.SetActive( false );
-			
-			theCamera.SetActive( true );	
-			
+
+			theCamera.SetActive( true );
+
 		}
 	}
 	else
 	{
-		if (show_GUI_hole) 
+		if (show_GUI_hole)
 		{
 			theHud.m_fx.HoleStop();
 		}
-			thePlayer.SetManualControl(true, true);	
+			thePlayer.SetManualControl(true, true);
 
-			
+
 		if( new_camera )
 		{
 			static_camera = (CStaticCamera)theGame.GetNodeByTag(cameraTag);
@@ -4501,7 +4501,7 @@ latent quest function qActivateCamera( cameraTag : name, show_GUI_hole : bool, a
 			theCamera.SetActive( true );
 		}
 	}
-		
+
 	return true;
 }
 
@@ -4521,7 +4521,7 @@ latent quest function QPauseCheckCombatMode () : bool
 }
 
 // Funckcja ladujaca panele GUI - nie naduzywac pls
- 
+
 quest function QLoadGUIPanel( panelName : string, FlashInput : bool, GameInput : bool, TurnActivePauseOn : bool ) : bool
 {
 	// TODO: implement
@@ -4548,9 +4548,9 @@ quest function QGuiCloseCharacterPanel()
 quest function QDespawnAllItems( actorTag : name )
 {
 	var actor : CActor;
-	
+
 	actor= theGame.GetActorByTag( actorTag );
-	
+
 	if ( actor )
 	{
 		actor.GetInventory().DespawnAllItems();
@@ -4560,9 +4560,9 @@ quest function QDespawnAllItems( actorTag : name )
 quest function QSpawnAllItems( actorTag : name )
 {
 	var actor : CActor;
-	
+
 	actor= theGame.GetActorByTag( actorTag );
-	
+
 	if ( actor )
 	{
 		actor.GetInventory().SpawnAllItems();
@@ -4578,19 +4578,19 @@ quest function QSceneTurnOffCombatCamera( turnOff : bool )
 // SL // dodaje/usuwa ability o okreslonej nazwie do wszystkich postaci o danym tagu
 quest function AddRemoveNPCAbility( npcTag : name, abilityName :name, remove : bool ) : bool
 {
-	var npc, target : CNewNPC;		
+	var npc, target : CNewNPC;
 	var npcs : array <CNewNPC>;
 	var i      : int;
-	
+
 	theGame.GetNPCsByTag(npcTag, npcs);
-	if ( npcs.Size() == 0 ) 
+	if ( npcs.Size() == 0 )
 	{
 		Log("AddRemoveNPCAbility_questFunction: No npc's with tag " + npcTag + " found!!!");
 		return false;
 	}
-	
+
 	for (i = 0; i < npcs.Size(); i += 1 )
-	{	
+	{
 		npc = npcs[i];
 		npc = theGame.GetNPCByTag( npcTag );
 		if(!remove)
@@ -4604,7 +4604,7 @@ quest function AddRemoveNPCAbility( npcTag : name, abilityName :name, remove : b
 		npc.ResetStats();
 		npc.SetHealth( npc.initialHealth, false, NULL );
 	}
-	 
+
 	return true;
 }
 
@@ -4621,10 +4621,10 @@ quest function QRemoveActiveElixirByName( abilityName :name ) : bool
 quest function qChangeCombatStyle( tag : name, combatStyle : ECombatType, currentCombatStyle : ECombatType ) : bool
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag( tag );
 	npc.SwapCombatType( currentCombatStyle, combatStyle, true);
-	
+
 	return true;
 }
 
@@ -4646,25 +4646,25 @@ quest function QRandomizer() : bool
 quest function CureNPCWithTag( npcTag : name ) : bool
 {
 
-	var npc, target : CNewNPC;		
+	var npc, target : CNewNPC;
 	var npcs : array <CNewNPC>;
 	var i      : int;
-	
+
 	theGame.GetNPCsByTag(npcTag, npcs);
-	if ( npcs.Size() == 0 ) 
+	if ( npcs.Size() == 0 )
 	{
 		Log("CureNPCWithTag_questFunction: No npc's with tag " + npcTag + " found!!!");
 		return false;
 	}
-	
+
 	for (i = 0; i < npcs.Size(); i += 1 )
-	{	
+	{
 		npc = npcs[i];
-		
+
 		npc.ResetStats();
 		npc.SetHealth( npc.initialHealth, false, NULL );
 	}
-	 
+
 	return true;
 }
 
@@ -4672,7 +4672,7 @@ quest function CureNPCWithTag( npcTag : name ) : bool
 quest function CurePlayer() : bool
 {
 	thePlayer.SetHealthToMax();
-	 
+
 	return true;
 }
 
@@ -4681,20 +4681,20 @@ quest latent function SQ106GeralLaysOnBeach() : bool
 {
 	thePlayer.AttachBehavior('sq106_laying');
 	thePlayer.RaiseForceEvent('geralt_felt_down');
-	
+
 	thePlayer.WaitForBehaviorNodeDeactivation(' ', 5.f);
-	
+
 return true;
 }
 
 quest function QArjanIdleSit() : bool
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag('Arjan');
 	npc.GetArbitrator().ClearAllGoals();
 	npc.GetArbitrator().AddGoalBehavior('arian_sitting');
-	
+
 return true;
 }
 
@@ -4702,11 +4702,11 @@ return true;
 quest function QOdrinIdleSit() : bool
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag('q212r_odrin');
 	npc.GetArbitrator().ClearAllGoals();
 	npc.GetArbitrator().AddGoalBehavior('arian_sitting');
-	
+
 return true;
 }
 
@@ -4727,33 +4727,33 @@ latent quest function FistFightRound( secondFighterTag : name, roundLength : flo
 {
     var secondNpc : CNewNPC;
     var maxHealth_1, maxHealth_2, currentHealth_1, currentHealth_2, percentHealth_1, percentHealth_2 : float;
-    
-    
+
+
     //poczekaj do zakonczenia rundy
 	Sleep( roundLength );
-	
+
 	//pobierz stan hp'kow pierwszego fightera
 	maxHealth_1 = thePlayer.initialHealth;
-	currentHealth_1 = thePlayer.health;	
-		
-	percentHealth_1 = currentHealth_1 / maxHealth_1 * 100.0f; 
-	
+	currentHealth_1 = thePlayer.health;
+
+	percentHealth_1 = currentHealth_1 / maxHealth_1 * 100.0f;
+
 	//pobierz stan hp'kow drugiego fightera
 	secondNpc  = theGame.GetNPCByTag( secondFighterTag );
-	
+
 	maxHealth_2 = secondNpc.initialHealth;
 	currentHealth_2 = secondNpc.health;
-	
-	percentHealth_2 = currentHealth_2 / maxHealth_2 * 100.0f; 
-	
+
+	percentHealth_2 = currentHealth_2 / maxHealth_2 * 100.0f;
+
 	if(percentHealth_1 >= percentHealth_2)
 	{
 		Log("PLAYER won");
 	}
-	
+
 	//zwroc true jesli wygral pierwszy, false jesli wygral drugi
     return (percentHealth_1 >= percentHealth_2);
-		
+
 }
 
 // wlacza stan combat na graczu
@@ -4775,10 +4775,10 @@ quest function ResetFact( factID : name ) :
  bool
 {
 	var sum : int;
-	
+
 	sum = FactsQuerySum(factID);
 	FactsAdd( factID , -sum);
-	
+
 	return true;
 }
 
@@ -4795,9 +4795,9 @@ quest function QSetGateState (gateTag: name, on : bool, force : bool ) : bool
 	var gates	: array <CNode>;
 	var gate	: CSwitchableEntity;
 	var i		: int;
-	
+
 	theGame.GetNodesByTag( gateTag, gates );
-	
+
 	for (i = 0; i < gates.Size(); i += 1 )
 	{
 		gate = (CSwitchableEntity) gates[i];
@@ -4816,30 +4816,30 @@ quest function QCheckHigherHealthLevel( firstCharacterTag : name,secondCharacter
      var secondNpc : CNewNPC;
      var firstNpcCurrentHealth : float;
      var secondNpcCurrentHealth : float;
-     
+
      if( firstCharacterTag != 'PLAYER' )
      {
 		firstNpc = theGame.GetNPCByTag( firstCharacterTag );
-		
+
 		firstNpcCurrentHealth = firstNpc.health;
-    
+
 	 }
 	  if( secondCharacterTag != 'PLAYER' )
      {
 		secondNpc = theGame.GetNPCByTag( secondCharacterTag );
-		
+
 		secondNpcCurrentHealth = secondNpc.health;
-    
+
 	 }
 	 if ( firstCharacterTag = 'PLAYER' )
 	 {
 		firstNpcCurrentHealth = thePlayer.health;
-		
+
 	 }
 	  if ( secondCharacterTag = 'PLAYER' )
 	 {
 		secondNpcCurrentHealth = thePlayer.health;
-		
+
 	 }
 	if (firstNpcCurrentHealth >= secondNpcCurrentHealth)
 	{
@@ -4848,7 +4848,7 @@ quest function QCheckHigherHealthLevel( firstCharacterTag : name,secondCharacter
     else
     {
     return false;
-    }   
+    }
 }
 
 // pokazuje akt info
@@ -4862,7 +4862,7 @@ quest function QShowActInfo( actText : string ) : bool
 quest function SQ102_EnterAimMode()
 {
 	var previousState : EPlayerState;
-	
+
 	theCamera.ResetRotation( false, true, true );
 	thePlayer.GetInventory().AddItem( 'Rusty Balanced Dagger', 1 );
 	thePlayer.SelectThrownItem( thePlayer.GetInventory().GetItemId( 'Rusty Balanced Dagger' ) );
@@ -4929,7 +4929,7 @@ quest function QGDCEndPanel(player: CStoryScenePlayer) : bool
 quest function QSwitchPathEngineWalking( enable : bool ) : bool
 {
 	thePlayer.EnablePathEngineAgent( enable );
-	
+
 	return true;
 }
 
@@ -4937,10 +4937,10 @@ quest function QSwitchPathEngineWalking( enable : bool ) : bool
 quest function QSetNpcHealthLevel( HpValue : float, CharacterTag : name ) : bool
 {
 	var Npc : CNewNPC;
-	
+
 	Npc = theGame.GetNPCByTag( CharacterTag );
 	Npc.SetHealth( HpValue, true, NULL );
-	
+
 	return true;
 }
 
@@ -4948,17 +4948,17 @@ quest latent function QRotateNPCToTarget( npcTag, targetTag : name, duration : f
 {
 	var target : CNode;
 	var npc : CNewNPC;
-	
+
 	target = theGame.GetNodeByTag( targetTag );
 	npc = theGame.GetNPCByTag( npcTag );
-	
+
 	npc.GetArbitrator().ClearAllGoals();
 	npc.ClearRotationTarget();
 	npc.ExitWork(exitWorkMode);
 	npc.RotateTo( target.GetWorldPosition(), duration );
 	//npc.RotateToNode(target, duration);
 	//npc.ActionRotateTo( target.GetWorldPosition());
-	
+
 	return true;
 }
 
@@ -4966,28 +4966,28 @@ quest latent function QRotateNPCToTargetContinuous( npcTag, targetTag : name, du
 {
 	var target : CNode;
 	var npc : CNewNPC;
-	
+
 	target = theGame.GetNodeByTag( targetTag );
 	npc = theGame.GetNPCByTag( npcTag );
-	
+
 	npc.GetArbitrator().ClearAllGoals();
 	npc.ExitWork(exitWorkMode);
 	npc.SetRotationTargetWithTimeout( target, false, duration + 1 );
 	Sleep( duration );
 	npc.ClearRotationTargetWithTimeout();
 
-	
+
 	return true;
 }
 
 quest latent function QClearRotation( npcTag: name) : bool
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag( npcTag );
-	
+
 	npc.ClearRotationTargetWithTimeout();
-	
+
 	return true;
 }
 //L.Sz // Removes fact from facts DB
@@ -4999,12 +4999,12 @@ quest function QRemoveFact( player: CStoryScenePlayer, factId : string ) : bool
 		// Removes a single fact from the facts db.
 		FactsRemove( factId );
 	}
-	
+
 	return true;
 }
 
 //Start look at node
-quest function QStartLookAt (actorTag : name,targetTag : name, duration : float, enable : bool): bool 
+quest function QStartLookAt (actorTag : name,targetTag : name, duration : float, enable : bool): bool
 {
 var actor : CActor;
 var target : CNode;
@@ -5020,7 +5020,7 @@ target = theGame.GetNodeByTag(targetTag);
 	{
 		actor.DisableLookAt();
 	}
-	
+
 	return true;
 
 }
@@ -5028,9 +5028,9 @@ target = theGame.GetNodeByTag(targetTag);
 quest function QSetUnconciousNPC (npcTag : name ) : bool
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag(npcTag);
-	
+
 	npc.Stun(true, NULL);
 }
 
@@ -5038,7 +5038,7 @@ quest function QSetUnconciousNPC (npcTag : name ) : bool
 quest function QMinigameSetNpcWristWrestling( npcTag : name, hotSpotMinWidth : int, hotSpotMaxWidth : int, gameDifficulty : EAIMinigameDifficulty ) : bool
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag( npcTag );
 
 	if ( npc )
@@ -5063,19 +5063,19 @@ quest latent function Q207GetWeaponFromPlayer () : bool
 
 	inv = (CInventoryComponent)container.GetComponentByClassName( 'CInventoryComponent' );
 	player_inv = thePlayer.GetInventory();
-	
+
 	player_inv.GetAllItems( allItems );
 
 	for ( i = 0; i < allItems.Size(); i += 1 )
-	{	
+	{
 		itemId = allItems[i];
-		
+
 		if( IsItemWeapon( player_inv.GetItemName(itemId) ) && player_inv.IsItemMounted( itemId ) && ( player_inv.GetItemCategory( itemId ) == 'silversword' || player_inv.GetItemCategory( itemId ) == 'steelsword' ) )
 		{
 			player_inv.UnmountItem( itemId, true );
 		}
 	}
-	
+
 	return true;
 }
 
@@ -5091,13 +5091,13 @@ quest latent function Q207MountWeaponToPlayer () : bool
 
 	inv = (CInventoryComponent)container.GetComponentByClassName( 'CInventoryComponent' );
 	player_inv = thePlayer.GetInventory();
-	
+
 	player_inv.GetAllItems( allItems );
-	
+
 	for ( i = 0; i < allItems.Size(); i += 1 )
 	{
 		itemId = allItems[i];
-		
+
 		if( IsItemWeapon( player_inv.GetItemName(itemId) ) && player_inv.GetItemCategory( itemId ) == 'steelsword' )
 		{
 			player_inv.MountItem( itemId );
@@ -5116,11 +5116,11 @@ var effectParams : W2CriticalEffectParams = W2CriticalEffectParams(damageMin, da
 var npcs : array <CNewNPC>;
 var i      : int;
 
-	
+
 	theGame.GetNPCsByTag(NPCTag, npcs);
-	
+
 	for (i = 0; i < npcs.Size(); i += 1 )
-	{	
+	{
 		npc = npcs[i];
 		npc.ForceCriticalEffect(effectType, effectParams);
 	}
@@ -5129,12 +5129,12 @@ var i      : int;
 quest latent function QTrebuchetBallHit( ballTag : name, ball_appearance : string ) : bool
 {
 	var ball :  CTrebuchetBall;
-	
+
 	ball = (CTrebuchetBall) theGame.GetEntityByTag( ballTag );
-	
+
 	ball.RaiseEvent( 'start' );
 	ball.ApplyAppearance(ball_appearance);
-	
+
 	return true;
 }
 
@@ -5146,14 +5146,14 @@ quest latent function QPlayerHolsterWeapon (latentHolster : bool) : bool
 		thePlayer.HolsterWeaponLatent(thePlayer.GetCurrentWeapon(CH_Right));
 		thePlayer.HolsterWeaponLatent(thePlayer.GetCurrentWeapon(CH_Left));
 		thePlayer.ChangePlayerState(PS_Exploration);
-		
+
 	} else {
 		thePlayer.HolsterWeaponInstant(thePlayer.GetCurrentWeapon(CH_Right));
 		thePlayer.HolsterWeaponInstant(thePlayer.GetCurrentWeapon(CH_Left));
 		thePlayer.ChangePlayerState(PS_Exploration);
 	}
-	
-	
+
+
 	return true;
 }
 
@@ -5176,8 +5176,8 @@ latent quest function QOpenTrapDoor() : bool
 	var trapdoor : CEntity;
 	var exploration : CEntity;
 	var exploration_component : CComponent;
-	
-	
+
+
 	trapdoor = theGame.GetEntityByTag( 'q109_trapdoor_garden' );
 	trapdoor.RaiseEvent( 'open' );
 	exploration = theGame.GetEntityByTag('q002_trap_door_expl');
@@ -5194,33 +5194,33 @@ latent quest function QTriggerMedallion() : bool
 /*latent quest function QMageTeleport( mageTag, placeTag : name )
 {
 	var 	npc 						: CNewNPC = theGame.GetNPCByTag( mageTag );
-	
-	var 	appearEffectTemplate 		: CEntityTemplate; 
-	var	 	disappearEffectTemplate 	: CEntityTemplate; 
+
+	var 	appearEffectTemplate 		: CEntityTemplate;
+	var	 	disappearEffectTemplate 	: CEntityTemplate;
 	var 	disappearanceFX 			: name;
 	var 	disappearanceDuration		: float;
-	
+
 	var 	appearanceFX 				: name;
 	var 	appearanceDuration 			: float;
 
 	var		teleportPos					: Vector;
 	var		teleportRot					: EulerAngles;
 	var		wasBlockingHit				: bool;
-	
+
 	disappearEffectTemplate= (CEntityTemplate)LoadResource( "fx\mage_teleport_pre" );
 	appearEffectTemplate = (CEntityTemplate)LoadResource( "fx\mage_teleport_post" );
-	
+
 	teleportPos = theGame.GetNodeByTag( placeTag ).GetWorldPosition();
 	teleportRot = theGame.GetNodeByTag( placeTag ).GetWorldRotation();
-	
+
 	// disable AI params for the teleport time being
 	npc.ActionCancelAll();
 	wasBlockingHit = npc.IsBlockingHit();
-	
+
 	npc.SetBlockingHit( true, 30 );
 
 	// make the NPC disappear
-	
+
 	npc.RaiseForceEvent ('Teleport');
 	Sleep(0.7);
 	npc.PlayEffect( disappearanceFX );
@@ -5232,14 +5232,14 @@ latent quest function QTriggerMedallion() : bool
 	// teleport
 	theGame.CreateEntity(appearEffectTemplate, teleportPos, npc.GetWorldRotation());
 	npc.TeleportWithRotation( teleportPos, teleportRot );
-	
+
 	// make the NPC appear
 	npc.PlayEffect( appearanceFX );
 	Sleep( appearanceDuration );
-	
+
 	// restore attack state
 	npc.SetBlockingHit( wasBlockingHit );
-	
+
 }*/
 
 
@@ -5250,12 +5250,12 @@ quest function QSetUnlimitedMageShield( mageTag : name,  enable : bool )
 	if( enable )
 	{
 		npc.unlimitedMagicShield =  true;
-	} 
+	}
 	else
 	{
 		npc.unlimitedMagicShield =  false;
 	}
-}					
+}
 
 quest function QEnableHUD( enable : bool )
 {
@@ -5267,7 +5267,7 @@ quest function QEnableHUD( enable : bool )
 	{
 		theHud.m_fx.NoHudStop();
 	}
-	
+
 	thePlayer.SetCanUseHud( enable );
 	LogChannel( 'GUI', "QEnableHUD: " + enable );
 }
@@ -5279,16 +5279,16 @@ quest function QRagdollDeath( targetTag : name )
 	var actor : CActor;
 	var deathData : SActorDeathData;
 	deathData.silent = true;
-	
+
 	theGame.GetActorsByTag(targetTag, actors);
-	
+
 	for (i = 0; i < actors.Size(); i += 1 )
-	{	
+	{
 		actor = actors[i];
-		
+
 		actor.ClearImmortality();
 		actor.SetRagdoll(true);
-		actor.Kill(false,NULL,deathData);		
+		actor.Kill(false,NULL,deathData);
 	}
 }
 
@@ -5300,13 +5300,13 @@ latent quest function QWalkWithPlayerAndTalk( npcTag : name, distanceToTalk : fl
 		var currPos      			: Vector;
 		var npc						: CNewNPC;
 		var NPCString				: string;
-		
+
 		while ( true )
 		{
 			npc = theGame.GetNPCByTag( npcTag );
 			currPos      = npc.GetWorldPosition();
 			distToPlayer = VecDistance( thePlayer.GetWorldPosition(), currPos );
-				
+
 			// Wait for player
 			if ( distToPlayer > distanceToTalk )
 			{
@@ -5316,7 +5316,7 @@ latent quest function QWalkWithPlayerAndTalk( npcTag : name, distanceToTalk : fl
 					FactsAdd( NPCString , 1);
 				}
 			}
-				
+
 			// Move to destination
 			if ( distToPlayer <= distanceToTalk )
 			{
@@ -5329,15 +5329,15 @@ latent quest function QWalkWithPlayerAndTalk( npcTag : name, distanceToTalk : fl
 			Sleep(1.0f);
 		}
 	}
-	
+
 //Funckja odpalajaca i wylaczajaca audience
 
 quest function QAudience( AudienceTag : name, Enable : bool )
 {
 	var audience : CAudience;
-	
+
 	audience = (CAudience)theGame.GetEntityByTag( AudienceTag );
-	
+
 	if(Enable)
 	{
 		audience.StartAudience();
@@ -5346,7 +5346,7 @@ quest function QAudience( AudienceTag : name, Enable : bool )
 	{
 		audience.StopAudience();
 	}
-}	
+}
 
 //MT : function for enabling/disabling destruction system component
 
@@ -5354,21 +5354,21 @@ quest function QSetTakesDamage( objectTag : name, enable : bool )
 {
 	var object : CEntity;
 	var component : CDestructionSystemComponent;
-	
+
 	object = theGame.GetEntityByTag( objectTag );
-	
+
 	if( !object )
 	{
 		Log( "QSetTakesDamage ERROR : target object not found " );
 	}
-	
+
 	component = (CDestructionSystemComponent) object.GetComponentByClassName( 'CDestructionSystemComponent' );
-	
+
 	if( !component )
 	{
 		Log( "QSetTakesDamage ERROR : No CDestructionSystemComponent in entity " + object );
 	}
-	
+
 	component.SetTakesDamage( enable );
 }
 
@@ -5395,11 +5395,11 @@ quest latent function QActivateStaticCamera( cameraTag: name, runAndWait, canPla
 	var camera : CStaticCamera;
 
 	camera = (CStaticCamera)theGame.GetNodeByTag( cameraTag );
-	
+
 	if ( camera )
 	{
 		thePlayer.SetManualControl(canPlayerMove, canPlayerMove);
-		
+
 		if( runAndWait )
 		{
 			if( startHoleFx )
@@ -5407,15 +5407,15 @@ quest latent function QActivateStaticCamera( cameraTag: name, runAndWait, canPla
 				theHud.m_fx.HoleStart();
 			}
 			if( disableHud )
-			{	
+			{
 				thePlayer.SetCanUseHud( false );
 				theHud.m_fx.NoHudStart();
 			}
-			
+
 			////
 			camera.RunAndWait();
 			////
-			
+
 			if( !canPlayerMove )
 			{
 				thePlayer.SetManualControl(true, true);
@@ -5441,7 +5441,7 @@ quest latent function QActivateStaticCamera( cameraTag: name, runAndWait, canPla
 				theHud.m_fx.HoleStop();
 			}
 			if( disableHud )
-			{	
+			{
 				thePlayer.SetCanUseHud( false );
 				theHud.m_fx.NoHudStart();
 			}
@@ -5464,23 +5464,23 @@ quest latent function QActivateStaticCamera( cameraTag: name, runAndWait, canPla
 // Funkcja do odpalania zniszczenia gniazda nekkera
 quest latent function QDestroyNekkerNest( nestTag : name )
 {
-	var nest : CEntity;	
-	
-	nest = theGame.GetEntityByTag( nestTag );	
+	var nest : CEntity;
+
+	nest = theGame.GetEntityByTag( nestTag );
 
 	thePlayer.RotateToNode( nest, 0.1f );
 	//thePlayer.ActionPlaySlotAnimation( "HIT", 'steel_low_petard_throw' );
-	
-	if( thePlayer.GetCurrentPlayerState() != PS_CombatSteel && thePlayer.GetCurrentPlayerState() != PS_CombatSilver ) 
+
+	if( thePlayer.GetCurrentPlayerState() != PS_CombatSteel && thePlayer.GetCurrentPlayerState() != PS_CombatSilver )
 	{
 		thePlayer.ChangePlayerState( PS_CombatSteel );
 		Sleep( 2.f );
-		
+
 	}
-	
+
 	thePlayer.PlayerCombatAction(PCA_DeployTrap);
 	Sleep( 5.f );
-	
+
 	nest.PlayEffect('explosion_fx');
 	nest.ApplyAppearance("destroyed");
 }
@@ -5489,27 +5489,27 @@ quest latent function QDestroyNekkerNest( nestTag : name )
 quest latent function QDestroyMinesNest( targetTag : name )
 {
 	var target : CNode;
-	
+
 	target = theGame.GetNodeByTag( targetTag );
-	
+
 	thePlayer.SetManualControl( false, true );
-		
-	if( thePlayer.GetCurrentPlayerState() != PS_CombatSteel && thePlayer.GetCurrentPlayerState() != PS_CombatSilver ) 
+
+	if( thePlayer.GetCurrentPlayerState() != PS_CombatSteel && thePlayer.GetCurrentPlayerState() != PS_CombatSilver )
 	{
 		thePlayer.ChangePlayerState( PS_CombatSteel );
 		thePlayer.SetManualControl(false, true);
 		thePlayer.SetAllPlayerStatesBlocked( true );
-		
+
 		Sleep( 1.5f );
 	}
-	
+
 	thePlayer.SetAllPlayerStatesBlocked( true );
 	thePlayer.RotateToNode( target, 0.1f );
 	thePlayer.PlayerCombatAction(PCA_DeployTrap);
 	thePlayer.GetInventory().RemoveItem( thePlayer.GetInventory().GetItemId('Grapeshot'), 1);
 	thePlayer.SetAllPlayerStatesBlocked( false );
 	thePlayer.SetManualControl( true, true );
-	
+
 	Sleep( 2.f);
 	//thePlayer.ActionPlaySlotAnimation( "HIT", 'steel_low_petard_throw' );
 }
@@ -5518,9 +5518,9 @@ quest latent function QSetIsAttackableByPlayer( actorsTag : name, enable : bool 
 {
 	var actors : array<CActor>;
 	var i : int;
-	
+
 	theGame.GetActorsByTag( actorsTag, actors );
-	
+
 	for(i=0;i<actors.Size();i+=1)
 	{
 		actors[i].SetAttackableByPlayerPersistent( enable );
@@ -5534,9 +5534,9 @@ quest function QCatEffectToggle( enable : bool )
 	{
 		thePlayer.RemoveElixirByName('Cat');
 	}
-	
+
 	thePlayer.EnableCatEffect( enable );
-	
+
 }
 
 // Unmountowanie itemu na postaci
@@ -5544,7 +5544,7 @@ quest function QCatEffectToggle( enable : bool )
 quest function QUnmountItemOnNPC( npcTag : name, item_category : name )
 {
 	var Npc : CNewNPC;
-	
+
 	Npc = theGame.GetNPCByTag( npcTag);
 	Npc.GetInventory().UnmountItem( Npc.GetInventory().GetItemByCategory( item_category ) );
 }
@@ -5561,7 +5561,7 @@ quest function ReturnQuickSlotItemsToInventory()
 	var i, itemQuant : int;
 	var itemName, lastItem : name;
 	var res : bool;
-	
+
 	for( i=0; i< slotItems.Size(); i+=1 )
 	{
 		itemName = thePlayer.GetInventory().GetItemName( slotItems[i] );
@@ -5569,12 +5569,12 @@ quest function ReturnQuickSlotItemsToInventory()
 		{
 			itemQuant = 0;
 			lastItem = itemName;
-		}	
+		}
 		else
 		{
 			itemQuant = thePlayer.GetInventory().GetItemQuantity( slotItems[i] );
 			lastItem = itemName;
-		}	
+		}
 		thePlayer.GetInventory().RemoveItem( slotItems[i], itemQuant );
 		thePlayer.GetInventory().AddItem( itemName, itemQuant, false );
 	}
@@ -5595,9 +5595,9 @@ quest function GRestoreQuickSlotItems( equipToQuickSlot : bool )
 quest function QEnableArrowsManager( tag : name, enable : bool )
 {
 	var entity : q208_ArrowsManager;
-	
+
 	entity = (q208_ArrowsManager) theGame.GetEntityByTag( tag );
-	
+
 	if ( enable )
 	{
 		entity.StartShooting();
@@ -5623,9 +5623,9 @@ quest latent function qDraugonBall( targetTag : name, template : CEntityTemplate
 {
 	var targets : array<CNode>;
 	var i : int;
-	
+
 	theGame.GetNodesByTag( targetTag, targets);
-	
+
 	for(i=0;i<targets.Size();i+=1)
 	{
 		theGame.CreateEntity(template, targets[i].GetWorldPosition());
@@ -5637,9 +5637,9 @@ quest latent function qDraugonBall( targetTag : name, template : CEntityTemplate
 quest function QEnableBallsManager( tag : name, enable : bool )
 {
 	var entity : q208_BallsManager;
-	
+
 	entity = (q208_BallsManager) theGame.GetEntityByTag( tag );
-	
+
 	if ( enable )
 	{
 		entity.StartShooting();
@@ -5668,10 +5668,10 @@ quest latent function QShealaExplodes( targetTag : name, explosionTemplate : CEn
 quest latent function QShealaEscapes( targetTag : name, teleportTemplate : CEntityTemplate )
 {
 	var 	target 						: CNode = theGame.GetNodeByTag( targetTag );
-	
+
 	theGame.CreateEntity(teleportTemplate, target.GetWorldPosition(), target.GetWorldRotation());
 	theGame.GetEntityByTag('Sheala').PlayEffect('mage_disappear_fx');
-	
+
 	Sleep( 0.5f );
 }
 
@@ -5684,9 +5684,9 @@ latent quest function QTomsinTestDoNotUseIt( tag : name, dupcia : bool )
 {
 	var npc : CNewNPC = theGame.GetNPCByTag( tag );
 	var itemId : SItemUniqueId;
-	
+
 	itemId = npc.GetInventory().GetItemByCategory( 'opponent_weapon', false );
-	
+
 	if ( dupcia )
 	{
 		npc.DrawWeaponLatent( itemId );
@@ -5699,11 +5699,11 @@ latent quest function QTomsinTestDoNotUseIt( tag : name, dupcia : bool )
 
 latent quest function QModifyPriceMultiplicator ( NPCTag: name, Multiplicator: float )
 {
-	var actorNPC : CNewNPC;	
-	
-	actorNPC = theGame.GetNPCByTag(NPCTag);	
+	var actorNPC : CNewNPC;
+
+	actorNPC = theGame.GetNPCByTag(NPCTag);
 	actorNPC.SetPriceMult( Multiplicator );
-	
+
 }
 quest function QActivateGameCamera()
 {
@@ -5713,21 +5713,21 @@ quest function QActivateGameCamera()
 quest function QSetUseMageTeleport(npcTag: name, enable : bool) : bool
 {
 
-	var npc, target : CNewNPC;		
+	var npc, target : CNewNPC;
 	var npcs : array <CNewNPC>;
 	var i      : int;
-	
+
 	theGame.GetNPCsByTag(npcTag, npcs);
-	if ( npcs.Size() == 0 ) 
+	if ( npcs.Size() == 0 )
 	{
 		Log("CureNPCWithTag_questFunction: No npc's with tag " + npcTag + " found!!!");
 		return false;
 	}
-	
+
 	for (i = 0; i < npcs.Size(); i += 1 )
-	{	
+	{
 		npc = npcs[i];
-		
+
 		npc.SetUseMageTeleport(enable);
 	}
 	return true;
@@ -5754,18 +5754,18 @@ latent quest function QDressFakeGeralt()
 	var i : int;
 	var actor : CNewNPC;
 	var itemName : name;
-	
+
 	actor = theGame.GetNPCByTag('fake_geralt');
-	
+
 	actor.SetAppearance('default');
-	
+
 	thePlayer.GetInventory().GetAllItems( allItems );
-	
+
 	for ( i = 0; i < allItems.Size(); i += 1 )
 	{
 		itemName = thePlayer.GetInventory().GetItemName( allItems[i] );
 		actor.GetInventory().AddItem( thePlayer.GetInventory().GetItemName( allItems[i] ) , 1 );
-		if ( thePlayer.GetInventory().IsItemMounted( allItems[i] ) && thePlayer.GetInventory().GetItemCategory( allItems[i] ) != 'steelsword' && thePlayer.GetInventory().GetItemCategory( allItems[i] ) != 'silversword' ) 
+		if ( thePlayer.GetInventory().IsItemMounted( allItems[i] ) && thePlayer.GetInventory().GetItemCategory( allItems[i] ) != 'steelsword' && thePlayer.GetInventory().GetItemCategory( allItems[i] ) != 'silversword' )
 		{
 			actor.GetInventory().MountItem( actor.GetInventory().GetItemId( itemName ), false );
 		}
@@ -5775,10 +5775,10 @@ latent quest function QDressFakeGeralt()
 quest function QActivateQuestLight( QLtag : name, enable : bool ) : bool
 {
 	var target : CEntity;
-	
+
 	target = (CQuestLights)theGame.GetNodeByTag( QLtag );
 	((CQuestLights)target).Background_Activate();
-	
+
 
 }
 
@@ -5786,16 +5786,16 @@ quest function QEnableGuardingTrigger( triggerTag : name, enable : bool ) : bool
 {
 	var triggers : array<CNode>;
 	var size, i : int;
-	
+
 	theGame.GetNodesByTag( triggerTag, triggers );
 	size = triggers.Size();
-	
+
 	if( size == 0 )
 	{
 		Log( "function QEnableGuardingTrigger: Couldn't find CCommunityGuardingArea with tag '" + triggerTag + "'." );
 		return false;
 	}
-	
+
 	//for( i = size - 1; i >= 0; i -= 1 )
 	for( i = 0; i < size; i += 1 )
 	{
@@ -5826,17 +5826,17 @@ quest function QMeditationExit()
 quest latent function QCheckIfInMeditation() : bool
 {
 	var currentState : EPlayerState;
-	
+
 	currentState = thePlayer.GetCurrentPlayerState();
-	
+
 	Log("currentState is " + currentState);
-	
+
 	while(currentState != PS_Meditation)
 	{
 		Log("currentState is " + currentState);
 		Sleep (0.5f);
 	}
-	
+
 	return true;
 }
 
@@ -5860,11 +5860,11 @@ quest function QChangeSneakLightsState( targetsTag : name, enable : bool )
 	var sneakLight : CSneakLights;
 
 	theGame.GetNodesByTag(targetsTag, nodes );
-	
+
 	for( i=0;i<=nodes.Size();i+=1 )
 	{
 		nodes[i] = (CSneakLights) sneakLight;
-		
+
 		sneakLight.light_status = enable;
 		sneakLight.SwitchLightState(enable);
 	}
@@ -5881,20 +5881,20 @@ latent quest function Q213EnterSabrinaMeditation()
 {
 	thePlayer.ChangePlayerState( PS_Meditation );
 }
-	
+
 // L.Sz. Funkca do zamykania/otwierania kontenerow
 quest function QSetContainerState (targetsTag : name, open : bool)
 {
 	var i : int;
 	var nodes : array<CNode>;
 	var container : CContainer;
-	
+
 	theGame.GetNodesByTag(targetsTag, nodes );
-	
+
 		for( i=0;i<=nodes.Size();i+=1 )
 	{
 		nodes[i] = (CContainer) container;
-		
+
 		container.LockEntryFunction(open);
 	}
 }
@@ -5903,9 +5903,9 @@ quest function QSetContainerState (targetsTag : name, open : bool)
 quest function QSetAppearance (entityTag : name, appearance : name)
 {
 	var entity : CEntity;
-	
+
 	entity = theGame.GetEntityByTag(entityTag);
-		
+
 	entity.ApplyAppearance(appearance);
 }
 
@@ -5916,10 +5916,10 @@ quest function QLeaveGuardingState(	awareAreaTag : name )
 	var guard_area : CCommunityGuardingArea;
 	var left_guard : CNewNPC;
 	var right_guard : CNewNPC;
-	var failedEventName : name;	
+	var failedEventName : name;
 
 	guard_area = (CCommunityGuardingArea) theGame.GetNodeByTag( awareAreaTag );
-	
+
 	if( !guard_area )
 	{
 		Log( "Guarding Trigger tagged " +"'" +awareAreaTag +"'" +" was not found!" );
@@ -5934,7 +5934,7 @@ quest function Q001RemoveSilverSword()
 	var geraltSword : SItemUniqueId;
 
 	geraltSword = thePlayer.GetInventory().GetItemByCategory('silversword', false );
-	
+
 	thePlayer.GetInventory().RemoveItem(geraltSword);
 }
 
@@ -5947,10 +5947,10 @@ latent quest function QPlayEndCredits()
 {
 	thePlayer.SetGameEnded();
 	theGame.FadeOutAsync(0.01f);
-	
+
 	theGame.UnlockAchievement( 'ACH_TO_BE_CONTINUED' );
 	if ( thePlayer.GetInsaneAch() && theGame.GetDifficultyLevel() == 3 ) theGame.UnlockAchievement( 'ACH_INSANITY' );
-	
+
 	theHud.ShowEndCredits();
 	theGame.FadeOutAsync(0.0);
 }
@@ -5987,22 +5987,22 @@ quest function QClearCarriedItems( targetNpcName: string )
 //SL : Kills NPC by dealing damage equal to actor health
 quest function QKillAllNPCWithTagByDamage( targetTag : name ) : bool
 {
-	
+
 	var actors : array <CActor>;
 	var i      : int;
 	var actor : CActor;
-	
+
 	theGame.GetActorsByTag(targetTag, actors);
-	
+
 	for (i = 0; i < actors.Size(); i += 1 )
-	{	
+	{
 		actor = actors[i];
-		
+
 		actor.ClearImmortality();
 		actor.DecreaseHealth( actor.GetHealth() + 1 , true, NULL );
 	}
-	
-	
+
+
 	return true;
 }
 
@@ -6042,7 +6042,7 @@ quest function QHolsterSword()
 	var playerInv : CInventoryComponent;
 
 	playerInv = thePlayer.GetInventory();
-	
+
 	id = playerInv.GetItemByCategory('steelsword');
 	id2 = playerInv.GetItemByCategory('silversword');
 	if ( id != GetInvalidUniqueId() )
@@ -6106,7 +6106,7 @@ quest function QForceDespawnAllNPCs( npcTag : name): bool
 	var i : int;
 
 	theGame.GetNPCsByTag( npcTag, npcs );
-	
+
 	Log( "DespawnNPCS(): Found " + npcs.Size() + " NPCs with tag " + npcTag );
 
 	for ( i = 0; i < npcs.Size(); i += 1 )
@@ -6129,34 +6129,34 @@ quest function QSQ101MadhouseGhosts(npcTag: name) : bool
 	var i : int;
 
 	theGame.GetNPCsByTag( npcTag, npcs );
-	
+
 	for ( i = 0; i < npcs.Size(); i += 1 )
 	{
 		npcs[i].EnablePathEngineAgent( false );
 	}
 	return true;
-	
+
 }
 
-quest function QUnequipArmor( ) 
+quest function QUnequipArmor( )
 {
 	var item_id : SItemUniqueId;
 	var playerInv : CInventoryComponent;
-	
+
 	playerInv = thePlayer.GetInventory();
-	
+
 	item_id = playerInv.GetItemByCategory('armor');
 	if ( playerInv.IsItemMounted(item_id)  )
 	{
 		playerInv.UnmountItem( item_id, true );
 	}
-	
+
 	item_id = playerInv.GetItemByCategory('gloves');
 	if ( playerInv.IsItemMounted(item_id)  )
 	{
 		playerInv.UnmountItem( item_id, true );
 	}
-	
+
 }
 
 //funkcja zabierajaca graczowi miecz z reki/slotu i pakujaca do containera
@@ -6165,11 +6165,11 @@ quest function QPlayerWeaponToContainer( containerTag : name) : bool
 {
 	var container : CContainer;
 	var steelWeapon, silverWeapon : SItemUniqueId;
-	
+
 	steelWeapon = thePlayer.GetInventory().GetItemByCategory('steelsword', true, true);
 	silverWeapon = thePlayer.GetInventory().GetItemByCategory('silversword', true, true);
 	container = (CContainer)theGame.GetEntityByTag( containerTag );
-	
+
 	if(steelWeapon != GetInvalidUniqueId())
 	{
 		thePlayer.GetInventory().GiveItem( container.GetInventory(), steelWeapon, 1);
@@ -6180,14 +6180,14 @@ quest function QPlayerWeaponToContainer( containerTag : name) : bool
 	}
 }
 
-quest function QFistFightBet( won : bool) 
+quest function QFistFightBet( won : bool)
 {
 	var lastBribe 	: int;
 	var inv 		: CInventoryComponent = thePlayer.GetInventory();
 
 	lastBribe = thePlayer.GetLastBribe();
-	
-	if(won) 
+
+	if(won)
 	{
 		Log(">QFistFightBet: Added " + lastBribe + " Orens to inv");
 		inv.AddItem( 'Orens', lastBribe);
@@ -6200,10 +6200,10 @@ quest function QFistFightBet( won : bool)
 		//thePlayer.GetInventory().AddItem( 'Orens', -thePlayer.GetLastBribe());
 		thePlayer.SetLastBribe(0);
 	}
-	
+
 }
 
-quest function QClearPlayerBuild() 
+quest function QClearPlayerBuild()
 {
 	thePlayer.ClearBuild();
 }
@@ -6212,7 +6212,7 @@ quest function QDisplayDebugText( text : string ) : bool
 {
 	LogChannel( 'DebugText', "Display Debug Text: " + text );
 	theHud.m_messages.ShowInformationText( text );
-	
+
 	return true;
 }
 
@@ -6239,9 +6239,9 @@ quest function QAnimatedToggleCarry( slaveTag : name) : bool
 	{
 	var slaves : array<CActor>;
 	var slave : CNewNPC;
-	
+
 	slave = theGame.GetNPCByTag(slaveTag);
-	
+
 	if( thePlayer.GetCurrentPlayerState() == PS_PlayerCarry )
 		{
 		thePlayer.OnManualCarryStopRequest();
@@ -6253,7 +6253,7 @@ quest function QAnimatedToggleCarry( slaveTag : name) : bool
 				slaves.PushBack( slave );
 				thePlayer.StateInteractionMasterAnimated( slaves, CTM_Sit );
 			}
-		}	
+		}
 		return true;
 	}
 quest function QEnableQuestMapPinTag( mapPinTag : name, questTag : name )
@@ -6270,9 +6270,9 @@ quest function QPlayEffectOnItem (actorTag: name, itemCategory: name, effectName
 {
 	var item : SItemUniqueId;
 	var actor : CActor;
-	
+
 	actor = theGame.GetActorByTag(actorTag);
-		
+
 		item = actor.GetInventory().GetItemByCategory(itemCategory, true, false);
 		if(item == GetInvalidUniqueId())
 		{
@@ -6285,9 +6285,9 @@ quest function QStopEffectOnItem (actorTag: name, itemCategory: name, effectName
 {
 	var item : SItemUniqueId;
 	var actor : CActor;
-	
+
 	actor = theGame.GetActorByTag(actorTag);
-		
+
 		item = actor.GetInventory().GetItemByCategory(itemCategory, true, false);
 		if(item == GetInvalidUniqueId())
 		{
@@ -6307,28 +6307,28 @@ quest function Q212RocheDrawWeapon( targetsTag : name ) : bool
 	var targets : array<CNewNPC>;
 	var i : int;
 	var weaponId : SItemUniqueId;
-	
+
 	theGame.GetNPCsByTag( targetsTag, targets );
-	
+
 	for( i = 0; i < targets.Size(); i +=1 )
 	{
 		targets[i].DrawWeaponInstant( targets[i].GetInventory().GetItemId('RocheCombatStanceSword'));
 	}
-	
+
 	return true;
-}	
+}
 
 latent quest function QIssueRequiredItemOnNPC( npcTag : name, LeftItemNameOrCategory : name, RightItemNameOrCategory : name ) : bool
 {
 	var npcs : array<CNewNPC>;
 	var i,size : int;
-	
+
 	theGame.GetNPCsByTag( npcTag, npcs );
-	
+
 	size = npcs.Size();
-	
+
 	for( i = 0; i < size; i +=1 )
-	{	
+	{
 		npcs[i].SetRequiredItems( LeftItemNameOrCategory, RightItemNameOrCategory );
 		npcs[i].ProcessRequiredItems();
 	}
@@ -6348,7 +6348,7 @@ quest function QEnableCombatUpdate( npcTag : name, enable : bool )
 {
 	var npc 	: CNewNPC;
 	var time	: float;
-	
+
 	npc = (CNewNPC)theGame.GetEntityByTag( npcTag );
 	if ( npc )
 	{
@@ -6369,9 +6369,9 @@ quest function QEnableCombatUpdate( npcTag : name, enable : bool )
 quest function QDropFromDraug()
 {
 	var loss : float = RandRangeF(1, 100);
-	
+
 	theGame.UnlockAchievement( 'ACH_DRAUG_DEAD' );
-	
+
 	thePlayer.GetInventory().AddItem('Death essence');
 	thePlayer.GetInventory().AddItem('Draug essence');
 	thePlayer.GetInventory().AddItem('Piece of Draug armor');
@@ -6443,50 +6443,50 @@ latent quest function PlayIntroVideoLocalized( movieName : string )
 {
 	var audioLang : string;
 	var subLang : string;
-	
+
 	//subLang = theGame.GetCurrentLocale();
 	theGame.GetGameLanguageName( audioLang, subLang );
-	
-	if( subLang == "PL" )										//	1	PL								
+
+	if( subLang == "PL" )										//	1	PL
 		theHud.PlayVideoEx( movieName +"_pl", false );
 	else if( subLang == "EN" )									//	2	EN
 		theHud.PlayVideoEx( movieName +"_en", false );
-	else if( subLang == "DE" )									//	3	DE								
+	else if( subLang == "DE" )									//	3	DE
 		theHud.PlayVideoEx( movieName +"_de", false );
 	else if( subLang == "IT" )									//	4	IT
 		theHud.PlayVideoEx( movieName +"_it", false );
 	else if( subLang == "FR" )									//	5	FR
-		theHud.PlayVideoEx( movieName +"_fr", false );	
+		theHud.PlayVideoEx( movieName +"_fr", false );
 	else if( subLang == "CZ" )									//	6	CZ
-		theHud.PlayVideoEx( movieName +"_cz", false );	
+		theHud.PlayVideoEx( movieName +"_cz", false );
 	else if( subLang == "ES" )									//	7	ES
-		theHud.PlayVideoEx( movieName +"_es", false );	
+		theHud.PlayVideoEx( movieName +"_es", false );
 	else if( subLang == "ZH" )									//	8	ZH
-		theHud.PlayVideoEx( movieName +"_zh", false );	
+		theHud.PlayVideoEx( movieName +"_zh", false );
 	else if( subLang == "RU" )									//	9	RU
-		theHud.PlayVideoEx( movieName +"_ru", false );	
+		theHud.PlayVideoEx( movieName +"_ru", false );
 	else if( subLang == "HU" )									//	10	HU
-		theHud.PlayVideoEx( movieName +"_hu", false );	
+		theHud.PlayVideoEx( movieName +"_hu", false );
 	else if( subLang == "JP" )									//	11	JP
 		theHud.PlayVideoEx( movieName +"_jp", false );
 	else if( subLang == "TR" )									//	12	TR
 		theHud.PlayVideoEx( movieName +"_tr", false );
 	else if( subLang == "KR" )									//	13	KR
-		theHud.PlayVideoEx( movieName +"_kr", false );	
+		theHud.PlayVideoEx( movieName +"_kr", false );
 	else if( subLang == "BR" )									//	14	BR
-		theHud.PlayVideoEx( movieName +"_br", false );	
-	
+		theHud.PlayVideoEx( movieName +"_br", false );
+
 }
 
 quest function QSetKillingGuardCauseDialog( npcTag : name, killingCauseDialog : bool )
 {
 	var npcs : array< CNewNPC >;
 	var i, size : int;
-	
+
 	theGame.GetNPCsByTag( npcTag, npcs );
-	
+
 	size = npcs.Size();
-	
+
 	for( i=0; size>i; i+=1 )
 	{
 		npcs[i].killingCauseGuardDialog = killingCauseDialog;
@@ -6531,8 +6531,8 @@ quest function QPlayerRestoreEquip()
 quest function PlayerStorageSaveItems()
 {
 	//SetItemsInVirtualStorage();
-	Log( "=======  temp - Saving Items from Storage ==========" );	
-	
+	Log( "=======  temp - Saving Items from Storage ==========" );
+
 }
 
 // funkcja umozliwia odtwarza stan schowka zapisanym w poprzednim akcie
@@ -6540,7 +6540,7 @@ quest function PlayerStorageRestoreItems()
 {
 	//GetItemsInVirtualStorage();
 	Log( "=======  temp - Restoring Items to Storage ==========" );
-	
+
 }
 
 //Odpalanie efektu krytycznego na graczu
@@ -6562,13 +6562,13 @@ quest function QSQ308GateGuardianDmg (effectType: ECriticalEffectType, playHit: 
 	if(dealAdditionalDmg == true)
 	{
 		playerHealth = thePlayer.GetHealth();
-		
+
 		if( theGame.GetDifficultyLevel() == 0 || theGame.GetDifficultyLevel() == 5 )
 		{
 			decreaseAmount = (playerHealth * 0.5);
 			thePlayer.DecreaseHealth(decreaseAmount, true, thePlayer);
 		}
-		
+
 		else if( theGame.GetDifficultyLevel() == 1 )
 		{
 			decreaseAmount = (playerHealth * 0.65);
@@ -6590,18 +6590,18 @@ quest function QRagdollDeathFalse( targetTag : name )
 	var actor : CActor;
 	var deathData : SActorDeathData;
 	deathData.ragDollAfterDeath = false;
-	
+
 	theGame.GetActorsByTag(targetTag, actors);
-	
+
 	for (i = 0; i < actors.Size(); i += 1 )
-	{	
+	{
 		actor = actors[i];
-		
+
 		actor.noragdollDeath = true;
 		actor.ClearImmortality();
-		actor.Kill(false,NULL,deathData);		
+		actor.Kill(false,NULL,deathData);
 	}
-}	
+}
 
 //////////////////////////////// TUTORIAL STUFF ///////////////////////////////////////////////////////////////////////////////
 
@@ -6609,13 +6609,13 @@ quest function QRagdollDeathFalse( targetTag : name )
 quest function TutorialEnabled()
 {
 	var fact_value : int;
-	
+
 	if ( theGame.tutorialenabled == true )
 	{
 		FactsAdd("tutorial_loaded", 1);
 		theGame.TutorialEnabled(false);
 
-	}	
+	}
 	else
 	{
 		FactsAdd("tutorial_loaded", 0);
@@ -6632,7 +6632,7 @@ quest function TutorialHideOldTutorialPanel( hide : bool )
 quest function TutorialSetGui()
 {
 	var arguments : array<CFlashValueScript>;
-	
+
 	arguments.PushBack(FlashValueFromBoolean(true));
 	arguments.PushBack(FlashValueFromBoolean(false));
 	arguments.PushBack(FlashValueFromBoolean(false));
@@ -6643,8 +6643,8 @@ quest function TutorialSetGui()
 //allows application of a critical effect on player
 quest function TutorialApplyCriticalEffectOnPlayer ( effectType : ECriticalEffectType, damageMin : int, damageMax : int, durationMin : int, durationMax : int )
 {
-	thePlayer.ForceCriticalEffect( effectType, W2CriticalEffectParams(damageMin, damageMax, durationMin, durationMax )); 
-	//thePlayer.ForceCriticalEffect( CET_Burn, W2CriticalEffectParams( 50, 70, 0, 0 )); 
+	thePlayer.ForceCriticalEffect( effectType, W2CriticalEffectParams(damageMin, damageMax, durationMin, durationMax ));
+	//thePlayer.ForceCriticalEffect( CET_Burn, W2CriticalEffectParams( 50, 70, 0, 0 ));
 }
 
 //
@@ -6665,7 +6665,7 @@ quest function QShowNewTutorialNew( imageName : string, 	firstField : string, 	f
 	var iconIds : array< string >;
 
 	theGame.TutorialPanelOpenByPlayer( false );
-	theGame.SetTutorialUseNew( true );	
+	theGame.SetTutorialUseNew( true );
 	theGame.SetTutorialNewIdsNew( imageName, firstField, firstIcon, secondField, secondIcon, thirdField, thirdIcon, fourthField, fourthIcon );
 	thePlayer.ShowTutorialQuestPanel( true );
 
@@ -6691,15 +6691,15 @@ quest function QSetTutorialId(tutorialId : string, imageName : string )
 
 quest function HideTutorial()
 {
-	//theGame.SetTimeScale( 1.0 );	
+	//theGame.SetTimeScale( 1.0 );
 	theHud.Invoke( "HideTutorial" );
-}	
+}
 
 quest function TutorialToggleGamePause( IsOn : bool )
 {
 	if( IsOn )
 		theGame.SetActivePause( true );
-	else	
+	else
 		theGame.SetActivePause( false );
 }
 
@@ -6729,7 +6729,7 @@ quest function TutorialTestBeforeNewGame( is : bool )
 quest function TutorialRemoveStartingRecipes()
 {
 	var inv : CInventoryComponent = thePlayer.GetInventory();
-		
+
 	inv.RemoveItem( inv.GetItemId( 'Recipe Kiss' ), 1 );
 	inv.RemoveItem( inv.GetItemId( 'Recipe Maribor Forest' ), 1 );
 	inv.RemoveItem( inv.GetItemId( 'Recipe Petri Philter' ), 1 );
@@ -6743,7 +6743,7 @@ quest function TutorialRemoveStartingRecipes()
 quest function TutorialAddStartingRecipes()
 {
 	var inv : CInventoryComponent = thePlayer.GetInventory();
-	
+
 	inv.AddItem( 'Recipe Kiss', 1, false  );
 	inv.AddItem( 'Recipe Maribor Forest', 1, false  );
 	inv.AddItem( 'Recipe Petri Philter', 1, false  );
@@ -6757,7 +6757,7 @@ quest function TutorialAddStartingRecipes()
 quest function TutorialMountItemsAtEnd()
 {
 	var itemId 		: SItemUniqueId;
-	
+
 	if( thePlayer.GetInventory().HasItem( 'Leather Jacket' ) )
 	{
 		itemId = thePlayer.GetInventory().GetItemId( 'Leather Jacket' );
@@ -6782,7 +6782,7 @@ quest function TutorialMountItemsAtEnd()
 	{
 		itemId = thePlayer.GetInventory().GetItemId( 'Long Steel Sword' );
 		thePlayer.GetInventory().MountItem( itemId, false );
-	}	
+	}
 }
 
 quest function TutorialForGamePad() : bool
@@ -6806,9 +6806,9 @@ quest function TutorialIsRestrictedToDawn( sleepToDawn : bool )
 quest function QEnableTutorialStuff( isEnabled : bool )
 {
 	var arenaManager : CArenaManager;
-	
+
 	arenaManager = (CArenaManager)theGame.GetNodeByTag('arena_manager');
-	
+
 	thePlayer.EnableTutButton( isEnabled );
 	if( !arenaManager )
 	{
@@ -6831,7 +6831,7 @@ quest function TutorialMountWetBoots()
 		thePlayer.GetInventory().MountItem( thePlayer.GetInventory().GetItemId( 'Soaked Wet Boots' ), false );
 	else
 		Log( "===== NO SOAKED WET BOOTS FOUND!!!! =======" );
-}	
+}
 
 quest function TutorialRemoveTutorialItems()
 {
@@ -6857,18 +6857,18 @@ quest function TutorialSetInvTrashBlock( isBlocked :  bool )
 quest function TutorialToggleHighlightEntity( entityTag : name, isHighlighted : bool )
 {
 	var entity : CEntity;
-	
+
 	entity = theGame.GetEntityByTag( entityTag );
 	if( isHighlighted )
 	{
 		entity.PlayEffect( 'toturial_glow' );
 		//entity.PlayEffect( 'medalion_detection_fx' );
-	}	
+	}
 	else
 	{
 		entity.StopEffect( 'toturial_glow' );
 		//entity.StopEffect( 'medalion_detection_fx' );
-	}	
+	}
 }
 
 quest function TutorialResetPlayerState()
@@ -6886,16 +6886,16 @@ quest function TutorialClearUsableItems()
 	var trap_count : int = inv.GetItemQuantity( trap );
 	var dagger : SItemUniqueId = inv.GetItemId( 'Balanced Dagger' );
 	var dagger_count : int = inv.GetItemQuantity( dagger );
-	
+
 	inv.RemoveItem( bomb, bomb_count );
 	inv.RemoveItem( trap, trap_count );
-	inv.RemoveItem( dagger, dagger_count );	
+	inv.RemoveItem( dagger, dagger_count );
 }
 
 quest function QForceCombatPositionOnNPC( npcTag : name )
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag( npcTag );
 	npc.GetArbitrator().AddGoalIdleAfterCombat( 10.0f );
 }
@@ -6904,10 +6904,10 @@ quest latent function TutorialForceSummoning( npcTag : name, timeout : float )
 {
 	var npc 	: CNewNPC;
 	var res 	: bool;
-	
+
 	npc = theGame.GetNPCByTag( npcTag );
 	npc.GetBehTreeMachine().Stop();
-	npc.ActionPlaySlotAnimation( 'NPC_ANIM_SLOT', 'c_mage_teleport', 0.2f, 0.2f ); 
+	npc.ActionPlaySlotAnimation( 'NPC_ANIM_SLOT', 'c_mage_teleport', 0.2f, 0.2f );
 	//npc.RaiseForceEvent ( 'Teleport' );
 	//res = npc.WaitForBehaviorNodeDeactivation ( 'TeleportEnded', timeout );
 	npc.GetBehTreeMachine().Restart();
@@ -6918,10 +6918,10 @@ quest latent function QWaitForBehaviorDeactivationOnActor( npcTag : name, deacti
 {
 	var npc : CNewNPC;
 	var res : bool;
-	
+
 	npc = theGame.GetNPCByTag( npcTag );
 	res = npc.WaitForBehaviorNodeDeactivation( deactivation, timeout );
-	
+
 	return res;
 }
 
@@ -6933,20 +6933,20 @@ quest function TutorialRestrictPlayerMovement( blockMovement : bool, blockCamera
 quest function TutorialGargoyleShakesAxii( creatureTag : name )
 {
 	var npc : CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag( creatureTag );
 	npc.CalmDown();
-	
+
 }
 
 quest latent function QWaitForEventProcessedOnActor( npcTag : name, eventName : name, timeout : float ) : bool
 {
 	var npc : CNewNPC;
 	var res : bool;
-	
+
 	npc = theGame.GetNPCByTag( npcTag );
 	res = npc.WaitForEventProcessing( eventName, timeout );
-	
+
 	return res;
 }
 
@@ -6955,7 +6955,7 @@ quest function TutorialReplacePotionWithQuestPotion()
 	var inventory 	: CInventoryComponent		= thePlayer.GetInventory();
 	var itemId 		: SItemUniqueId;
 	var itemQty 		: int;
-		
+
 	if( inventory.HasItem( 'Argentia' ) )
 	{
 		itemId = inventory.GetItemId( 'Argentia' );
@@ -6968,12 +6968,12 @@ quest function TutorialReplacePotionWithQuestPotion()
 quest latent function QDenyFastMenuSelection( deniedSelection : array< EFastMenuSelection >, deny : bool )
 {
 	var size, i : int;
-	
+
 	while( !theHud.m_hud.m_fastMenu )
 	{
 		Sleep( 0.01f );
 	}
-	
+
 	size = deniedSelection.Size();
 	for( i = 0; i < size; i += 1 )
 	{
@@ -6992,7 +6992,7 @@ quest latent function QDenyFastMenuSelection( deniedSelection : array< EFastMenu
 quest function TutorialNPCBlockMovement( tag : name, isBlocked : bool )
 {
 	var npc : CNewNPC = theGame.GetNPCByTag( tag );
-	
+
 	if( isBlocked )
 		npc.GetArbitrator().AddGoalImmobile();
 	else
@@ -7029,14 +7029,14 @@ quest function TutorialInputBlockingAllSwitch( BlockInput : bool )
 	theGame.IgnoreGameInput( 'GI_MouseDampX', BlockInput );				//camera X-axis mouse
 	theGame.IgnoreGameInput( 'GI_MouseDampY', BlockInput );				//camera Y-axis mouse
 	theGame.IgnoreGameInput( 'GI_AxisRightX', BlockInput );				//camera X-axis pad
-	theGame.IgnoreGameInput( 'GI_AxisRightY', BlockInput );				//camera Y-axis pad	
+	theGame.IgnoreGameInput( 'GI_AxisRightY', BlockInput );				//camera Y-axis pad
 
 	//sterowanie postacia
 	theGame.IgnoreGameInput( 'GI_AxisLeftX', BlockInput );				//left/right movement
 	theGame.IgnoreGameInput( 'GI_AxisLeftY', BlockInput );				//forward/backward movement
 	theGame.IgnoreGameInput( 'GI_WalkSwitch', BlockInput );				//enable walking
 	theGame.IgnoreGameInput( 'GI_WalkFlag', BlockInput );				//toggle walking/running
-	
+
 	//przygotowanie broni/znakow
 	theGame.IgnoreGameInput( 'GI_Holster', BlockInput );				//holster weapon
 	theGame.IgnoreGameInput( 'GI_Steel', BlockInput );					//draw steel sword
@@ -7065,7 +7065,7 @@ quest function TutorialInputBlockingAllSwitch( BlockInput : bool )
 	//theGame.IgnoreGameInput( 'GI_CircleOfPower', BlockInput );			//special quest interaction
 	theGame.IgnoreGameInput( 'GI_Cancel', BlockInput );					//delete item in inventory panel
 
-	//panele informacyjne	
+	//panele informacyjne
 	theGame.IgnoreGameInput( 'GI_Inventory', BlockInput );				//open inventory panel
 	theGame.IgnoreGameInput( 'GI_Character', BlockInput );				//open character panel
 	theGame.IgnoreGameInput( 'GI_Nav', BlockInput );					//open map panel
@@ -7078,9 +7078,9 @@ quest function TutorialInputBlockingAllSwitch( BlockInput : bool )
 	//dodatkowe
 	theGame.IgnoreGameInput( 'GI_F5', BlockInput );						//save game in quickslot
 	theGame.IgnoreGameInput( 'GI_H', BlockInput );						//hide GUI
-	
+
 	Log( "*************************************************" );
-	
+
 	if( BlockInput == true )
 	{
 		thePlayer.ResetPlayerMovement();
@@ -7094,7 +7094,7 @@ quest function TutorialInputBlockingSwitch( input : ETutorialInputBlocker, Block
 		Log( "Input blocked from TutorialInputBlockingSwitch." );
 	else
 		Log( "Input unblocked from TutorialInputBlockingSwitch." );
-		
+
 	switch( input )
 	{
 		case TIB_Camera_Movement:
@@ -7103,7 +7103,7 @@ quest function TutorialInputBlockingSwitch( input : ETutorialInputBlocker, Block
 			theGame.IgnoreGameInput( 'GI_MouseDampX', BlockInput );				//camera X-axis mouse
 			theGame.IgnoreGameInput( 'GI_MouseDampY', BlockInput );				//camera Y-axis mouse
 			theGame.IgnoreGameInput( 'GI_AxisRightX', BlockInput );				//camera X-axis pad
-			theGame.IgnoreGameInput( 'GI_AxisRightY', BlockInput );				//camera Y-axis pad				
+			theGame.IgnoreGameInput( 'GI_AxisRightY', BlockInput );				//camera Y-axis pad
 			break;
 		}
 		case TIB_Movement_Walk:
@@ -7263,7 +7263,7 @@ quest function TutorialInputBlockingSwitch( input : ETutorialInputBlocker, Block
 		{
 			Log( "TIB_Panel_Map" );
 			theGame.IgnoreGameInput( 'GI_Nav', BlockInput );					//open map panel
-			theGame.TutorialToggleMapBlock( BlockInput );			
+			theGame.TutorialToggleMapBlock( BlockInput );
 			break;
 		}
 		case TIB_Panel_Journal:
@@ -7298,16 +7298,16 @@ quest function TutorialInputBlockingSwitch( input : ETutorialInputBlocker, Block
 			break;
 		}
 	}
-	
+
 	Log( "*************************************************" );
-		
+
 	if( input == TIB_Movement_Walk )
 	{
 		if( BlockInput == true )
 		{
 			thePlayer.ResetPlayerMovement();
-		}	
-	}	
+		}
+	}
 }
 
 exec function TestCheckSlots()
@@ -7316,17 +7316,17 @@ exec function TestCheckSlots()
 	var itemsAr : array< SItemUniqueId >;
 	var i,j : int;
 	var itemName : name;
-	
+
 	slotAr = thePlayer.GetItemsInQuickSlots();
-	
+
 	for( i=0; i<slotAr.Size(); i+=1 )
 	{
 		itemName = thePlayer.GetInventory().GetItemName( slotAr[i] );
 		Log( "===================== In QuickSlots: " +itemName +" ==================" );
 	}
-	
+
 	thePlayer.GetInventory().GetAllItems( itemsAr );
-	
+
 	for( j=0; j<itemsAr.Size(); j+=1 )
 	{
 		itemName = thePlayer.GetInventory().GetItemName( itemsAr[j] );
@@ -7340,7 +7340,7 @@ exec function TestCheckSlots()
 quest function TutorialHideMinimap()
 {
 	var arguments : array<CFlashValueScript>;
-	
+
 	arguments.PushBack(FlashValueFromBoolean(false));
 	arguments.PushBack(FlashValueFromBoolean(false));
 	arguments.PushBack(FlashValueFromBoolean(false));
@@ -7353,7 +7353,7 @@ quest function TutorialHideMinimap()
 quest function QStopChatScene (npcTag: name )
 {
 	var npc: CNewNPC;
-	
+
 	npc = theGame.GetNPCByTag( npcTag );
 	npc.StopAllScenes();
 }
@@ -7373,18 +7373,18 @@ quest latent function GPlayMovieWithDescription( videoName : string, headlineTex
 	//optional textFadeIn, textFadeOut : float
 	//var args : array< CFlashValueScript >;
 	var arg : CFlashValueScript;
-	
+
 	arg = FlashValueFromString( StrUpperUTF( GetLocStringByKeyExt( headlineText ) ) );
 	//args.PushBack( FlashValueFromString( StrUpperUTF( GetLocStringByKeyExt( headlineText ) ) ) );
 	//args.PushBack( FlashValueFromString( GetLocStringByKeyExt( infoText ) ) );
 	//args.PushBack( FlashValueFromFloat( textFadeIn ));
 	//args.PushBack( FlashValueFromFloat( textFadeOut ));
-	
+
 	theHud.m_hud.HideTutorial();
 	thePlayer.ResetPlayerMovement();
 	//theHud.InvokeManyArgs( "USMSubtitles", args );
-	
-	if ( afterTime > 0 ) 
+
+	if ( afterTime > 0 )
 		{
 			thePlayer.SetUSMTitle( FlashValueFromString( StrUpperUTF( GetLocStringByKeyExt( headlineText ) ) ) );
 			thePlayer.AddTimer( 'ShowUSMTitle', afterTime );
@@ -7394,7 +7394,7 @@ quest latent function GPlayMovieWithDescription( videoName : string, headlineTex
 			theHud.InvokeOneArg( "USMSubtitles", arg );
 			theHud.PlayVideoEx( videoName, false);
 		}
-	
+
 	theHud.Invoke( "HideUSMSubtitles" );
 }
 
@@ -7407,7 +7407,7 @@ quest function QResetPlayer()
 quest function QToggleStorageInteraction( storageTag : name, enableInteraction : bool )
 {
 	var storage : W2PlayerStorage;
-	
+
 	storage = (W2PlayerStorage)theGame.GetEntityByTag( storageTag );
 	storage.ToggleInteraction( enableInteraction );
 }
