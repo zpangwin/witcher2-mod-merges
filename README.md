@@ -248,7 +248,7 @@ Options:
 * Custom: short-circuited many QTE checks so that many QTEs will succeed regardless of if you press buttons correctly or not.
 * [915-Faster Exploration Run Speed by Heramepheus](https://www.nexusmods.com/witcher2/mods/915)
 * [868-Win Arm Wrestling And Poker Everytime Fix Dice Camera Too by djbauer](https://www.nexusmods.com/witcher2/mods/868); reverted (was curious how to do it but did not really want for my playthrough)
-
+* Custom: Increased Health regen rate during combat (now 25% normal regen rate instead of 0.5%); made Health and Vigor regen active while toxic. Based on notes in descption of [61-Increase Combat Regen Rate by Kevinnium](https://www.nexusmods.com/witcher2/mods/61)
 
 
 
