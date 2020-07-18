@@ -77,6 +77,7 @@ latent quest function Q_209_LeverQte ( qteDurationTime: float, qteInitialValue: 
 		Sleep( 0.1 );
 	}
 
+	result = QTER_Succeeded;
 	if( result == QTER_Succeeded )
 	{
 		while( !witcher.RaiseEvent( 'qte_succeed' ) )

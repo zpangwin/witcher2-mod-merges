@@ -1611,7 +1611,8 @@ state TryingEscapeM3 in ZagnicaMackaBig
 
 			arraySize = parent.mackasBones.Size();
 
-			if( parent.zgn.rodeoCanBeStarted && thePlayer.GetLastQTEResult() == QTER_Succeeded )
+			//if( parent.zgn.rodeoCanBeStarted && thePlayer.GetLastQTEResult() == QTER_Succeeded )
+			if( parent.zgn.rodeoCanBeStarted )
 			{
 				theGame.SetTimeScale( 1.f );
 				parent.zgn.rodeoCheckInProgress = false;
@@ -1806,7 +1807,7 @@ state RodeoQTEM3 in ZagnicaMackaBig
 			Log( "-----------------------------------------------------------------" );
 		}
 
-		if( thePlayer.GetLastQTEResult() != QTER_Succeeded )
+		if( false == true && thePlayer.GetLastQTEResult() != QTER_Succeeded )
 		{
 			actors.Clear();
 			actorNames.Clear();
@@ -1898,7 +1899,7 @@ state RodeoQTEM3 in ZagnicaMackaBig
 
 			thePlayer.BreakQTE();
 
-			if( thePlayer.GetLastQTEResult() != QTER_Succeeded )
+			if( false == true && thePlayer.GetLastQTEResult() != QTER_Succeeded )
 			{
 				actors.Clear();
 				actorNames.Clear();

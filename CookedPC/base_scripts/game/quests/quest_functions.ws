@@ -3416,6 +3416,7 @@ latent quest function QStartQte ( qteDurationTime: float, qteInitialValue: float
 		Sleep( 0.1 );
 	}
 
+	result = QTER_Succeeded;
 	if ( result == QTER_Succeeded )
 	{
 		theHud.m_messages.ShowInformationText( GetLocStringByKeyExt( "Action successful!" ) );

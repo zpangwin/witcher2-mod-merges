@@ -148,6 +148,7 @@ state ZgnSpitQTE in CPlayer extends Combat
 			Sleep( 0.2 );
 		}
 
+		result = QTER_Succeeded;
 		if( result == QTER_Succeeded )
 		{
 			parent.RaiseEvent( 'ZgnSpitQTE_End' );
@@ -324,6 +325,7 @@ state ZgnRodeoQTE in CPlayer extends Cutscene
 
 		parent.RaiseEvent( 'qte_finished' );
 
+		result = QTER_Succeeded;
 		if( result != QTER_Succeeded )
 		{
 			parent.RodeoFailed();

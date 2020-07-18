@@ -85,7 +85,8 @@ latent storyscene function AxiiQte ( player: CStoryScenePlayer, qteDurationTime:
 	*/
 
 	var result : bool;
-	result = ImplAxiiQte( qteDurationTime, qteInitialValue, valueDecayPerSecond, valueIncreasePerMash, rotateToTargetTag );
+	//result = ImplAxiiQte( qteDurationTime, qteInitialValue, valueDecayPerSecond, valueIncreasePerMash, rotateToTargetTag );
+	result = true;
 	return result;
 }
 
@@ -180,6 +181,7 @@ latent function ImplAxiiQte( qteDurationTime: float, qteInitialValue: float, val
 	//witcher.GetRootAnimatedComponent().PopBehaviorGraph( 'qte_quest_signs', 0.f );
 
 	//LogChannel( 'AxiiQte', "4. Finished" );
+	result = QTER_Succeeded;
 	return result == QTER_Succeeded;
 
 	//return thePlayer.StartMashFullQTE( 'QTE1', qteInitialValue, qteDurationTime, valueDecayPerSecond, valueIncreasePerMash );
@@ -292,6 +294,7 @@ latent storyscene function IgniQte ( player: CStoryScenePlayer, qteDurationTime:
 	witcher.DetachBehavior( 'qte_quest_igni' );
 	//witcher.GetRootAnimatedComponent().PopBehaviorGraph( 'qte_quest_igni', 0.f );
 
+	result = QTER_Succeeded;
 	return result == QTER_Succeeded;
 }
 
@@ -357,6 +360,7 @@ latent quest function QIgniQte ( qteDurationTime: float, qteInitialValue: float,
 	witcher.DetachBehavior( 'qte_quest_igni' );
 	//witcher.GetRootAnimatedComponent().PopBehaviorGraph( 'qte_quest_igni', 0.f );
 
+	result = QTER_Succeeded;
 	return result == QTER_Succeeded;
 }
 
@@ -515,5 +519,6 @@ latent function ImplQ302Qte( qteDurationTime: float, qteInitialValue: float, val
 		Sleep( 0.1 );
 	}
 
+	result = QTER_Succeeded;
 	return result == QTER_Succeeded;
 }

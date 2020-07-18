@@ -222,7 +222,7 @@ Options:
 ```
 
 
-## Mods Used
+## Mods Used / Changelog
 
 * [696-Enhanced Mod Compilation by QuietusPlus](https://www.nexusmods.com/witcher2/mods/696) \[Full Version\] | [Github](https://github.com/QuietusPlus)
 * [115-Weight Watchers by Bill Jahnel](https://www.nexusmods.com/witcher2/mods/115)
@@ -245,7 +245,7 @@ Options:
 * [906-Better Poker by Rey](https://www.nexusmods.com/witcher2/mods/906) - partial - I did not merge the stuff that prevents throwing dice out of the box (as it would nulify EmptyHand changes) but i did merge the camera fixes and the max bets scaling with difficulty
 * Customized max bets as follows: use difficult scaling system from Better Poker but also augment with percentage like from Tweaked Minigame Bets EXCEPT use the Max() function rather than the Min() function when determining BP vs TMB value.
 * [876-Win Fistfight QTEs by Nastyemu](https://www.nexusmods.com/witcher2/mods/876)
-
+* Custom: short-circuited many QTE checks so that many QTEs will succeed regardless of if you press buttons correctly or not.
 
 
 

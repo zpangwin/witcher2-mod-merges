@@ -1724,19 +1724,19 @@ state Sliding in CDragonGrabEdge
 		//Sleep(0.1);
 		thePlayer.TeleportWithRotation(parent.teleportPosition, parent.teleportRotation);
 		parent.grabCamera.SetActive(true);
-		if(thePlayer.GetLastQTEResult() == QTER_Succeeded)
-		{
+//		if(thePlayer.GetLastQTEResult() == QTER_Succeeded)
+//		{
 			thePlayer.RaiseEvent('grab');
 			thePlayer.WaitForBehaviorNodeDeactivation('climb_loop', 6.0);
 			parent.interactionPullUp.SetEnabled(true);
 			Sleep(3.0);
 			PullUp();
 			//FallDown();
-		}
-		else
-		{
-			FallDown();
-		}
+//		}
+//		else
+//		{
+//			FallDown();
+//		}
 	}
 }
 */
