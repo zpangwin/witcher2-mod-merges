@@ -196,6 +196,10 @@ quest function QAddAbilityToPlayer(abilityName : name)
 	{
 		thePlayer.GetCharacterStats().AddAbility(abilityName);
 	}
+	if (StrLeft(NameToString(abilityName), 5) == "story")
+	{
+		QAddStoryAbilityToPlayer(NameToString(abilityName));
+	}
 }
 quest function QAddStoryAbilityToPlayer(abilityName : string)
 {
