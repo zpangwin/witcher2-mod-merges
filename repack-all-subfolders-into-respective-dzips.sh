@@ -593,8 +593,11 @@ while IFS= read -r -d '' relativeDirPathToBeBeRepacked; do
 	#echo "wineDirPath: ${wineDirPath}";
 
 	# set output dir to be passed to windows app
-	relativeOutputFilePath="${relativeDirPathToBeBeRepacked:1}.$(date +'%Y-%m-%d@%H.%M.%S').dzip";
+	relativeOutputFilePath="${relativeDirPathToBeBeRepacked:1}.dzip";
 	#echo "relativeOutputFilePath: ${relativeOutputFilePath}";
+
+	realOutputFilePath="${outputDir}${relativeOutputFilePath}";
+	#echo "realOutputFilePath: ${realOutputFilePath}";
 
 	wineOutputFilePath="${wineOutputDir}${relativeOutputFilePath}";
 	#echo "wineOutputFilePath: ${wineOutputFilePath}";
@@ -615,6 +618,9 @@ while IFS= read -r -d '' relativeDirPathToBeBeRepacked; do
 		runOrSimulate /usr/bin/env WINEDEBUG=-all WINEPREFIX="${witcher2ProtonPrefix}" "${protonWineBinPath}" "${wineToolsDir}/${GIBBED_PACKER_FILENAME}" "${wineOutputFilePath}" "${wineDirPath}"
 	else
 		runOrSimulate "${wineToolsDir}/${GIBBED_PACKER_FILENAME}" "${wineOutputFilePath}" "${wineDirPath}"
+	fi
+	if [[ -f "${realOutputFilePath}" ]]; then
+		runOrSimulate cp "${realOutputFilePath}" "${realOutputFilePath}.$(date +'%Y-%m-%d@%H.%M.%S').bak";
 	fi
 
 done < <(find . -mindepth 1 -maxdepth 1 -type d -print0)
