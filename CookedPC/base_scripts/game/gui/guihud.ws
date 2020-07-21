@@ -517,13 +517,12 @@ class CGuiHud
 		x = ( playerPos.X-theHud.miniMapMinX ) * theHud.miniMapScaleX;
 		y = ( playerPos.Y-theHud.miniMapMinY ) * theHud.miniMapScaleY;
 
+        //reset rotations/fixed minimap
+        cameraRot.Yaw = 180.0;
+
 		// Send rotations
-		//theHud.InvokeOneArg( "setNavCameraDirection",	FlashValueFromFloat( cameraRot.Yaw ), AS_hud );
-		//theHud.InvokeOneArg( "setNavActorDirection",	FlashValueFromFloat( cameraRot.Yaw-playerRot.Yaw ), AS_hud );
-
-		theHud.InvokeOneArg( "setNavActorDirection",	FlashValueFromFloat( cameraRot.Yaw ), AS_hud );
-		theHud.InvokeOneArg( "setNavCameraDirection",	FlashValueFromFloat( cameraRot.Yaw-playerRot.Yaw ), AS_hud );
-
+		theHud.InvokeOneArg( "setNavCameraDirection",	FlashValueFromFloat( cameraRot.Yaw ), AS_hud );
+		theHud.InvokeOneArg( "setNavActorDirection",	FlashValueFromFloat( cameraRot.Yaw-playerRot.Yaw ), AS_hud );
 
 		// Send player position
 		params.Clear();
