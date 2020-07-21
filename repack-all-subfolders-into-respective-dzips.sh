@@ -48,6 +48,9 @@ if [[ 'true' == "${showHelp}" ]]; then
 	echo '';
 	echo 'Options:';
 	echo "  -s, --simulate           Print out paths and commands but don't actually extract any archives.";
+	echo "  -u, --unmodifed          Repack the existing sources dir AS-IS. Default behavior is that the sources in";
+	echo "                           the script's dir are copied on top of the sources dir before repacking begins.";
+	echo "                           In other words, this flag disables that default behavior.";
 	echo '';
 	echo '---------------------------------------------------------------------------------';
 	echo 'The Gibbed RED Tools can be found at: https://www.nexusmods.com/witcher2/mods/768';
@@ -65,8 +68,23 @@ if [[ 'true' == "${showHelp}" ]]; then
 fi
 
 SIMULATE_ONLY="false";
+UNMODIFIED_SOURCES="false";
+
+# Handle first option
 if [[ "-s" == "$1" || "--simulate" == "$1" ]]; then
 	SIMULATE_ONLY="true";
+	shift 1;
+elif [[ "-u" == "$1" || "--unmodifed" == "$1" ]]; then
+	UNMODIFIED_SOURCES="true";
+	shift 1;
+fi
+
+# Handle second option
+if [[ "-s" == "$1" || "--simulate" == "$1" ]]; then
+	SIMULATE_ONLY="true";
+	shift 1;
+elif [[ "-u" == "$1" || "--unmodifed" == "$1" ]]; then
+	UNMODIFIED_SOURCES="true";
 	shift 1;
 fi
 
@@ -520,7 +538,19 @@ echo "sourceFilesDir: '${sourceFilesDir}' ";
 echo  "outputDir: '${outputDir}' ...";
 echo '==============================================================================';
 
-# 2. Extract dzips
+startDir=$(pwd);
+
+
+# 2. Copy sources (or not) depending on options
+if [[ "true" != "${UNMODIFIED_SOURCES}" && -d "${SCRIPT_DIR}/CookedPC" ]]; then
+	cd "${SCRIPT_DIR}/CookedPC";
+
+	while IFS= read -r -d '' relativeDirPathToBeBeRepacked; do
+		cp -a -t "${sourceFilesDir}" "${SCRIPT_DIR}/CookedPC/${relativeDirPathToBeBeRepacked:1}";
+	done < <(find . -mindepth 1 -maxdepth 1 -type d -not -iname '.git' -print0)
+fi
+
+# 3. Extract dzips
 
 # setup wine paths: when we pass the paths to wine, we want the windows app to use
 # to use a format like "C:/temp/output"
@@ -570,8 +600,6 @@ fi
 #echo "wineSourcesDir: ${wineSourcesDir}";
 #echo "wineOutputDir: ${wineOutputDir}";
 
-
-startDir=$(pwd);
 
 # Change to sourceFilesDir so that we can use "find ." to make the paths all relative
 cd "${sourceFilesDir}";
