@@ -1188,7 +1188,7 @@ import class CGuiUtils extends CObject
 		}
 		else
 		{
-			return RoundFEx((item_price * 2.3) * multi + 1);
+			return RoundFEx((item_price * 1.5) * multi + 1);
 		}
 	}
 /*
