@@ -929,12 +929,7 @@ import class W2MinigameDicePoker extends CMinigame
 			// Initial betting, based only on NPC risk rate, not dices
 			if( m_npc.GetDicePokerLevel() < 2 )
 			{
-				// On hard levels NPC raises stake 2x as much
-				bet = ( int )( playerBet + RandRangeF( m_minStake, playerBet * 0.33f ) );
-				bet = bet * 2;
-			}
-			else if (maximalBet < 300 && parent.m_npc.GetDicePokerLevel() == 1){
-				// On medium levels NPC raises stake
+				// On hard levels NPC raises stake
 				bet = ( int )( playerBet + RandRangeF( m_minStake, playerBet * 0.33f ) );
 			}
 			else
