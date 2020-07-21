@@ -915,7 +915,7 @@ import class W2MinigameDicePoker extends CMinigame
 		if ( playerMinor > npcMinor ) return DicePoker_Player;
 		if ( playerMinor < npcMinor ) return DicePoker_NPC;
 
-		return -1;
+		return DicePoker_Player;
 	}
 
 	final function BetAI( playerBet : int ) : int
