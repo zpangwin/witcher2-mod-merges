@@ -927,13 +927,27 @@ import class W2MinigameDicePoker extends CMinigame
 		if( m_currentThrow == 1 )
 		{
 			// Initial betting, based only on NPC risk rate, not dices
-			if( m_npc.GetDicePokerLevel() < 2 )
-			{
-				// On hard levels NPC raises stake
+			/*
+				0 - DicePoker_Master  - raise bet 3x vanilla "hard"
+				1 - DicePoker_Hard    - raise bet 2x vanilla "hard"
+				2 - DicePoker_Normal  - raise bet same as vanilla "hard"
+				3 - DicePoker_Easy    - same as vanilla
+			*/
+			if( m_npc.GetDicePokerLevel() < 3 ) {
+				// On medium/hard/master levels NPCs, raise stakes
 				bet = ( int )( playerBet + RandRangeF( m_minStake, playerBet * 0.33f ) );
-			}
-			else
-			{
+
+				if( m_npc.GetDicePokerLevel() == 0 ) {
+					// On master level NPCs, triple vanilla stakes
+					bet = ( 3 * bet );
+
+				} else if( m_npc.GetDicePokerLevel() == 1 ) {
+					// On hard level NPCs, double vanilla stakes
+					bet = ( 2 * bet );
+				}
+				// for mediun level npcs, just raise normally
+
+			} else {
 				// On easy levels, npc just accepts player stake
 				bet = Max( playerBet, m_minStake );
 			}
