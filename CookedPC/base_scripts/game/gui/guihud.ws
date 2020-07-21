@@ -491,8 +491,11 @@ class CGuiHud
 	final function SendNavigationDataToGUI( master : CEntity )
 	{
 		var playerPos	    : Vector		= master.GetWorldPosition();
-		var playerRot	    : EulerAngles	= master.GetWorldRotation();
-		var cameraRot	    : EulerAngles	= theGame.GetActiveCameraComponent().GetWorldRotation();
+		//var playerRot	    : EulerAngles	= master.GetWorldRotation();
+		//var cameraRot	    : EulerAngles	= theGame.GetActiveCameraComponent().GetWorldRotation();
+
+		var playerRot	    : EulerAngles	= theGame.GetActiveCameraComponent().GetWorldRotation();
+		var cameraRot	    : EulerAngles	= master.GetWorldRotation();
 
 		var questEntities   : array< CEntity >;
 		var questEntity     : CEntity;
