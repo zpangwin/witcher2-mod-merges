@@ -162,7 +162,10 @@ state PlayerBetting in W2MinigameDicePoker
 				else                  -  25 or 10x Vanilla, whichever is larger
 			*/
 			// just in case set this to 25 if for some reason the character doesn't have the diff level set
-			maximalBet = Max( 25, 10*parent.m_npc.GetDicePokerMaxBet() );
+			maximalBet = 10*parent.m_npc.GetDicePokerMaxBet();
+			if (maximalBet < 25){
+				maximalBet = 25;
+			}
 
 			if (maximalBet < 200 && parent.m_npc.GetDicePokerLevel() == 0){
 				// master
