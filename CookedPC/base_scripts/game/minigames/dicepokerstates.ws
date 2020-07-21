@@ -151,8 +151,6 @@ state PlayerBetting in W2MinigameDicePoker
 			//=========================================
 			// MOD - START
 			//=========================================
-			minimalBet = Min( 1, parent.m_playerStatuses[ DicePoker_Player ].m_money );
-
 			/*
 			Red's max bets suck in general - better and more logical way below
 				0 - DicePoker_Master  - 200 or 10x Vanilla, whichever is larger
@@ -182,6 +180,15 @@ state PlayerBetting in W2MinigameDicePoker
 
 			//Don't allow betting more money than the player has
 			maximalBet = Min( maximalBet, parent.m_playerStatuses[ DicePoker_Player ].m_money );
+
+			//Make minimum bet as either 100 oren less than the max bet
+			minimalBet = maximalBet - 100;
+
+			// if that would make the value negative or if the player only has 1 oren; make min bet 1 oren
+			if ( minimalBet < 1 || parent.m_playerStatuses[ DicePoker_Player ].m_money == 1 ) {
+				minimalBet = 1;
+			}
+
 			//=========================================
 			// MOD - END
 			//=========================================
