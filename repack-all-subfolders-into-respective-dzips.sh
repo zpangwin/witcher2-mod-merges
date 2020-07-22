@@ -8,6 +8,7 @@ FOLDER_NAME="${SCRIPT_DIR##*/}";
 GIBBED_RED_TOOLS_BOOKMARK="${SCRIPT_DIR}/GIBBED_RED_TOOLS_BOOKMARK";
 PROTON_DIR_BOOKMARK="${SCRIPT_DIR}/PROTON_DIR_BOOKMARK";
 WITCHER2_PFX_DIR_BOOKMARK="${SCRIPT_DIR}/WITCHER2_PFX_DIR_BOOKMARK";
+WITCHER2_INSTALL_DIR_BOOKMARK="${SCRIPT_DIR}/WITCHER2_INSTALL_DIR_BOOKMARK";
 
 showHelp='false';
 if [[ "-h" == "$1" || "--help" == "$1" ]]; then
@@ -16,7 +17,7 @@ elif [[ '' == '$1' && ! -f "$1" ]]; then
 	showHelp='true';
 fi
 if [[ 'true' == "${showHelp}" ]]; then
-	echo '---------------------------------------------------------------------------------';
+	echo '-------------------------------------------------------------------------------------------------------------';
 	echo 'This script is for creating dzip files from extracted The Witcher 2 assets / mods sources.';
 	echo '';
 	echo 'IT IS RECOMMENDED TO RUN THE WITCHER 2 LAUNCHER ONCE SO THAT THE PROTON FOLDER';
@@ -25,7 +26,7 @@ if [[ 'true' == "${showHelp}" ]]; then
 	echo '';
 	echo 'Bash v4.0 or later, gnu core tools, and Gibbed RED Tools are required to run.';
 	echo 'On Mac and Linux, Steam and Proton are also required.';
-	echo '---------------------------------------------------------------------------------';
+	echo '-------------------------------------------------------------------------------------------------------------';
 	echo '';
 	echo 'Expected usage':
 	echo "   $0 [OPTIONS]";
@@ -48,11 +49,14 @@ if [[ 'true' == "${showHelp}" ]]; then
 	echo '';
 	echo 'Options:';
 	echo "  -s, --simulate           Print out paths and commands but don't actually extract any archives.";
+	echo '';
 	echo "  -u, --unmodifed          Repack the existing sources dir AS-IS. Default behavior is that the sources in";
 	echo "                           the script's dir are copied on top of the sources dir before repacking begins.";
 	echo "                           In other words, this flag disables that default behavior.";
 	echo '';
-	echo '---------------------------------------------------------------------------------';
+	echo "  -d, --deploy             Deploy repacked files to the installed game's CookedPC folder.";
+	echo '';
+	echo '-------------------------------------------------------------------------------------------------------------';
 	echo 'The Gibbed RED Tools can be found at: https://www.nexusmods.com/witcher2/mods/768';
 	echo 'This is the ONLY version that will receive any kind of support whatsoever.';
 	echo '';
@@ -63,12 +67,13 @@ if [[ 'true' == "${showHelp}" ]]; then
 	echo '';
 	echo 'There is also a fork which looks to have additional changes available here:';
 	echo '         git clone https://github.com/yole/Gibbed.RED.git';
-	echo '---------------------------------------------------------------------------------';
+	echo '-------------------------------------------------------------------------------------------------------------';
 	exit;
 fi
 
 SIMULATE_ONLY="false";
 UNMODIFIED_SOURCES="false";
+DEPLOY_FINAL_FILES="false";
 
 # Handle first option
 if [[ "-s" == "$1" || "--simulate" == "$1" ]]; then
@@ -76,6 +81,9 @@ if [[ "-s" == "$1" || "--simulate" == "$1" ]]; then
 	shift 1;
 elif [[ "-u" == "$1" || "--unmodifed" == "$1" ]]; then
 	UNMODIFIED_SOURCES="true";
+	shift 1;
+elif [[ "-d" == "$1" || "--deploy" == "$1" ]]; then
+	DEPLOY_FINAL_FILES="true";
 	shift 1;
 fi
 
@@ -86,6 +94,26 @@ if [[ "-s" == "$1" || "--simulate" == "$1" ]]; then
 elif [[ "-u" == "$1" || "--unmodifed" == "$1" ]]; then
 	UNMODIFIED_SOURCES="true";
 	shift 1;
+elif [[ "-d" == "$1" || "--deploy" == "$1" ]]; then
+	DEPLOY_FINAL_FILES="true";
+	shift 1;
+fi
+
+# Handle third option
+if [[ "-s" == "$1" || "--simulate" == "$1" ]]; then
+	SIMULATE_ONLY="true";
+	shift 1;
+elif [[ "-u" == "$1" || "--unmodifed" == "$1" ]]; then
+	UNMODIFIED_SOURCES="true";
+	shift 1;
+elif [[ "-d" == "$1" || "--deploy" == "$1" ]]; then
+	DEPLOY_FINAL_FILES="true";
+	shift 1;
+fi
+
+# disable mod file copying when in simulate mode
+if [[ 'true' == "${SIMULATE_ONLY}" ]]; then
+	UNMODIFIED_SOURCES="true";
 fi
 
 function alwaysUsePosixPaths() {
@@ -146,7 +174,8 @@ else
 	esac
 fi
 
-witcher2ProtonPrefix='';
+witcher2GameInstallDir='';
+witcher2ProtonPrefixDir='';
 protonWineBinPath='';
 steamLibraryDirsArray=(  );
 protonDir='';
@@ -161,14 +190,21 @@ if [[ 'false' == "${isWindows}" ]]; then
 		fi
 	fi
 
-	if [[ -z "${witcher2ProtonPrefix}" && -f "${WITCHER2_PFX_DIR_BOOKMARK}" ]]; then
+	if [[ -z "${witcher2ProtonPrefixDir}" && -f "${WITCHER2_PFX_DIR_BOOKMARK}" ]]; then
 		tempLocation="$(head -1 "${WITCHER2_PFX_DIR_BOOKMARK}")";
 		if [[ -n "${tempLocation}" && -d "${tempLocation}" && -f "${tempLocation}/dist/bin/wine64" ]]; then
-			witcher2ProtonPrefix="${tempLocation}";
+			witcher2ProtonPrefixDir="${tempLocation}";
 		fi
 	fi
 
-	if [[ '' == "${protonWineBinPath}" || '' == "${protonDir}" || '' == "${witcher2ProtonPrefix}" ]]; then
+	if [[ -z "${witcher2GameInstallDir}" && -f "${WITCHER2_INSTALL_DIR_BOOKMARK}" ]]; then
+		tempLocation="$(head -1 "${WITCHER2_INSTALL_DIR_BOOKMARK}")";
+		if [[ -n "${tempLocation}" && -d "${tempLocation}" && -d "${tempLocation}/CookedPC" ]]; then
+			witcher2GameInstallDir="${tempLocation}";
+		fi
+	fi
+
+	if [[ -z "${protonWineBinPath}" || -z "${protonDir}" || -z "${witcher2ProtonPrefixDir}" || -z "${witcher2GameInstallDir}" ]]; then
 		# 1. Steam on linux will by default have a config file in home dir that contains a list of user-defined steam library folders
 		#	Finding the file allows use to automatically search and find the latest installed proton version without bothering the user for it.
 		#
@@ -176,7 +212,8 @@ if [[ 'false' == "${isWindows}" ]]; then
 		#	then set the following variables before the start of this IF block:
 		#		protonDir={steamLibDir}/steamapps/common/Proton x.x
 		#		protonWineBinPath=${protonDir}/dist/bin/wine64
-		#		witcher2ProtonPrefix={steamLibDir}/steamapps/compatdata/20920/pfx
+		#		witcher2ProtonPrefixDir={steamLibDir}/steamapps/compatdata/20920/pfx
+		#		witcher2GameInstallDir={steamLibDir}/steamapps/common/the witcher 2
 		#
 		steamConfigFile='';
 
@@ -206,22 +243,38 @@ if [[ 'false' == "${isWindows}" ]]; then
 
 			    done < <(grep -P '"BaseInstallFolder_\d"' "${steamConfigFile}"|sed -E 's/^\s*"BaseInstallFolder_[0-9][0-9]*"\s+"([^"]+)"\s*$/\1/g')
 			fi
-			if [[ '' == "${witcher2ProtonPrefix}" ]]; then
+			if [[ -z "${witcher2ProtonPrefixDir}" || -z "${witcher2GameInstallDir}" ]]; then
 				for steamDownloadDir in "${steamLibraryDirsArray[@]}"; do
 					#echo "steamDownloadDir in array is $steamDownloadDir";
-					 gameCompatDir="$(dirname "${steamDownloadDir}")/compatdata/20920/pfx";
-					 if [[ -d "${gameCompatDir}" ]]; then
-					 	witcher2ProtonPrefix="${gameCompatDir}";
+
+					# check for game compat dir
+					gameCompatDir="$(dirname "${steamDownloadDir}")/compatdata/20920/pfx";
+					if [[ -z "${witcher2ProtonPrefixDir}" && -d "${gameCompatDir}" ]]; then
+					 	witcher2ProtonPrefixDir="${gameCompatDir}";
 					 	if [[ -n "${WITCHER2_PFX_DIR_BOOKMARK}" ]]; then
-					 		echo "${witcher2ProtonPrefix}" > "${WITCHER2_PFX_DIR_BOOKMARK}";
+					 		echo "${witcher2ProtonPrefixDir}" > "${WITCHER2_PFX_DIR_BOOKMARK}";
 					 	fi
-					 	break;
+				 		if [[ -n "${witcher2ProtonPrefixDir}" && -n "${witcher2GameInstallDir}" ]]; then
+					 		break;
+					 	fi
 					fi;
+
+					# check for game install dir
+					if [[ -z "${witcher2GameInstallDir}" && -d "${steamDownloadDir}/common/the witcher 2/CookedPC" ]]; then
+						witcher2GameInstallDir="${steamDownloadDir}/common/the witcher 2";
+					 	if [[ -n "${WITCHER2_INSTALL_DIR_BOOKMARK}" ]]; then
+					 		echo "${witcher2GameInstallDir}" > "${WITCHER2_INSTALL_DIR_BOOKMARK}";
+					 	fi
+				 		if [[ -n "${witcher2ProtonPrefixDir}" && -n "${witcher2GameInstallDir}" ]]; then
+					 		break;
+					 	fi
+				 	fi
 				done
-				echo "witcher2ProtonPrefix: ${witcher2ProtonPrefix}";
+				echo "witcher2GameInstallDir: ${witcher2GameInstallDir}";
+				echo "witcher2ProtonPrefixDir: ${witcher2ProtonPrefixDir}";
 			fi
-			if [[ '' == "${witcher2ProtonPrefix}" ]]; then
-				echo 'ERROR: witcher2ProtonPrefix does not exist. Run The Witcher 2 under Proton once so that Steam will generate this folder.';
+			if [[ '' == "${witcher2ProtonPrefixDir}" ]]; then
+				echo 'ERROR: witcher2ProtonPrefixDir does not exist. Run The Witcher 2 under Proton once so that Steam will generate this folder.';
 				echo 'For help setting up The Witcher 2 under Proton, see https://gaming.stackexchange.com/a/372547/254686';
 				exit;
 			fi
@@ -327,6 +380,86 @@ if [[ 'false' == "${isWindows}" ]]; then
 
 		echo "Found protonWineBinPath binary as: '${protonWineBinPath}'";
 	fi
+
+elif [[ 'true' == "${isWindows}" && -z "${witcher2GameInstallDir}" ]]; then
+
+	# 1. Steam on 64-bit windows will by default have a config file in "C:/Program Files (x86)/Steam/config" dir that contains a list of
+	#	 user-defined steam library folders. Finding the file allows use to automatically search and find the game install dir without
+	#	 bothering the user for it.
+	#
+	#   If you are reading this and wish to hard-code values to avoid the search below,
+	#	then set the following variables before the start of this IF block:
+	#		witcher2GameInstallDir={steamLibDir}/steamapps/common/the witcher 2
+	#
+	#	Note: the folder "the witcher 2" is case-sensitive when accessing it from bash, even if windows is case-insenstive
+	steamConfigFile='';
+
+	steamInstallDir=$(alwaysUsePosixPaths 'C:\Program Files (x86)\Steam');
+
+	# i've seen both of these paths on nix systems before; handle both cases
+	if [[ -f "${steamInstallDir}/config/config.vdf" ]]; then
+	    steamConfigFile="${steamInstallDir}/config/config.vdf";
+	fi
+
+	if [[ -d "${steamInstallDir}/steamapps/common" ]]; then
+		# add default steam install location
+		steamLibraryDirsArray+=("${steamInstallDir}/steamapps/common");
+
+	elif [[ -d "${steamInstallDir}/SteamApps/common" ]]; then
+		# add default steam install location
+		steamLibraryDirsArray+=("${steamInstallDir}/SteamApps/common");
+	fi
+
+	for steamDownloadDir in "${steamLibraryDirsArray[@]}"; do
+		#echo "steamDownloadDir in array is $steamDownloadDir";
+
+		# handle some case-sensitives that are present in some rare older steam installs
+		steamAppsCommon='';
+		if [[ -d "${steamDownloadDir}/steamapps/common" ]]; then
+			# seet library location
+			steamAppsCommon="${steamDownloadDir}/steamapps/common";
+
+		elif [[ -d "${steamDownloadDir}/SteamApps/common" ]]; then
+			# seet library location
+			steamAppsCommon="${steamDownloadDir}/SteamApps/common";
+		fi
+
+		# if commons dir not found, go to next location
+		if [[ -z "${steamAppsCommon}" || ! -d "${steamAppsCommon}" ]]; then
+			break;
+		fi
+
+		# handle some case-sensitives that are present in some rare cases
+		gameDir='';
+		if [[ -d "${steamAppsCommon}/the witcher 2" ]]; then
+			# game install location
+			gameDir="${steamAppsCommon}/the witcher 2";
+
+		elif [[ -d "${steamAppsCommon}/The Witcher 2" ]]; then
+			# game install location
+			gameDir="${steamAppsCommon}/The Witcher 2";
+		fi
+
+		# check for game install dir
+		if [[ -z "${witcher2GameInstallDir}" && -d "${gameDir}/CookedPC" ]]; then
+			witcher2GameInstallDir="${gameDir}";
+		 	if [[ -n "${WITCHER2_INSTALL_DIR_BOOKMARK}" ]]; then
+		 		echo "${witcher2GameInstallDir}" > "${WITCHER2_INSTALL_DIR_BOOKMARK}";
+		 	fi
+	 		if [[ -n "${witcher2GameInstallDir}" ]]; then
+		 		break;
+		 	fi
+	 	fi
+	done
+	echo "witcher2GameInstallDir: ${witcher2GameInstallDir}";
+fi
+
+if [[ 'true' == "${DEPLOY_FINAL_FILES}" && -z "${witcher2GameInstallDir}" ]]; then
+	echo "ERROR: Detected --deploy option but witcher2GameInstallDir not found '${witcher2GameInstallDir}'";
+	exit
+elif [[ 'true' == "${DEPLOY_FINAL_FILES}" && ! -d "${witcher2GameInstallDir}/CookedPC" ]]; then
+	echo "ERROR: Detected --deploy option but directory '${witcher2GameInstallDir}/CookedPC' not found / does not exist.";
+	exit
 fi
 
 # 1. check locations of (a) tools, (b) dzip folder (CookedPC/Mods), (c) output folder for extracted sources
@@ -561,33 +694,33 @@ wineOutputDir='';
 if [[ 'false' == "${isWindows}" ]]; then
 	echo "Checking symlinks...";
 
-	mkdir -p "${witcher2ProtonPrefix}/drive_c/temp" 2>/dev/null;
-	if [[ ! -d "${witcher2ProtonPrefix}/drive_c/temp" ]]; then
-		echo "ERROR: Faild to create temp directory at '${witcher2ProtonPrefix}/drive_c/temp'.";
+	mkdir -p "${witcher2ProtonPrefixDir}/drive_c/temp" 2>/dev/null;
+	if [[ ! -d "${witcher2ProtonPrefixDir}/drive_c/temp" ]]; then
+		echo "ERROR: Faild to create temp directory at '${witcher2ProtonPrefixDir}/drive_c/temp'.";
 		exit;
 	fi
 
-	if [[ "${gibbedRedToolsDir}" != "${witcher2ProtonPrefix}/drive_c/temp/Gibbed-RED-Tools" ]]; then
-		if [[ -L "${witcher2ProtonPrefix}/drive_c/temp/Gibbed-RED-Tools" ]]; then
-			rm "${witcher2ProtonPrefix}/drive_c/temp/Gibbed-RED-Tools" 2>/dev/null;
+	if [[ "${gibbedRedToolsDir}" != "${witcher2ProtonPrefixDir}/drive_c/temp/Gibbed-RED-Tools" ]]; then
+		if [[ -L "${witcher2ProtonPrefixDir}/drive_c/temp/Gibbed-RED-Tools" ]]; then
+			rm "${witcher2ProtonPrefixDir}/drive_c/temp/Gibbed-RED-Tools" 2>/dev/null;
 		fi
-		ln -sf "${gibbedRedToolsDir}" "${witcher2ProtonPrefix}/drive_c/temp/Gibbed-RED-Tools";
+		ln -sf "${gibbedRedToolsDir}" "${witcher2ProtonPrefixDir}/drive_c/temp/Gibbed-RED-Tools";
 	fi
 	wineToolsDir="C:/temp/Gibbed-RED-Tools";
 
-	if [[ "${sourceFilesDir}" != "${witcher2ProtonPrefix}/drive_c/temp/sources" ]]; then
-		if [[ -L "${witcher2ProtonPrefix}/drive_c/temp/sources" ]]; then
-			rm "${witcher2ProtonPrefix}/drive_c/temp/sources" 2>/dev/null;
+	if [[ "${sourceFilesDir}" != "${witcher2ProtonPrefixDir}/drive_c/temp/sources" ]]; then
+		if [[ -L "${witcher2ProtonPrefixDir}/drive_c/temp/sources" ]]; then
+			rm "${witcher2ProtonPrefixDir}/drive_c/temp/sources" 2>/dev/null;
 		fi
-		ln -sf "${sourceFilesDir}" "${witcher2ProtonPrefix}/drive_c/temp/sources";
+		ln -sf "${sourceFilesDir}" "${witcher2ProtonPrefixDir}/drive_c/temp/sources";
 	fi
 	wineSourcesDir="C:/temp/sources";
 
-	if [[ "${outputDir}" != "${witcher2ProtonPrefix}/drive_c/temp/repacks" ]]; then
-		if [[ -L "${witcher2ProtonPrefix}/drive_c/temp/repacks" ]]; then
-			rm "${witcher2ProtonPrefix}/drive_c/temp/repacks" 2>/dev/null;
+	if [[ "${outputDir}" != "${witcher2ProtonPrefixDir}/drive_c/temp/repacks" ]]; then
+		if [[ -L "${witcher2ProtonPrefixDir}/drive_c/temp/repacks" ]]; then
+			rm "${witcher2ProtonPrefixDir}/drive_c/temp/repacks" 2>/dev/null;
 		fi
-		ln -sf "${outputDir}" "${witcher2ProtonPrefix}/drive_c/temp/repacks";
+		ln -sf "${outputDir}" "${witcher2ProtonPrefixDir}/drive_c/temp/repacks";
 	fi
 	wineOutputDir="C:/temp/repacks";
 else
@@ -643,12 +776,15 @@ while IFS= read -r -d '' relativeDirPathToBeBeRepacked; do
 	# invoke windows app to extract dzip files
 	if [[ 'false' == "${isWindows}" ]]; then
 		# Note: WINEDEBUG=-all is to get rid of wine debug messages/warnings such as "fixme" that just create console noise
-		runOrSimulate /usr/bin/env WINEDEBUG=-all WINEPREFIX="${witcher2ProtonPrefix}" "${protonWineBinPath}" "${wineToolsDir}/${GIBBED_PACKER_FILENAME}" "${wineOutputFilePath}" "${wineDirPath}"
+		runOrSimulate /usr/bin/env WINEDEBUG=-all WINEPREFIX="${witcher2ProtonPrefixDir}" "${protonWineBinPath}" "${wineToolsDir}/${GIBBED_PACKER_FILENAME}" "${wineOutputFilePath}" "${wineDirPath}"
 	else
 		runOrSimulate "${wineToolsDir}/${GIBBED_PACKER_FILENAME}" "${wineOutputFilePath}" "${wineDirPath}"
 	fi
 	if [[ -f "${realOutputFilePath}" ]]; then
-		runOrSimulate cp "${realOutputFilePath}" "${realOutputFilePath}.$(date +'%Y-%m-%d@%H.%M.%S').bak";
+		runOrSimulate cp -a "${realOutputFilePath}" "${realOutputFilePath}.$(date +'%Y-%m-%d@%H.%M.%S').bak";
+		if [[ 'true' == "${DEPLOY_FINAL_FILES}" ]]; then
+			runOrSimulate cp -a "${realOutputFilePath}" "${witcher2GameInstallDir}/CookedPC/${relativeOutputFilePath}";
+		fi
 	fi
 
 done < <(find . -mindepth 1 -maxdepth 1 -type d -print0)
