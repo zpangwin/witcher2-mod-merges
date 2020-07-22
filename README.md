@@ -252,7 +252,10 @@ Options:
 * [918-Toggleable Cat Effect with a Hotkey by Wolverine1984](https://www.nexusmods.com/witcher2/mods/918) - Note: requires keybinding to be setup in User.ini; see mod description
 [745-Double Potion and Oil Durations by Dansgaming](https://www.nexusmods.com/witcher2/mods/745) - note original makes cat as 10min with other potions as 20 min; I make all potions including cat as 20min
 * [740-Quickslot Potions by Rustine](https://www.nexusmods.com/witcher2/mods/740) - mod replaces 'Elixir' tag with 'QuickSlot'; I see other definitions with more than 3 tags so I kept the Elixir tag and *added* the QuickSlot tag.
-
+* Custom: removed potion toxicities
+* Custom: altered dice bets so that npcs raise bets more frequently and by larger amounts (vanilla: only hard/master dice players will raise bets and for a set range, mine: medium/hard/master dice players will raise bets - medium by set range, hard by double, master by triple)
+* Custom: altered dice bets so that minimum is 100 gold less than the maximum
+* [756-Minimap rotation disabled by misiekt](https://www.nexusmods.com/witcher2/mods/758) - minimap changes only (e.g. for chapter 1: yaw=190.0; for chapter 2 +: yaw+=0.0)
 
 
 
